@@ -10,17 +10,19 @@ class Collection extends React.Component {
     componentWillUnmount() {clearInterval(this.interval)}
     render() {
         let t = this.state.time.getSeconds();
-        debugger
+        // debugger
         return (
             this.props.rocks.map((rock, indx) => {
-                let X = rock.xi + rock.vx * t;
-                let Y = rock.yi + rock.vy * t;
                 let Z = rock.zi + rock.vz * t;
+                let X = (rock.xi + rock.vx * t)/(1 - Z);
+                let Y = (rock.yi + rock.vy * t)/(1 - Z);
+                // debugger
                 return (
                     <Rock
                     key={indx}
                     X={X} Y={Y} Z={Z}
-                    color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}/>
+                    color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
+                    />
                 )
             })
         )
