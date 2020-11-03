@@ -6,10 +6,12 @@ class Collection extends React.Component {
         this.state = { time: new Date() }
     }
     tick = () => this.setState({ time: new Date() });
-    componentDidMount() {this.interval = setInterval(this.tick, 100)}
+    componentDidMount() {this.interval = setInterval(this.tick, 10)}
     componentWillUnmount() {clearInterval(this.interval)}
     render() {
         let t = this.state.time.getSeconds();
+        let tm = this.state.time.getMilliseconds();
+        t = t + tm/1000
         // debugger
         return (
             this.props.rocks.map((rock, indx) => {
