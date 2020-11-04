@@ -18,6 +18,7 @@
 .dot {
   position: fixed;
   border-radius: 50%;
+  background-color: "black"
 }
 
 /* Clock */
