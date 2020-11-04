@@ -1,15 +1,12 @@
 import React from "react";
 import Rock from "./Rock";
 class Collection extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             now: 0,
             running: false,
             start: 0,
-            xs: this.props.xs,
-            ys: this.props.ys,
-            zs: this.props.zs,
         }
     }
 
@@ -26,7 +23,11 @@ class Collection extends React.Component {
           this.interval = null;
         }
         this.setState({ running });
-    };
+      };
+
+    // componentDidMount() {this.interval = setInterval(this.tick, 10)}
+
+    // componentWillUnmount() {clearInterval(this.interval)}
 
     render() {
         let t = (this.state.now - this.state.start) / 1000;
@@ -38,17 +39,7 @@ class Collection extends React.Component {
                         {this.state.running ? "Stop" : "Start"}
                     </button>
                 </div>
-                {this.state.zs.map((col, i) => (
-                    col.map((z, j) => (
-                        <Rock
-                            key={this.props.ny * i + j}
-                            X={this.state.xs[i]}
-                            Y={this.state.ys[j]}
-                            Z={this.state.zs[i][j]}
-                        />
-                    ))
-                ))}
-                {/* <div>{this.props.rocks.map((rock, indx) => (
+                <div>{this.props.rocks.map((rock, indx) => (
                     // let Z = rock.zi + rock.vz * t;
                     // let X = (rock.xi + rock.vx * t)/(1 - (rock.zi + rock.vz * t));
                     // let Y = (rock.yi + rock.vy * t)/(1 - (rock.zi + rock.vz * t));
@@ -59,7 +50,8 @@ class Collection extends React.Component {
                         Z={rock.zi + rock.vz * t}
                         color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
                     />
-                ))} */}
+                ))}
+                </div>
             </>
         )
     }

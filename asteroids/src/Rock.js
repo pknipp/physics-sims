@@ -9,7 +9,8 @@ const Rock = ({ X, Y, Z, color }) => {
             width:`${size}px`,
             left: `${xpx}px`,
             top: `${ypx}px`,
-            zIndex: `${Math.floor(1000 * Z)}`
+            zIndex: `${Math.floor(1000 * Z)}`,
+            backgroundColor: `${color}`
             }}>
         </div>
     )
