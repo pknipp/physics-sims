@@ -2,7 +2,7 @@ import React from 'react';
 import Collection from './Collection';
 
 let rocks = [];
-let n_rocks = 5000;
+let n_rocks = 500;
 for (let i = 0; i < n_rocks; i++) {
     let rock = {};
     rock.xi = Math.random() - 0.5;
@@ -16,8 +16,6 @@ for (let i = 0; i < n_rocks; i++) {
     rock.B = Math.floor(255 * Math.random());
     rocks.push(rock)
 }
-const Root = () => {
-  return <Collection rocks={rocks} />
-}
+const Root = () => <Collection rocks={rocks} />
 
 export default Root;
