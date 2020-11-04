@@ -3,30 +3,56 @@ import Rock from "./Rock";
 class Collection extends React.Component {
     constructor() {
         super();
-        this.state = { time: new Date() }
+        this.state = {
+            now: 0,
+            running: false,
+            start: 0,
+        }
     }
-    tick = () => this.setState({ time: new Date() });
-    componentDidMount() {this.interval = setInterval(this.tick, 10)}
-    componentWillUnmount() {clearInterval(this.interval)}
+
+    tick = () => this.setState({ now: new Date().valueOf() });
+
+    toggle = () => {
+        const running = !this.state.running;
+        if (running) {
+          this.interval = setInterval(() => this.tick(), 100);
+          this.setState({start: new Date().valueOf()});
+        } else {
+            console.log("This should log after the stop button is pushed.")
+          clearInterval(this.interval);
+          this.interval = null;
+        }
+        this.setState({ running });
+      };
+
+    // componentDidMount() {this.interval = setInterval(this.tick, 10)}
+
+    // componentWillUnmount() {clearInterval(this.interval)}
+
     render() {
-        let t = this.state.time.getSeconds();
-        let tm = this.state.time.getMilliseconds();
-        t = t + tm/1000
-        // debugger
+        let t = (this.state.now - this.state.start) / 1000;
         return (
-            this.props.rocks.map((rock, indx) => {
-                let Z = rock.zi + rock.vz * t;
-                let X = (rock.xi + rock.vx * t)/(1 - Z);
-                let Y = (rock.yi + rock.vy * t)/(1 - Z);
-                // debugger
-                return (
+            <>
+                <div>
+                    <p>time: {t} s</p>
+                    <button onClick={this.toggle}>
+                        {this.state.running ? "Stop" : "Start"}
+                    </button>
+                </div>
+                <div>{this.props.rocks.map((rock, indx) => (
+                    // let Z = rock.zi + rock.vz * t;
+                    // let X = (rock.xi + rock.vx * t)/(1 - (rock.zi + rock.vz * t));
+                    // let Y = (rock.yi + rock.vy * t)/(1 - (rock.zi + rock.vz * t));
                     <Rock
-                    key={indx}
-                    X={X} Y={Y} Z={Z}
-                    color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
+                        key={indx}
+                        X={(rock.xi + rock.vx * t)/(1 - (rock.zi + rock.vz * t))}
+                        Y={(rock.yi + rock.vy * t)/(1 - (rock.zi + rock.vz * t))}
+                        Z={rock.zi + rock.vz * t}
+                        color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
                     />
-                )
-            })
+                ))}
+                </div>
+            </>
         )
     }
 }

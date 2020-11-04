@@ -2,7 +2,7 @@ import React from 'react';
 import Collection from './Collection';
 
 let rocks = [];
-let n_rocks = 100;
+let n_rocks = 5000;
 for (let i = 0; i < n_rocks; i++) {
     let rock = {};
     rock.xi = Math.random() - 0.5;
