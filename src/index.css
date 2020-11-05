@@ -7,7 +7,21 @@
   position: fixed;
 }
 
+.drumHead {
+  height: 560px;
+  width: 1000px;
+  border: 5px;
+  /* background-color: yellow; */
+}
+
 .dot {
+  box-sizing: border-box;
   position: fixed;
   border-radius: 50%;
+  /*   */
+}
+
+.stationary {
+  border: 1px dashed;
+  z-index: 1000
 }
