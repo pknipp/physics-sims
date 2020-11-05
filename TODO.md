@@ -5,13 +5,13 @@ GENERAL:
 DRUMHEAD:
 * connect objects with lines
 * insert form fields for initial condition (IC)
+* allow for introduction of damping?
 * increase order of integrator?
 * figure out why styling sometimes doesn't work in jsx components
 * figure out why I should not decrease dt below 5 ms
 * figure out why I cannot wrap objects in an svg tag
 * insert arrows to indicate tangential velocity
 * adjust IC by click-and-drag instead of form rilling
-* correlate two appearances of integrator time-step with tick frequency
 * adjust relative sizes of 2 types of spring constants, so that motion is isotropic (circular?)
 
 ASTEROIDS:

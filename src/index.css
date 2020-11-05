@@ -1,27 +1,33 @@
-/* TODO Add site wide styles */
 * {
   font-family: "Ubuntu", sans-serif !important;
 }
 
-.box {
-  position: fixed;
+.drumhead {
+  position: relative;
+  flex-shrink: 0;
+  height: 540px;
+  width: 540px;
+  border: 1px solid;
 }
 
-.drumHead {
-  height: 560px;
-  width: 1000px;
-  border: 5px;
-  /* background-color: yellow; */
+.container {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .dot {
   box-sizing: border-box;
-  position: fixed;
+  position: absolute;
   border-radius: 50%;
-  /*   */
 }
 
 .stationary {
+  box-sizing: border-box;
   border: 1px dashed;
   z-index: 1000
+}
+
+svg {
+  border: 2px solid;
+  z-index: -1;
 }

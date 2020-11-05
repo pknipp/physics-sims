@@ -2,11 +2,11 @@ import React from 'react';
 import Collection from './Collection';
 
 // let rocks = [];
-let n = 81;
+let n = 9;
 let nx = Math.ceil(Math.sqrt(n));
 let ny = nx;
 let a = 1/nx;
-let width = a * 0.2;
+let width = a * 0.1;
 let xs = [];
 let ys = [];
 let rs = [];
@@ -30,7 +30,7 @@ for (let i = 0; i < nx; i++) {
 
 rs[Math.floor(nx/2)][Math.floor(ny/2)][0] = a * 0.5 //0.9;
 rs[Math.floor(nx/2)][Math.floor(ny/2)][1] = a * 0.3 //0.7 //0.02;
-rs[Math.floor(nx/2)][Math.floor(ny/2)][2] = 2
+rs[Math.floor(nx/2)][Math.floor(ny/2)][2] = 0.7
 
 debugger
 const Root = () => {
