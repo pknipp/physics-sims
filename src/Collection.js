@@ -7,24 +7,14 @@ class Collection extends React.Component {
             now: 0,
             running: false,
             start: 0,
-            // xs: null,
-            // ys: null,
-            // rs: [[[0,0,0]]],
-            // vs: [[[0,0,0]]],
-            // Fs: [[[0,0,0]]],
-            // optionsI: ["choose row", 1],
-            // optionsJ: ["choose column", 1],
-            // springConstant: 1,
             n: "",
-            // i: null,
-            // j: null,
-            // width: 0.2
         }
-        this.dt = 5;
+        this.dt = 100;
     }
 
     makeLattice = n => {
         debugger;
+        let springConstant = n * n;
         let xs = [];
         let ys = [];
         let rs = [];
@@ -49,17 +39,32 @@ class Collection extends React.Component {
           vs.push(colv);
           Fs.push(colF)
         }
-        const newState = {xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true};
+        const newState = {springConstant, xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true, i: 0, j: 0};
         debugger
         this.setState(newState)
     }
 
-    handleN = e => {
+    handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
+
+    handleIndex = e => {
+        const newIndex = {};
+        newIndex[e.target.name] = Number(e.target.value);
+        this.setState(newIndex);
+    }
+
+    handleDisp = e => {
         debugger
-        this.setState(
-            {n: Number(e.target.value)},
-            () => this.makeLattice(this.state.n)
-        );
+        let name = e.target.name;
+        let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
+        const newDisp = [...this.state.rs[this.state.i - 1][this.state.j - 1]];
+        newDisp[k] = Number(e.target.value);
+        const newRs = [...this.state.rs];
+        debugger
+        newRs[this.state.i - 1][this.state.j - 1] = newDisp;
+        const newState = {}
+        newState.rs = newRs;
+        debugger
+        this.setState(newState);
     }
 
     tick = () => {
@@ -147,11 +152,10 @@ class Collection extends React.Component {
     };
 
     render() {
-        debugger;
         let { n } = this.state;
         const chooseN = (
             <>
-                <span>How many particles should be on each side of your lattice?</span>
+                <span>How many particles should be on each side of your lattice? </span>
                 <input
                     type="number"
                     onChange={this.handleN}
@@ -195,8 +199,9 @@ class Collection extends React.Component {
                 })
             })
             debugger
+            let { i, j, optionsI, optionsJ, rs, vs } = this.state;
             let controls = (
-                <div>
+                <>
                     <div className="controls">
                         <p>time: {t} s</p>
                         <button onClick={this.toggle}>
@@ -207,22 +212,38 @@ class Collection extends React.Component {
                         <div className="drumhead">
                             {rComponents}
                         </div>
-                        <div>
-                            <div className="ic">
-                                <label htmlFor="coords">Choose a particle: </label>
-                                <input type="text" name="coords" id="coords" />
+                        <div className="ic">
+                            <div>
+                                <span>Select a particle: </span>
+                                <select onChange={this.handleIndex} name="i" value={i}>
+                                    {optionsI.map((option, row) => <option key={row} value={row}>{option}</option>)}
+                                </select>
+                                <select onChange={this.handleIndex} name="j" value={j}>
+                                    {optionsJ.map((option, col) => <option key={n + col} value={col}>{option}</option>)}
+                                </select>
                             </div>
-                            <div className="ic">
-                                <label htmlFor="displacement">Displacement from equilibrium: </label>
-                                <input type="text" name="displacement" id="displacement" />
-                            </div>
-                            <div className="ic">
-                                <label htmlFor="velocity">Particle's initial velocity: </label>
-                                <input type="text" name="velocity" id="velocity" />
-                            </div>
+                            {(i === 0 || j === 0) ? null : <div>
+                                <span>Specify the amount by which you want to shift each coordinate of this particle.</span>
+                                <div>
+                                    <label htmlFor="x">x = </label>
+                                    <input type="number" name="x" onChange={this.handleDisp} value={rs[i - 1][j - 1][0]} />
+                                </div>
+                                <div>
+                                    <label htmlFor="y">y = </label>
+                                    <input type="number" name="y" onChange={this.handleDisp} value={rs[i - 1][j - 1][1]} />
+                                </div>
+                                <div>
+                                    <label htmlFor="z">z = </label>
+                                    <input type="number" name="z" onChange={this.handleDisp} value={rs[i - 1][j - 1][2]} />
+                                </div>
+                                <div className="ic">
+                                    <label htmlFor="velocity">Particle's initial velocity: </label>
+                                    <input type="text" name="velocity" id="velocity" />
+                                </div>
+                            </div>}
+                        </div>
                     </div>
-                </div>
-            </div>
+                </>
             )
             debugger
             returnMe.push(controls)
