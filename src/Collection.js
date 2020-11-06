@@ -7,18 +7,59 @@ class Collection extends React.Component {
             now: 0,
             running: false,
             start: 0,
-            xs: this.props.xs,
-            ys: this.props.ys,
-            rs: this.props.rs,
-            vs: this.props.vs,
-            Fs: this.props.Fs,
-            n: this.props.nx,
+            // xs: null,
+            // ys: null,
+            // rs: [[[0,0,0]]],
+            // vs: [[[0,0,0]]],
+            // Fs: [[[0,0,0]]],
+            // optionsI: ["choose row", 1],
+            // optionsJ: ["choose column", 1],
+            // springConstant: 1,
+            n: "",
+            // i: null,
+            // j: null,
+            // width: 0.2
         }
-        this.nx = this.props.nx;
-        this.ny = this.props.ny;
-        this.k = this.nx * this.ny;
         this.dt = 5;
-        this.options = new Array(this.props.nx).fill(0).map((_, idx) => idx + 1);
+    }
+
+    makeLattice = n => {
+        debugger;
+        let xs = [];
+        let ys = [];
+        let rs = [];
+        let vs = [];
+        let Fs = [];
+        let optionsI = ["choose row"];
+        let optionsJ = ["choose column"];
+        for (let i = 0; i < n; i++) xs.push(-0.5 + (i + 1)/(n + 1));
+        for (let j = 0; j < n; j++) ys.push(-0.5 + (j + 1)/(n + 1));
+        for (let i = 0; i < n; i++) {
+          const colr = [];
+          const colv = [];
+          const colF = [];
+          for (let j = 0; j < n; j++) {
+            colr.push([0,0,0]);
+            colv.push([0,0,0]);
+            colF.push([0,0,0]);
+          }
+          optionsI.push(i + 1);
+          optionsJ.push(i + 1);
+          rs.push(colr);
+          vs.push(colv);
+          Fs.push(colF)
+        }
+        const newState = {xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true};
+        debugger
+        this.setState(newState)
+    }
+
+    handleN = e => {
+        debugger
+        this.setState(
+            {n: Number(e.target.value)},
+            () => this.makeLattice(this.state.n)
+        );
     }
 
     tick = () => {
@@ -32,18 +73,18 @@ class Collection extends React.Component {
         debugger;
         const { rs } = this.state;
         const nextFs = [];
-        for (let i = 0; i < this.nx; i++) {
+        for (let i = 0; i < this.state.n; i++) {
             const Fcol = [];
-            for (let j = 0; j < this.ny; j++) {
+            for (let j = 0; j < this.state.n; j++) {
                 const rL = (i === 0)     ? [0, 0, 0] : rs[i - 1][j];
-                const rR = (i === this.nx - 1)? [0, 0, 0] : rs[i + 1][j];
+                const rR = (i === this.state.n - 1)? [0, 0, 0] : rs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
-                const rD = (j === this.ny - 1)? [0, 0, 0] : rs[i][j + 1];
+                const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
                 debugger
                 Fcol.push([
-                    (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + rU[0] + rD[0]) * this.k,
-                    (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + rL[0] + rR[0]) * this.k,
-                    (-4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) * this.k,
+                    (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + rU[0] + rD[0]) * this.state.springConstant,
+                    (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + rL[0] + rR[0]) * this.state.springConstant,
+                    (-4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) * this.state.springConstant,
                 ]);
                 debugger
             }
@@ -59,9 +100,9 @@ class Collection extends React.Component {
         debugger
         const { vs, Fs } = this.state;
         const nextVs = [];
-        for (let i = 0; i < this.nx; i++) {
+        for (let i = 0; i < this.state.n; i++) {
             const nextVcol = [];
-            for (let j = 0; j < this.ny; j++) {
+            for (let j = 0; j < this.state.n; j++) {
                 const nextV = [];
                 for (let k = 0; k < 3; k++) {
                     nextV.push(vs[i][j][k] + Fs[i][j][k] * dt)
@@ -78,9 +119,9 @@ class Collection extends React.Component {
         debugger
         const { rs, vs } = this.state;
         const nextRs = [];
-        for (let i = 0; i < this.nx; i++) {
+        for (let i = 0; i < this.state.n; i++) {
             const nextRcol = [];
-            for (let j = 0; j < this.ny; j++) {
+            for (let j = 0; j < this.state.n; j++) {
                 const nextR = [];
                 for (let k = 0; k < 3; k++) {
                     nextR.push(rs[i][j][k] + vs[i][j][k] * dt)
@@ -106,50 +147,67 @@ class Collection extends React.Component {
     };
 
     render() {
-        let t = (this.state.now - this.state.start) / 1000;
-        let numPx = 540;
-        let rComponents = this.state.rs.map((col, i, rs) => {
-            return col.map((r, j, col) => {
-                let X = numPx * (this.props.xs[i] + this.state.rs[i][j][0] + 0.5);
-                let Y = numPx * (this.props.ys[j] + this.state.rs[i][j][1] + 0.5);
-                let X0 = numPx * (this.props.xs[i] + 0.5);
-                let Y0 = numPx * (this.props.ys[j] + 0.5);
-                // let xL = (i === 0) ? 0 : numPx * (this.props.xs[i - 1] + this.state.rs[i - 1][j][0] + 0.5);
-                // let yL = numPx * (0.5 + this.props.ys[j] + ((i === 0) ? 0 : this.state.rs[i - 1][j][1]));
-                debugger
-                return (
-                    <div key = {this.props.ny * i + j}>
-                    <Object
-                        X0={X0}
-                        Y0={Y0}
-                        X={X}
-                        Y={Y}
-                        Z={this.state.rs[i][j][2]}
-                        width={numPx * this.props.width}
-                        backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
-                    />
-                    {/* <svg className="isaac" viewBox={`0 0 100 100`} xmlns="http://www.w3.org/2000/svg">
-                        <line x1={xL} y1={yL/2} x2={X/2} y2={Y/2} stroke="black" />
-                    </svg> */}
-                    </div>
-                )
+        debugger;
+        let { n } = this.state;
+        const chooseN = (
+            <>
+                <span>How many particles should be on each side of your lattice?</span>
+                <input
+                    type="number"
+                    onChange={this.handleN}
+                    placeholder="# of particles"
+                    value={n}
+                />
+            </>
+        )
+        let returnMe = [chooseN];
+        debugger;
+        if (this.state.n && this.state.isLattice) {
+            debugger
+            let { n } = this.state;
+            let t = (this.state.now - this.state.start) / 1000;
+            let numPx = 540;
+            let rComponents = this.state.rs.map((col, i, rs) => {
+                return col.map((r, j, col) => {
+                    let X = numPx * (this.state.xs[i] + this.state.rs[i][j][0] + 0.5);
+                    let Y = numPx * (this.state.ys[j] + this.state.rs[i][j][1] + 0.5);
+                    let X0 = numPx * (this.state.xs[i] + 0.5);
+                    let Y0 = numPx * (this.state.ys[j] + 0.5);
+                    // let xL = (i === 0) ? 0 : numPx * (this.props.xs[i - 1] + this.state.rs[i - 1][j][0] + 0. 5);
+                    // let yL = numPx * (0.5 + this.props.ys[j] + ((i === 0) ? 0 : this.state.rs[i - 1][j][1]));
+                    debugger
+                    return (
+                        <div key = {this.state.n * i + j}>
+                        <Object
+                            X0={X0}
+                            Y0={Y0}
+                            X={X}
+                            Y={Y}
+                            Z={this.state.rs[i][j][2]}
+                            width={numPx * this.state.width}
+                            backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
+                        />
+                        {/* <svg className="isaac" viewBox={`0 0 100 100`} xmlns="http://www.w3.org/2000/svg">
+                            <line x1={xL} y1={yL/2} x2={X/2} y2={Y/2} stroke="black" />
+                        </svg> */}
+                        </div>
+                    )
+                })
             })
-        })
-        return (
-            <div>
-                <div className="controls">
-                    <p>time: {t} s</p>
-                    <button onClick={this.toggle}>
-                        {this.state.running ? "Stop" : "Start"}
-                    </button>
-                </div>
-                <div className="container">
-                    <div className="drumhead">
-                        {rComponents}
+            debugger
+            let controls = (
+                <div>
+                    <div className="controls">
+                        <p>time: {t} s</p>
+                        <button onClick={this.toggle}>
+                            {this.state.running ? "Stop" : "Start"}
+                        </button>
                     </div>
-                    <div>
-                        <h2>Specify "initial conditions" below:</h2>
-                        <form action="" method="get" className="ic">
+                    <div className="container">
+                        <div className="drumhead">
+                            {rComponents}
+                        </div>
+                        <div>
                             <div className="ic">
                                 <label htmlFor="coords">Choose a particle: </label>
                                 <input type="text" name="coords" id="coords" />
@@ -162,14 +220,15 @@ class Collection extends React.Component {
                                 <label htmlFor="velocity">Particle's initial velocity: </label>
                                 <input type="text" name="velocity" id="velocity" />
                             </div>
-                            <div className="ic">
-                                <input type="submit" value="Submit" />
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
-        )
+            )
+            debugger
+            returnMe.push(controls)
+        }
+        debugger
+        return returnMe
     }
 }
 
