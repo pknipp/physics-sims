@@ -7,7 +7,8 @@ class Collection extends React.Component {
             now: 0,
             running: false,
             start: 0,
-            n: "",
+            nStr: "1",
+            n: 1,
             damping: 0,
         }
         this.dt = 5;
@@ -44,7 +45,25 @@ class Collection extends React.Component {
         this.setState(newState)
     }
 
-    handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
+    componentDidMount() {this.makeLattice(this.state.n)}
+
+    handleN = e => {
+        debugger
+        this.setState(
+            {nStr: e.target.value},
+            () => this.setState(
+                {n: Number(this.state.nStr)},
+                () => this.makeLattice(this.state.n)
+            )
+        )
+    }
+
+    submitN = e => {
+        debugger
+        e.preventDefault();
+        this.setState(() => this.makeLattice(Number(this.state.n)));
+    }
+
     handleDamping = e => {
         // this.setState({damping: valueAsNumber(e.target.value)}, () => this.nextFs());
         this.setState({damping: Number(e.target.value)});
@@ -154,13 +173,17 @@ class Collection extends React.Component {
         let { n } = this.state;
         const chooseN = (
             <>
-                <span>How many particles should be on each side of your lattice? </span>
-                <input
-                    type="number"
-                    onChange={this.handleN}
-                    placeholder="# of particles"
-                    value={n}
-                />
+                <form onSubmit={this.submitN}>
+                    <label>How many particles should be along each edge?</label>
+                    <input
+                        type="number"
+                        onChange={this.handleN}
+                        placeholder="# of particles"
+                        value={n}
+                        min="1"
+                        step="1"
+                    />
+                </form>
             </>
         )
         let returnMe = [chooseN];
@@ -169,7 +192,7 @@ class Collection extends React.Component {
             let t = (this.state.now - this.state.start) / 1000;
             let numPx = 540;
             let rComponents = (
-                
+
                     this.state.rs.map((col, i, rs) => {
                         return col.map((r, j, col) => {
                             let X = numPx * (this.state.xs[i] + this.state.rs[i][j][0] + 0.5);

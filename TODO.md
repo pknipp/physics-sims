@@ -7,7 +7,6 @@ DRUMHEAD:
 * calculate energy (How possible w/stress terms?) to monitor errors
 * enable multiplicity of particles which have nonzero IC (IC component?)
 * enable negative inputs
-* prevent non-natural numbers of particles
 * figure out how to round #'s which are displayed in input boxes
 * insert a "pause" button
 * insert a "reset" button
@@ -17,7 +16,7 @@ DRUMHEAD:
 * figure out why styling sometimes doesn't work in jsx components
 * figure out why I should not decrease dt below 5 ms
 * figure out why I cannot wrap objects in an svg tag
-* insert arrows to indicate tangential velocity (w/svg's)
+* insert arrows to indicate tangential velocity (w/svg'sgit c)
 * adjust IC by click-and-drag instead of form filling
 * adjust relative sizes of 2 types of spring constants, so that motion is isotropic (circular?)
 

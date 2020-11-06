@@ -22,7 +22,7 @@ const Object = ({ X, Y, Z, X0, Y0, width, backgroundColor}) => {
             }}/>
             <div className="dot stationary" style={{
                 height:`${width}px`,
-                width:`${width}px`,
+                width:`${width}px`, 
                 left:`${xpx0}px`,
                 top:`${ypx0}px`,
                 zIndex: 1000
