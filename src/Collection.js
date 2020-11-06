@@ -239,10 +239,10 @@ class Collection extends React.Component {
                             <h2>Initial conditions:</h2>
                             <div>
                                 <span>Select a particle: </span>
-                                <select onChange={this.handleIndex} name="i" value={i}>
+                                <select onChange={this.handleIndex} name="j" value={j}>
                                     {optionsI.map((option, row) => <option key={row} value={row}>{option}</option>)}
                                 </select>
-                                <select onChange={this.handleIndex} name="j" value={j}>
+                                <select onChange={this.handleIndex} name="i" value={i}>
                                     {optionsJ.map((option, col) => <option key={n + col} value={col}>{option}</option>)}
                                 </select>
                             </div>
