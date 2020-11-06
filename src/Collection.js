@@ -43,6 +43,7 @@ class Collection extends React.Component {
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
+    handleDamping = e => this.setState({damping: Number(e.target.value)}, () => this.nextFs());
 
     handleIndex = e => {
         const newIndex = {};
@@ -73,7 +74,7 @@ class Collection extends React.Component {
     tick = _ => this.setState({now: new Date().valueOf()}, () => this.nextFs());
 
     nextFs = _ => {
-        const { rs } = this.state;
+        const { rs, vs, damping } = this.state;
         const nextFs = [];
         for (let i = 0; i < this.state.n; i++) {
             const Fcol = [];
@@ -82,14 +83,16 @@ class Collection extends React.Component {
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
+                debugger
                 Fcol.push([
-                    (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + rU[0] + rD[0]) * this.state.springConstant,
-                    (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + rL[0] + rR[0]) * this.state.springConstant,
-                    (-4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) * this.state.springConstant,
+                    (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + rU[0] + rD[0]) * this.state.springConstant - damping * vs[0],
+                    (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + rL[0] + rR[0]) * this.state.springConstant - damping * vs[1],
+                    (-4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) * this.state.springConstant - damping * vs[2],
                 ]);
             }
             nextFs.push(Fcol);
         }
+        debugger
         this.setState({Fs: nextFs}, () => this.nextVs(this.dt/1000));
     }
 
@@ -183,8 +186,7 @@ class Collection extends React.Component {
                     )
                 })
             })
-            debugger
-            let { i, j, optionsI, optionsJ, rs, vs } = this.state;
+            let { i, j, optionsI, optionsJ, rs, vs, damping } = this.state;
             let controls = (
                 <>
                     <div className="controls">
@@ -235,15 +237,17 @@ class Collection extends React.Component {
                                     <label htmlFor="z">z-component = </label>
                                     <input type="number" name="z" onChange={this.handleVel} value={vs[i - 1][j - 1][2]} />
                                 </div>
+                                <div>
+                                    <input type="range" onChange={this.handleDamping} name="damping" min="0" max="2" value={damping} step="20" />
+                                    <label htmlFor="volume">Damping</label>
+                                </div>
                             </div>}
                         </div>
                     </div>
                 </>
             )
-            debugger
             returnMe.push(controls)
         }
-        debugger
         return returnMe
     }
 }
