@@ -4,8 +4,9 @@ GENERAL:
 
 DRUMHEAD:
 * connect objects with lines
-* insert form fields for initial condition (IC)
-* allow for introduction of damping?
+* insert a "pause" button
+* insert a "reset" button
+* allow for introduction of damping
 * increase order of integrator?
 * figure out why styling sometimes doesn't work in jsx components
 * figure out why I should not decrease dt below 5 ms

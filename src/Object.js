@@ -7,8 +7,8 @@ const Object = ({ X, Y, Z, X0, Y0, width, backgroundColor}) => {
     let xpx0 = Math.floor(X0 - width/2);
     let ypx0 = Math.floor(Y0 - width/2);
     let size = Math.floor(width * ((Z < 0) ? 1/(1 - Z) : 1 + Z));
-    let xpx = Math.floor(X - width/2);
-    let ypx = Math.floor(Y - width/2);
+    let xpx = Math.floor(X - size/2);
+    let ypx = Math.floor(Y - size/2);
     debugger
     return (
         <>

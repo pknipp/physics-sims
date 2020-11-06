@@ -9,11 +9,10 @@ class Collection extends React.Component {
             start: 0,
             n: "",
         }
-        this.dt = 100;
+        this.dt = 5;
     }
 
     makeLattice = n => {
-        debugger;
         let springConstant = n * n;
         let xs = [];
         let ys = [];
@@ -40,7 +39,6 @@ class Collection extends React.Component {
           Fs.push(colF)
         }
         const newState = {springConstant, xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true, i: 0, j: 0};
-        debugger
         this.setState(newState)
     }
 
@@ -53,29 +51,28 @@ class Collection extends React.Component {
     }
 
     handleDisp = e => {
-        debugger
         let name = e.target.name;
         let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
         const newDisp = [...this.state.rs[this.state.i - 1][this.state.j - 1]];
         newDisp[k] = Number(e.target.value);
         const newRs = [...this.state.rs];
-        debugger
         newRs[this.state.i - 1][this.state.j - 1] = newDisp;
-        const newState = {}
-        newState.rs = newRs;
-        debugger
-        this.setState(newState);
+        this.setState({rs: newRs});
     }
 
-    tick = () => {
-        this.setState(
-            {now: new Date().valueOf()},
-            () => this.nextFs()
-        );
+    handleVel = e => {
+        let name = e.target.name;
+        let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
+        const newVel = [...this.state.vs[this.state.i - 1][this.state.j - 1]];
+        newVel[k] = Number(e.target.value);
+        const newVs = [...this.state.vs];
+        newVs[this.state.i - 1][this.state.j - 1] = newVel;
+        this.setState({vs: newVs});
     }
+
+    tick = _ => this.setState({now: new Date().valueOf()}, () => this.nextFs());
 
     nextFs = _ => {
-        debugger;
         const { rs } = this.state;
         const nextFs = [];
         for (let i = 0; i < this.state.n; i++) {
@@ -85,24 +82,18 @@ class Collection extends React.Component {
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
-                debugger
                 Fcol.push([
                     (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + rU[0] + rD[0]) * this.state.springConstant,
                     (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + rL[0] + rR[0]) * this.state.springConstant,
                     (-4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) * this.state.springConstant,
                 ]);
-                debugger
             }
-            debugger
             nextFs.push(Fcol);
-            debugger
         }
-        debugger
         this.setState({Fs: nextFs}, () => this.nextVs(this.dt/1000));
     }
 
     nextVs = dt => {
-        debugger
         const { vs, Fs } = this.state;
         const nextVs = [];
         for (let i = 0; i < this.state.n; i++) {
@@ -116,12 +107,10 @@ class Collection extends React.Component {
             }
             nextVs.push(nextVcol);
         }
-        debugger
         this.setState({vs: nextVs}, () => this.nextRs(this.dt/1000));
     }
 
     nextRs = dt => {
-        debugger
         const { rs, vs } = this.state;
         const nextRs = [];
         for (let i = 0; i < this.state.n; i++) {
@@ -135,7 +124,6 @@ class Collection extends React.Component {
             }
             nextRs.push(nextRcol);
         }
-        debugger
         this.setState({rs: nextRs});
     }
 
@@ -165,9 +153,7 @@ class Collection extends React.Component {
             </>
         )
         let returnMe = [chooseN];
-        debugger;
         if (this.state.n && this.state.isLattice) {
-            debugger
             let { n } = this.state;
             let t = (this.state.now - this.state.start) / 1000;
             let numPx = 540;
@@ -179,7 +165,6 @@ class Collection extends React.Component {
                     let Y0 = numPx * (this.state.ys[j] + 0.5);
                     // let xL = (i === 0) ? 0 : numPx * (this.props.xs[i - 1] + this.state.rs[i - 1][j][0] + 0. 5);
                     // let yL = numPx * (0.5 + this.props.ys[j] + ((i === 0) ? 0 : this.state.rs[i - 1][j][1]));
-                    debugger
                     return (
                         <div key = {this.state.n * i + j}>
                         <Object
@@ -213,6 +198,7 @@ class Collection extends React.Component {
                             {rComponents}
                         </div>
                         <div className="ic">
+                            <h2>Initial conditions:</h2>
                             <div>
                                 <span>Select a particle: </span>
                                 <select onChange={this.handleIndex} name="i" value={i}>
@@ -223,22 +209,31 @@ class Collection extends React.Component {
                                 </select>
                             </div>
                             {(i === 0 || j === 0) ? null : <div>
-                                <span>Specify the amount by which you want to shift each coordinate of this particle.</span>
+                                <span>Specify the particle's initial displacement from equilibrium.</span>
                                 <div>
-                                    <label htmlFor="x">x = </label>
+                                    <label htmlFor="x">x-coordinate = </label>
                                     <input type="number" name="x" onChange={this.handleDisp} value={rs[i - 1][j - 1][0]} />
                                 </div>
                                 <div>
-                                    <label htmlFor="y">y = </label>
+                                    <label htmlFor="y">y-coordinate = </label>
                                     <input type="number" name="y" onChange={this.handleDisp} value={rs[i - 1][j - 1][1]} />
                                 </div>
                                 <div>
-                                    <label htmlFor="z">z = </label>
+                                    <label htmlFor="z">z-coordinate = </label>
                                     <input type="number" name="z" onChange={this.handleDisp} value={rs[i - 1][j - 1][2]} />
                                 </div>
-                                <div className="ic">
-                                    <label htmlFor="velocity">Particle's initial velocity: </label>
-                                    <input type="text" name="velocity" id="velocity" />
+                                <span>Specify the particle's initial velocity.</span>
+                                <div>
+                                    <label htmlFor="x">x-component = </label>
+                                    <input type="number" name="x" onChange={this.handleVel} value={vs[i - 1][j - 1][0]} />
+                                </div>
+                                <div>
+                                    <label htmlFor="y">y-component = </label>
+                                    <input type="number" name="y" onChange={this.handleVel} value={vs[i - 1][j - 1][1]} />
+                                </div>
+                                <div>
+                                    <label htmlFor="z">z-component = </label>
+                                    <input type="number" name="z" onChange={this.handleVel} value={vs[i - 1][j - 1][2]} />
                                 </div>
                             </div>}
                         </div>
