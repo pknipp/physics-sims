@@ -48,6 +48,7 @@ class Collection extends React.Component {
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
     handleDamping = e => {
         debugger
+            // this.setState({damping: valueAsNumber(e.target.value)}, () => this.nextFs());
         this.setState({damping: Number(e.target.value)}, () => this.nextFs());
     }
 
@@ -248,7 +249,7 @@ class Collection extends React.Component {
                                     <input type="number" name="z" onChange={this.handleVel} value={vs[i - 1][j - 1][2]} />
                                 </div>
                                 <div>
-                                    <input type="range" onChange={this.handleDamping} name="damping" min="0" max="2" value={damping} step="20" />
+                                    <input type="range" onChange={this.handleDamping} name="damping" min="0" max="2" step="0.1" value={damping} />
                                     <label htmlFor="volume">Damping</label>
                                 </div>
                             </div>}
