@@ -8,7 +8,7 @@ class Collection extends React.Component {
             running: false,
             start: 0,
             n: "",
-            damping: 0.1
+            damping: 0,
         }
         this.dt = 5;
     }
@@ -41,15 +41,13 @@ class Collection extends React.Component {
           Fs.push(colF)
         }
         const newState = {springConstant, xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true, i: 0, j: 0};
-        debugger
         this.setState(newState)
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
     handleDamping = e => {
-        debugger
-            // this.setState({damping: valueAsNumber(e.target.value)}, () => this.nextFs());
-        this.setState({damping: Number(e.target.value)}, () => this.nextFs());
+        // this.setState({damping: valueAsNumber(e.target.value)}, () => this.nextFs());
+        this.setState({damping: Number(e.target.value)});
     }
 
     handleIndex = e => {
@@ -170,32 +168,36 @@ class Collection extends React.Component {
             let { n } = this.state;
             let t = (this.state.now - this.state.start) / 1000;
             let numPx = 540;
-            let rComponents = this.state.rs.map((col, i, rs) => {
-                return col.map((r, j, col) => {
-                    let X = numPx * (this.state.xs[i] + this.state.rs[i][j][0] + 0.5);
-                    let Y = numPx * (this.state.ys[j] + this.state.rs[i][j][1] + 0.5);
-                    let X0 = numPx * (this.state.xs[i] + 0.5);
-                    let Y0 = numPx * (this.state.ys[j] + 0.5);
-                    // let xL = (i === 0) ? 0 : numPx * (this.props.xs[i - 1] + this.state.rs[i - 1][j][0] + 0. 5);
-                    // let yL = numPx * (0.5 + this.props.ys[j] + ((i === 0) ? 0 : this.state.rs[i - 1][j][1]));
-                    return (
-                        <div key = {this.state.n * i + j}>
-                        <Object
-                            X0={X0}
-                            Y0={Y0}
-                            X={X}
-                            Y={Y}
-                            Z={this.state.rs[i][j][2]}
-                            width={numPx * this.state.width}
-                            backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
-                        />
-                        {/* <svg className="isaac" viewBox={`0 0 100 100`} xmlns="http://www.w3.org/2000/svg">
-                            <line x1={xL} y1={yL/2} x2={X/2} y2={Y/2} stroke="black" />
-                        </svg> */}
-                        </div>
-                    )
-                })
-            })
+            let rComponents = (
+                
+                    this.state.rs.map((col, i, rs) => {
+                        return col.map((r, j, col) => {
+                            let X = numPx * (this.state.xs[i] + this.state.rs[i][j][0] + 0.5);
+                            let Y = numPx * (this.state.ys[j] + this.state.rs[i][j][1] + 0.5);
+                            let X0 = numPx * (this.state.xs[i] + 0.5);
+                            let Y0 = numPx * (this.state.ys[j] + 0.5);
+                            // let xL = (i === 0) ? 0 : numPx * (this.props.xs[i - 1] + this.state.rs[i - 1][j] [0]  + 0. 5);
+                            // let yL = numPx * (0.5 + this.props.ys[j] + ((i === 0) ? 0 : this.state.rs[i - 1] [j]  [1]));
+                            return (
+                                <div key = {this.state.n * i + j}>
+                                <Object
+                                    X0={X0}
+                                    Y0={Y0}
+                                    X={X}
+                                    Y={Y}
+                                    Z={this.state.rs[i][j][2]}
+                                    width={numPx * this.state.width}
+                                    backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
+                                />
+                                {/* <svg className="isaac" viewBox={`0 0 100 100`} xmlns="http://www.w3.org/    2000/   svg">
+                                    <line x1={xL} y1={yL/2} x2={X/2} y2={Y/2} stroke="black" />
+                                </svg> */}
+                                </div>
+                            )
+                        })
+                    })
+
+            )
             let { i, j, optionsI, optionsJ, rs, vs, damping } = this.state;
             debugger
             let controls = (
