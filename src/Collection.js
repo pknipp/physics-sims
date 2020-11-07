@@ -28,8 +28,10 @@ class Collection extends React.Component {
     handleNIC = e => this.setState({nIC: Number(e.target.value)});
     submitN = e => e.preventDefault();
     handleDamping = e => this.setState({damping: Number(e.target.value)});
-
-    handleSpeed = e => this.setState({speed: Number(e.target.value)});
+    handleSpeed = e => {
+        debugger
+        this.setState({speed: Number(e.target.value)});
+    }
     handleIndex = e => {
         const newIndex = {};
         newIndex[e.target.name] = Number(e.target.value);
@@ -215,10 +217,22 @@ class Collection extends React.Component {
             let controls = (
                 <>
                     <div className="controls">
-                        <p>time: {Math.floor(100 * time)/100} s</p>
                         <button onClick={this.toggle}>
-                            {this.state.running ? "Stop" : "Start"}
+                            {this.state.running ? "Pause" : "Run"}
                         </button>
+                        <span> time: {Math.floor(100 * time)/100} s</span>
+                        <div>
+                        <input
+                            type="range"
+                            onChange={this.handleSpeed}
+                            name="speed"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={speed}
+                        />
+                        <label htmlFor="speed">Playback speed (pause before changing)</label>
+                        </div>
                     </div>
                     <div className="container">
                         <div className="drumhead">
@@ -279,10 +293,6 @@ class Collection extends React.Component {
                                 <div>
                                     <input type="range" onChange={this.handleDamping} name="damping" min="0" max="2" step="0.1" value={damping} />
                                     <label htmlFor="damping">Damping</label>
-                                </div>
-                                <div>
-                                    <input type="range" onChange={this.handleSpeed} name="speed" min="0" max="1" step="0.1" value={speed} />
-                                    <label htmlFor="speed">Playback speed</label>
                                 </div>
                             </div>}
                         </div>

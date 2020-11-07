@@ -11,6 +11,7 @@ DRUMHEAD:
 * figure out how to round #'s which are displayed in input boxes
 * insert a "pause" button
 * insert a "reset" button
+* enable "speed" to be changed without first pausing sim
 * figure out how to label BOTH ends of slider
 * auth
 * highlight somehow those particles w/non-zero IC
