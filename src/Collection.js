@@ -8,10 +8,25 @@ class Collection extends React.Component {
             running: false,
             start: 0,
             n: 1,
+            nIC: 0,
             damping: 0,
             speed: 1,
         }
         this.dt = 5;
+    }
+
+    componentDidMount() {this.makeLattice(this.state.n)}
+
+    handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
+    handleNIC = e => this.setState({nIC: Number(e.target.value)});
+    submitN = e => e.preventDefault();
+    handleDamping = e => this.setState({damping: Number(e.target.value)});
+
+    handleSpeed = e => this.setState({speed: Number(e.target.value)});
+    handleIndex = e => {
+        const newIndex = {};
+        newIndex[e.target.name] = Number(e.target.value);
+        this.setState(newIndex);
     }
 
     makeLattice = n => {
@@ -43,25 +58,6 @@ class Collection extends React.Component {
         }
         const newState = {springConstant, xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true, i: 0, j: 0};
         this.setState(newState)
-    }
-
-    componentDidMount() {this.makeLattice(this.state.n)}
-
-    handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n))
-
-    submitN = e => e.preventDefault();
-
-    handleDamping = e => {
-        // this.setState({damping: valueAsNumber(e.target.value)}, () => this.nextFs());
-        this.setState({damping: Number(e.target.value)});
-    }
-
-    handleSpeed = e => this.setState({speed: Number(e.target.value)});
-
-    handleIndex = e => {
-        const newIndex = {};
-        newIndex[e.target.name] = Number(e.target.value);
-        this.setState(newIndex);
     }
 
     handleDisp = e => {
@@ -211,7 +207,7 @@ class Collection extends React.Component {
                     })
 
             )
-            let { i, j, optionsI, optionsJ, rs, vs, damping, speed } = this.state;
+            let { i, j, optionsI, optionsJ, rs, vs, damping, speed, nIC } = this.state;
             debugger
             let controls = (
                 <>
@@ -225,6 +221,13 @@ class Collection extends React.Component {
                         <div className="drumhead">
                             {rComponents}
                         </div>
+                        <span>Specify the number of particles that you'll displace from initial equilibrium.</span>
+                                    <label htmlFor="nIC">number = </label>
+                                    <input
+                                        type="number"
+                                        name="nIC"
+                                        onChange={this.handleNIC}
+                                        value={nIC} />
                         <div className="ic">
                             <h2>Initial conditions:</h2>
                             <div>
@@ -282,7 +285,11 @@ class Collection extends React.Component {
             )
             returnMe.push(controls)
         }
-        return returnMe
+        return (
+            <div className="controls">
+                {returnMe}
+            </div>
+        )
     }
 }
 

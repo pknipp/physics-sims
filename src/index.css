@@ -10,6 +10,11 @@
   border: 1px solid;
 }
 
+/* .ic {
+  display: flex;
+  flex-direction: column;
+} */
+
 .container {
   display: flex;
   justify-content: flex-start;
