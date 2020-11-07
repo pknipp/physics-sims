@@ -7,9 +7,9 @@ class Collection extends React.Component {
             now: 0,
             running: false,
             start: 0,
-            nStr: "1",
             n: 1,
             damping: 0,
+            speed: 1,
         }
         this.dt = 5;
     }
@@ -47,27 +47,16 @@ class Collection extends React.Component {
 
     componentDidMount() {this.makeLattice(this.state.n)}
 
-    handleN = e => {
-        debugger
-        this.setState(
-            {nStr: e.target.value},
-            () => this.setState(
-                {n: Number(this.state.nStr)},
-                () => this.makeLattice(this.state.n)
-            )
-        )
-    }
+    handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n))
 
-    submitN = e => {
-        debugger
-        e.preventDefault();
-        this.setState(() => this.makeLattice(Number(this.state.n)));
-    }
+    submitN = e => e.preventDefault();
 
     handleDamping = e => {
         // this.setState({damping: valueAsNumber(e.target.value)}, () => this.nextFs());
         this.setState({damping: Number(e.target.value)});
     }
+
+    handleSpeed = e => this.setState({speed: Number(e.target.value)});
 
     handleIndex = e => {
         const newIndex = {};
@@ -80,7 +69,8 @@ class Collection extends React.Component {
         let name = e.target.name;
         let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
         const newDisp = [...this.state.rs[this.state.i - 1][this.state.j - 1]];
-        newDisp[k] = Number(e.target.value);
+        let val = e.target.value;
+        newDisp[k] = (val === "") ? "" : Number(val);
         const newRs = [...this.state.rs];
         newRs[this.state.i - 1][this.state.j - 1] = newDisp;
         this.setState({rs: newRs});
@@ -120,7 +110,7 @@ class Collection extends React.Component {
             nextFs.push(Fcol);
         }
         debugger
-        this.setState({Fs: nextFs}, () => this.nextVs(this.dt/1000));
+        this.setState({Fs: nextFs}, () => this.nextVs(this.dt * this.state.speed /  1000));
     }
 
     nextVs = dt => {
@@ -137,7 +127,7 @@ class Collection extends React.Component {
             }
             nextVs.push(nextVcol);
         }
-        this.setState({vs: nextVs}, () => this.nextRs(this.dt/1000));
+        this.setState({vs: nextVs}, () => this.nextRs(this.dt * this.state.speed / 1000));
     }
 
     nextRs = dt => {
@@ -179,7 +169,7 @@ class Collection extends React.Component {
                         type="number"
                         onChange={this.handleN}
                         placeholder="# of particles"
-                        value={n}
+                        value={String(n)}
                         min="1"
                         step="1"
                     />
@@ -189,7 +179,7 @@ class Collection extends React.Component {
         let returnMe = [chooseN];
         if (this.state.n && this.state.isLattice) {
             let { n } = this.state;
-            let t = (this.state.now - this.state.start) / 1000;
+            let t = (this.state.now - this.state.start) * this.state.speed / 1000;
             let numPx = 540;
             let rComponents = (
 
@@ -221,12 +211,12 @@ class Collection extends React.Component {
                     })
 
             )
-            let { i, j, optionsI, optionsJ, rs, vs, damping } = this.state;
+            let { i, j, optionsI, optionsJ, rs, vs, damping, speed } = this.state;
             debugger
             let controls = (
                 <>
                     <div className="controls">
-                        <p>time: {t} s</p>
+                        <p>time: {Math.floor(100 * t)/100} s</p>
                         <button onClick={this.toggle}>
                             {this.state.running ? "Stop" : "Start"}
                         </button>
@@ -250,7 +240,11 @@ class Collection extends React.Component {
                                 <span>Specify the particle's initial displacement from equilibrium.</span>
                                 <div>
                                     <label htmlFor="x">x-coordinate = </label>
-                                    <input type="number" name="x" onChange={this.handleDisp} value={rs[i - 1][j - 1][0]} />
+                                    <input
+                                        type="number"
+                                        name="x"
+                                        onChange={this.handleDisp}
+                                        value={String(rs[i - 1][j - 1][0])} />
                                 </div>
                                 <div>
                                     <label htmlFor="y">y-coordinate = </label>
@@ -275,7 +269,11 @@ class Collection extends React.Component {
                                 </div>
                                 <div>
                                     <input type="range" onChange={this.handleDamping} name="damping" min="0" max="2" step="0.1" value={damping} />
-                                    <label htmlFor="volume">Damping</label>
+                                    <label htmlFor="damping">Damping</label>
+                                </div>
+                                <div>
+                                    <input type="range" onChange={this.handleSpeed} name="speed" min="0" max="1" step="0.1" value={speed} />
+                                    <label htmlFor="speed">Playback speed</label>
                                 </div>
                             </div>}
                         </div>
