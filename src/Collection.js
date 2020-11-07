@@ -7,7 +7,7 @@ class Collection extends React.Component {
             now: 0,
             running: false,
             start: 0,
-            t: 0,
+            time: 0,
             n: 1,
             nIC: 0,
             damping: 0,
@@ -17,6 +17,12 @@ class Collection extends React.Component {
     }
 
     componentDidMount() {this.makeLattice(this.state.n)}
+
+    // tick = _ => this.setState({now: new Date().valueOf()}, () => this.nextFs());
+    tick = _ => {
+        let nextT = this.state.time + this.dt/1000;
+        this.setState({time: nextT}, () => this.nextFs())
+    }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
     handleNIC = e => this.setState({nIC: Number(e.target.value)});
@@ -81,12 +87,6 @@ class Collection extends React.Component {
         this.setState({vs: newVs});
     }
 
-    // tick = _ => this.setState({now: new Date().valueOf()}, () => this.nextFs());
-    tick = _ => {
-        let nextT = this.state.t + this.dt/1000;
-        this.setState({t: nextT}, () => this.nextFs())
-    }
-
     nextFs = _ => {
         const { rs, vs, damping } = this.state;
         const nextFs = [];
@@ -106,7 +106,7 @@ class Collection extends React.Component {
             nextFs.push(Fcol);
         }
         debugger
-        this.setState({Fs: nextFs}, () => this.nextVs(this.dt * this.state.speed /  1000));
+        this.setState({Fs: nextFs}, () => this.nextVs(this.dt /  1000));
     }
 
     nextVs = dt => {
@@ -123,7 +123,7 @@ class Collection extends React.Component {
             }
             nextVs.push(nextVcol);
         }
-        this.setState({vs: nextVs}, () => this.nextRs(this.dt * this.state.speed / 1000));
+        this.setState({vs: nextVs}, () => this.nextRs(this.dt / 1000));
     }
 
     nextRs = dt => {
@@ -144,9 +144,10 @@ class Collection extends React.Component {
     }
 
     toggle = () => {
+        debugger
         const running = !this.state.running;
         if (running) {
-          this.interval = setInterval(() => this.tick(), this.dt);
+          this.interval = setInterval(this.tick, Math.floor(this.dt/this.state.speed));
           this.setState({t: 0});
         //   this.setState({start: new Date().valueOf()});
         } else {
@@ -177,7 +178,7 @@ class Collection extends React.Component {
         if (this.state.n && this.state.isLattice) {
             let { n } = this.state;
             // let t = (this.state.now - this.state.start) * this.state.speed / 1000;
-            let { t } = this.state
+            let { time } = this.state
             let numPx = 540;
             let rComponents = (
 
@@ -214,7 +215,7 @@ class Collection extends React.Component {
             let controls = (
                 <>
                     <div className="controls">
-                        <p>time: {Math.floor(100 * t)/100} s</p>
+                        <p>time: {Math.floor(100 * time)/100} s</p>
                         <button onClick={this.toggle}>
                             {this.state.running ? "Stop" : "Start"}
                         </button>
