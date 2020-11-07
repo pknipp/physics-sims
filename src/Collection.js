@@ -221,15 +221,18 @@ class Collection extends React.Component {
                         <div className="drumhead">
                             {rComponents}
                         </div>
+                        <div className="right-side">
+                        <h2>Initial conditions:</h2>
                         <span>Specify the number of particles that you'll displace from initial equilibrium.</span>
-                                    <label htmlFor="nIC">number = </label>
-                                    <input
-                                        type="number"
-                                        name="nIC"
-                                        onChange={this.handleNIC}
-                                        value={nIC} />
+                        <div>
+                            <label htmlFor="nIC">number = </label>
+                            <input
+                                type="number"
+                                name="nIC"
+                                onChange={this.handleNIC}
+                                value={nIC} />
+                        </div>
                         <div className="ic">
-                            <h2>Initial conditions:</h2>
                             <div>
                                 <span>Select a particle: </span>
                                 <select onChange={this.handleIndex} name="j" value={j}>
@@ -279,6 +282,7 @@ class Collection extends React.Component {
                                     <label htmlFor="speed">Playback speed</label>
                                 </div>
                             </div>}
+                        </div>
                         </div>
                     </div>
                 </>
