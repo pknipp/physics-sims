@@ -5,6 +5,7 @@ GENERAL:
 DRUMHEAD:
 * connect objects with lines
 * calculate energy (How possible w/stress terms?) to monitor errors
+* after accomplishing the former task, allow user to change timestep
 * enable multiplicity of particles which have nonzero IC (IC component?)
 * enable negative inputs for ICs
 * figure out how to round #'s which are displayed in input boxes

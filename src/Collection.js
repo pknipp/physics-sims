@@ -7,6 +7,7 @@ class Collection extends React.Component {
             now: 0,
             running: false,
             start: 0,
+            t: 0,
             n: 1,
             nIC: 0,
             damping: 0,
@@ -30,7 +31,6 @@ class Collection extends React.Component {
     }
 
     makeLattice = n => {
-        debugger
         let springConstant = n * n;
         let xs = [];
         let ys = [];
@@ -61,7 +61,6 @@ class Collection extends React.Component {
     }
 
     handleDisp = e => {
-        debugger
         let name = e.target.name;
         let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
         const newDisp = [...this.state.rs[this.state.i - 1][this.state.j - 1]];
@@ -73,21 +72,22 @@ class Collection extends React.Component {
     }
 
     handleVel = e => {
-        debugger
         let name = e.target.name;
         let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
         const newVel = [...this.state.vs[this.state.i - 1][this.state.j - 1]];
         newVel[k] = Number(e.target.value);
         const newVs = [...this.state.vs];
         newVs[this.state.i - 1][this.state.j - 1] = newVel;
-        debugger
         this.setState({vs: newVs});
     }
 
-    tick = _ => this.setState({now: new Date().valueOf()}, () => this.nextFs());
+    // tick = _ => this.setState({now: new Date().valueOf()}, () => this.nextFs());
+    tick = _ => {
+        let nextT = this.state.t + this.dt/1000;
+        this.setState({t: nextT}, () => this.nextFs())
+    }
 
     nextFs = _ => {
-        debugger
         const { rs, vs, damping } = this.state;
         const nextFs = [];
         for (let i = 0; i < this.state.n; i++) {
@@ -147,7 +147,8 @@ class Collection extends React.Component {
         const running = !this.state.running;
         if (running) {
           this.interval = setInterval(() => this.tick(), this.dt);
-          this.setState({start: new Date().valueOf()});
+          this.setState({t: 0});
+        //   this.setState({start: new Date().valueOf()});
         } else {
           clearInterval(this.interval);
           this.interval = null;
@@ -175,7 +176,8 @@ class Collection extends React.Component {
         let returnMe = [chooseN];
         if (this.state.n && this.state.isLattice) {
             let { n } = this.state;
-            let t = (this.state.now - this.state.start) * this.state.speed / 1000;
+            // let t = (this.state.now - this.state.start) * this.state.speed / 1000;
+            let { t } = this.state
             let numPx = 540;
             let rComponents = (
 
