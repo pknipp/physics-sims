@@ -15,6 +15,10 @@
   flex-direction: column;
 } */
 
+input {
+  width: 5em;
+}
+
 .right-side {
   display: flex;
   flex-direction: column;

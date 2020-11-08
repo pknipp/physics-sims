@@ -1,5 +1,6 @@
 import React from "react";
 import Object from "./Object";
+import Row from "./Row";
 class Collection extends React.Component {
     constructor(props) {
         super(props);
@@ -12,6 +13,8 @@ class Collection extends React.Component {
             nIC: 0,
             damping: 0,
             speed: 1,
+            i: [],
+            j: []
         }
         this.dt = 5;
     }
@@ -25,7 +28,19 @@ class Collection extends React.Component {
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
-    handleNIC = e => this.setState({nIC: Number(e.target.value)});
+    handleNIC = e => {
+        debugger
+        let nIC = Number(e.target.value);
+        debugger
+        this.setState({nIC})
+        // , () => {
+        //         let i = new Array(nIC).fill(0);
+        //         let j = new Array(nIC).fill(0);
+        //         this.setState({i, j})
+        //     }
+        // );
+    };
+
     submitN = e => e.preventDefault();
     handleDamping = e => this.setState({damping: Number(e.target.value)});
     handleSpeed = e => {
@@ -33,9 +48,13 @@ class Collection extends React.Component {
         this.setState({speed: Number(e.target.value)});
     }
     handleIndex = e => {
-        const newIndex = {};
-        newIndex[e.target.name] = Number(e.target.value);
-        this.setState(newIndex);
+        debugger
+        const iNew = [...this.state.i];
+        const jNew = [...this.state.j];
+        const newIndices = {i: iNew, j: jNew};
+        newIndices[e.target.name].push(Number(e.target.value));
+        debugger
+        this.setState(newIndices);
     }
 
     makeLattice = n => {
@@ -45,8 +64,8 @@ class Collection extends React.Component {
         let rs = [];
         let vs = [];
         let Fs = [];
-        let optionsI = ["choose row"];
-        let optionsJ = ["choose column"];
+        let optionsI = ["col"];
+        let optionsJ = ["row"];
         for (let i = 0; i < n; i++) xs.push(-0.5 + (i + 1)/(n + 1));
         for (let j = 0; j < n; j++) ys.push(-0.5 + (j + 1)/(n + 1));
         for (let i = 0; i < n; i++) {
@@ -64,28 +83,38 @@ class Collection extends React.Component {
           vs.push(colv);
           Fs.push(colF)
         }
-        const newState = {springConstant, xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true, i: 0, j: 0};
+        const newState = {springConstant, xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
     }
 
     handleDisp = e => {
-        let name = e.target.name;
+        let name = e.target.name[0];
+        let val = Number(e.target.value);
+        let iIC = Number(e.target.name.slice(1));
+        debugger
         let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
-        const newDisp = [...this.state.rs[this.state.i - 1][this.state.j - 1]];
-        let val = e.target.value;
+        let newI = [...this.state.i];
+        let newJ = [...this.state.j];
+        let newRs = [...this.state.rs];
+        debugger;
+        const newDisp = newRs[newI[iIC] - 1][newJ[iIC] - 1]
+        // const newDisp = [...this.state.rs[this.state.i[iIC] - 1][this.state.j[iIC] - 1]];
         newDisp[k] = (val === "") ? "" : Number(val);
-        const newRs = [...this.state.rs];
-        newRs[this.state.i - 1][this.state.j - 1] = newDisp;
+        newRs[newI[iIC] - 1][newJ[iIC] - 1] = newDisp;
         this.setState({rs: newRs});
     }
 
     handleVel = e => {
-        let name = e.target.name;
+        let name = e.target.name[0];
+        let val = Number(e.target.value);
+        let iIC = Number(e.target.name.slice(1));
         let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
-        const newVel = [...this.state.vs[this.state.i - 1][this.state.j - 1]];
-        newVel[k] = Number(e.target.value);
-        const newVs = [...this.state.vs];
-        newVs[this.state.i - 1][this.state.j - 1] = newVel;
+        let newI = [...this.state.i];
+        let newJ = [...this.state.j];
+        let newVs = [...this.state.vs];
+        const newVel = newVs[newI[iIC] - 1][newJ[iIC] - 1]
+        newVel[k] = (val === "") ? "" : Number(val);
+        newVs[newI[iIC] - 1][newJ[iIC] - 1] = newVel;
         this.setState({vs: newVs});
     }
 
@@ -193,7 +222,7 @@ class Collection extends React.Component {
                             // let xL = (i === 0) ? 0 : numPx * (this.props.xs[i - 1] + this.state.rs[i - 1][j] [0]  + 0. 5);
                             // let yL = numPx * (0.5 + this.props.ys[j] + ((i === 0) ? 0 : this.state.rs[i - 1] [j]  [1]));
                             return (
-                                <div key = {this.state.n * i + j}>
+                                <div key={this.state.n * i + j}>
                                 <Object
                                     X0={X0}
                                     Y0={Y0}
@@ -214,6 +243,24 @@ class Collection extends React.Component {
             )
             let { i, j, optionsI, optionsJ, rs, vs, damping, speed, nIC } = this.state;
             debugger
+            let Rows = [];
+            for (let iIC = 0; iIC < nIC; iIC++) {
+                Rows.push(
+                    <Row
+                        key={iIC}
+                        optionsI={optionsI}
+                        optionsJ={optionsJ}
+                        rs={rs}
+                        vs={vs}
+                        i={i}
+                        j={j}
+                        iIC={iIC}
+                        handleIndex={this.handleIndex}
+                        handleDisp={this.handleDisp}
+                        handleVel={this.handleVel}
+                    />
+                )
+            }
             let controls = (
                 <>
                     <div className="controls">
@@ -239,64 +286,50 @@ class Collection extends React.Component {
                             {rComponents}
                         </div>
                         <div className="right-side">
-                        <h2>Initial conditions:</h2>
-                        <span>Specify the number of particles that you'll displace from initial equilibrium.</span>
-                        <div>
-                            <label htmlFor="nIC">number = </label>
-                            <input
-                                type="number"
-                                name="nIC"
-                                onChange={this.handleNIC}
-                                value={nIC} />
-                        </div>
-                        <div className="ic">
+                            <h2>Initial conditions:</h2>
+                            <span>
+                                Specify the number of particles that you'll displace from equilibrium.
+                            </span>
                             <div>
-                                <span>Select a particle: </span>
-                                <select onChange={this.handleIndex} name="j" value={j}>
-                                    {optionsI.map((option, row) => <option key={row} value={row}>{option}</option>)}
-                                </select>
-                                <select onChange={this.handleIndex} name="i" value={i}>
-                                    {optionsJ.map((option, col) => <option key={n + col} value={col}>{option}</option>)}
-                                </select>
+                                <label htmlFor="nIC">number = </label>
+                                <input
+                                    type="number"
+                                    name="nIC"
+                                    onChange={this.handleNIC}
+                                    value={nIC} />
                             </div>
-                            {(i === 0 || j === 0) ? null : <div>
-                                <span>Specify the particle's initial displacement from equilibrium.</span>
-                                <div>
-                                    <label htmlFor="x">x-coordinate = </label>
-                                    <input
-                                        type="number"
-                                        name="x"
-                                        onChange={this.handleDisp}
-                                        value={String(rs[i - 1][j - 1][0])} />
-                                </div>
-                                <div>
-                                    <label htmlFor="y">y-coordinate = </label>
-                                    <input type="number" name="y" onChange={this.handleDisp} value={rs[i - 1][j - 1][1]} />
-                                </div>
-                                <div>
-                                    <label htmlFor="z">z-coordinate = </label>
-                                    <input type="number" name="z" onChange={this.handleDisp} value={rs[i - 1][j - 1][2]} />
-                                </div>
-                                <span>Specify the particle's initial velocity.</span>
-                                <div>
-                                    <label htmlFor="x">x-component = </label>
-                                    <input type="number" name="x" onChange={this.handleVel} value={vs[i - 1][j - 1][0]} />
-                                </div>
-                                <div>
-                                    <label htmlFor="y">y-component = </label>
-                                    <input type="number" name="y" onChange={this.handleVel} value={vs[i - 1][j - 1][1]} />
-                                </div>
-                                <div>
-                                    <label htmlFor="z">z-component = </label>
-                                    <input type="number" name="z" onChange={this.handleVel} value={vs[i - 1][j - 1][2]} />
-                                </div>
-                                <div>
-                                    <input type="range" onChange={this.handleDamping} name="damping" min="0" max="2" step="0.1" value={damping} />
-                                    <label htmlFor="damping">Damping</label>
-                                </div>
-                            </div>}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th colSpan="2" align="center">choose particle's</th>
+                                        <th colSpan="3">displacement</th>
+                                        <th colSpan="3">velocity</th>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan="2">row and column</td>
+                                        <td>x</td><td>y</td><td>z</td>
+                                        <td>x</td><td>y</td><td>z</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Rows}
+                                </tbody>
+                            </table>
                         </div>
+
+                        <div>
+                            <input
+                                type="range"
+                                onChange={this.handleDamping}
+                                name="damping"
+                                min="0"
+                                max="2"
+                                step="0.1"
+                                value={damping}
+                            />
+                            <label htmlFor="damping">Damping</label>
                         </div>
+
                     </div>
                 </>
             )

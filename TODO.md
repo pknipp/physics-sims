@@ -9,7 +9,6 @@ DRUMHEAD:
 * enable multiplicity of particles which have nonzero IC (IC component?)
 * enable negative inputs for ICs
 * figure out how to round #'s which are displayed in input boxes
-* insert a "pause" button
 * insert a "reset" button
 * enable "speed" to be changed without first pausing sim
 * figure out how to label BOTH ends of slider
