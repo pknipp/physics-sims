@@ -129,8 +129,8 @@ class Collection extends React.Component {
                 const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
                 Fcol.push([
-                    (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + rU[0] + rD[0]) * this.state.springConstant - damping * vs[i][j][0],
-                    (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + rL[0] + rR[0]) * this.state.springConstant - damping * vs[i][j][1],
+                    (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + 1*(rU[0] + rD[0])) * this.state.springConstant - damping * vs[i][j][0],
+                    (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + 1*(rL[1] + rR[1])) * this.state.springConstant - damping * vs[i][j][1],
                     (-4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) * this.state.springConstant - damping * vs[i][j][2],
                 ]);
             }

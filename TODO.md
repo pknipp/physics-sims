@@ -13,7 +13,7 @@ DRUMHEAD:
 * enable "speed" to be changed without first pausing sim
 * figure out how to label BOTH ends of slider
 * auth
-* highlight somehow those particles w/non-zero IC
+* highlight somehow those particles w/non-zero IC?
 * increase order of integrator?
 * figure out why styling sometimes doesn't work in jsx components
 * figure out why I should not decrease dt below 5 ms
