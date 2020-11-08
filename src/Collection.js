@@ -10,50 +10,36 @@ class Collection extends React.Component {
             start: 0,
             time: 0,
             n: 1,
-            nIC: 0,
+            nIC: 1,
             damping: 0,
             speed: 1,
             i: [],
-            j: []
+            j: [],
+            PE: 0,
+            KE: 0,
         }
         this.dt = 5;
+        this.T = 1;
+        this.k = 1;
     }
 
     componentDidMount() {this.makeLattice(this.state.n)}
 
-    // tick = _ => this.setState({now: new Date().valueOf()}, () => this.nextFs());
     tick = _ => {
         let nextT = this.state.time + this.dt/1000;
         this.setState({time: nextT}, () => this.nextFs())
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
-    handleNIC = e => {
-        debugger
-        let nIC = Number(e.target.value);
-        debugger
-        this.setState({nIC})
-        // , () => {
-        //         let i = new Array(nIC).fill(0);
-        //         let j = new Array(nIC).fill(0);
-        //         this.setState({i, j})
-        //     }
-        // );
-    };
-
+    handleNIC = e => this.setState({nIC: Number(e.target.value)});
     submitN = e => e.preventDefault();
     handleDamping = e => this.setState({damping: Number(e.target.value)});
-    handleSpeed = e => {
-        debugger
-        this.setState({speed: Number(e.target.value)});
-    }
+    handleSpeed = e => this.setState({speed: Number(e.target.value)});
     handleIndex = e => {
-        debugger
         const iNew = [...this.state.i];
         const jNew = [...this.state.j];
         const newIndices = {i: iNew, j: jNew};
         newIndices[e.target.name].push(Number(e.target.value));
-        debugger
         this.setState(newIndices);
     }
 
@@ -91,7 +77,6 @@ class Collection extends React.Component {
         let name = e.target.name[0];
         let val = Number(e.target.value);
         let iIC = Number(e.target.name.slice(1));
-        debugger
         let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
         let newI = [...this.state.i];
         let newJ = [...this.state.j];
@@ -119,42 +104,64 @@ class Collection extends React.Component {
     }
 
     nextFs = _ => {
+        debugger
         const { rs, vs, damping } = this.state;
-        const nextFs = [];
+        const Fs = [];
+        let PEk = 0;
+        let PET = 0;
         for (let i = 0; i < this.state.n; i++) {
-            const Fcol = [];
+            const FCol = [];
+            PEk += rs[0][i][0] ** 2 + rs[i][0][1] ** 2;
+            PET +=
+                rs[0][i][0] ** 2 + rs[0][i][2] ** 2 +
+                rs[i][0][1] ** 2 + rs[i][0][2] ** 2;
             for (let j = 0; j < this.state.n; j++) {
                 const rL = (i === 0)     ? [0, 0, 0] : rs[i - 1][j];
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
-                Fcol.push([
-                    (-6 * rs[i][j][0] + 2 * (rL[0] + rR[0]) + 1*(rU[0] + rD[0])) * this.state.springConstant - damping * vs[i][j][0],
-                    (-6 * rs[i][j][1] + 2 * (rU[1] + rD[1]) + 1*(rL[1] + rR[1])) * this.state.springConstant - damping * vs[i][j][1],
-                    (-4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) * this.state.springConstant - damping * vs[i][j][2],
+                PEk += (rs[i][j][0] - rR[0]) ** 2 + (rs[i][j][1] - rD[1]) ** 2;
+                PET +=
+                    (rs[i][j][0] - rD[0]) ** 2 + (rs[i][j][2] - rD[2]) ** 2 +
+                    (rs[i][j][1] - rR[1]) ** 2 + (rs[i][j][2] - rR[2]) ** 2;
+                FCol.push([
+                    - damping * vs[i][j][0] + this.state.springConstant * (
+                        this.k * (-2 * rs[i][j][0] + rL[0] + rR[0]) +
+                        this.T * (-2 * rs[i][j][0] + rU[0] + rD[0])
+                    ),
+                    - damping * vs[i][j][1] + this.state.springConstant * (
+                        this.k * (-2 * rs[i][j][1] + rU[1] + rD[1]) +
+                        this.T * (-2 * rs[i][j][1] + rL[1] + rR[1])
+                    ),
+                    - damping * vs[i][j][2] + this.state.springConstant * this.T * (
+                        -4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]),
                 ]);
             }
-            nextFs.push(Fcol);
+            Fs.push(FCol);
         }
-        debugger
-        this.setState({Fs: nextFs}, () => this.nextVs(this.dt /  1000));
+        PEk *= 0.5 * this.k * this.state.springConstant;
+        PET *= 0.5 * this.T * this.state.springConstant;
+        this.setState({Fs, PE: PEk + PET}, () => this.nextVs(this.dt /  1000));
     }
 
     nextVs = dt => {
         const { vs, Fs } = this.state;
         const nextVs = [];
+        let KE = 0;
         for (let i = 0; i < this.state.n; i++) {
-            const nextVcol = [];
+            const vCol = [];
             for (let j = 0; j < this.state.n; j++) {
-                const nextV = [];
+                const v = [];
                 for (let k = 0; k < 3; k++) {
-                    nextV.push(vs[i][j][k] + Fs[i][j][k] * dt)
+                    v.push(vs[i][j][k] + Fs[i][j][k] * dt);
+                    KE += vs[i][j][k] * vs[i][j][k];
                 }
-                nextVcol.push(nextV);
+                vCol.push(v);
             }
-            nextVs.push(nextVcol);
+            nextVs.push(vCol);
         }
-        this.setState({vs: nextVs}, () => this.nextRs(this.dt / 1000));
+        KE /= 2;
+        this.setState({vs: nextVs, KE}, () => this.nextRs(this.dt / 1000));
     }
 
     nextRs = dt => {
@@ -175,12 +182,10 @@ class Collection extends React.Component {
     }
 
     toggle = () => {
-        debugger
         const running = !this.state.running;
         if (running) {
           this.interval = setInterval(this.tick, Math.floor(this.dt/this.state.speed));
           this.setState({t: 0});
-        //   this.setState({start: new Date().valueOf()});
         } else {
           clearInterval(this.interval);
           this.interval = null;
@@ -208,7 +213,6 @@ class Collection extends React.Component {
         let returnMe = [chooseN];
         if (this.state.n && this.state.isLattice) {
             let { n } = this.state;
-            // let t = (this.state.now - this.state.start) * this.state.speed / 1000;
             let { time } = this.state
             let numPx = 540;
             let rComponents = (
@@ -242,7 +246,6 @@ class Collection extends React.Component {
 
             )
             let { i, j, optionsI, optionsJ, rs, vs, damping, speed, nIC } = this.state;
-            debugger
             let Rows = [];
             for (let iIC = 0; iIC < nIC; iIC++) {
                 Rows.push(
@@ -267,8 +270,15 @@ class Collection extends React.Component {
                         <button onClick={this.toggle}>
                             {this.state.running ? "Pause" : "Run"}
                         </button>
-                        <span> time: {Math.floor(100 * time)/100} s</span>
+                        <div> time: {Math.floor(100 * time)/100} s</div>
+                        <div> potential energy: {Math.floor(1000 * this.state.PE)/1000} </div>
+                        <div> kinetic energy: {Math.floor(1000 * this.state.KE)/1000} </div>
+                        <div> (total) energy: {Math.floor(1000 * (this.state.PE + this.state.KE))/1000}</div>
                         <div>
+                            Running speed:
+                        </div>
+                        <div>
+                        <label>slow</label>
                         <input
                             type="range"
                             onChange={this.handleSpeed}
@@ -278,7 +288,10 @@ class Collection extends React.Component {
                             step="0.1"
                             value={speed}
                         />
-                        <label htmlFor="speed">Playback speed (pause before changing)</label>
+                        <label htmlFor="speed">regular</label>
+                        <div>
+                            <label>("pause" before adjusting)</label>
+                        </div>
                         </div>
                     </div>
                     <div className="container">
@@ -315,9 +328,9 @@ class Collection extends React.Component {
                                     {Rows}
                                 </tbody>
                             </table>
-                        </div>
-
-                        <div>
+                            <label>Damping (or "viscosity"):</label>
+                            <div>
+                            <label>none </label>
                             <input
                                 type="range"
                                 onChange={this.handleDamping}
@@ -327,7 +340,8 @@ class Collection extends React.Component {
                                 step="0.1"
                                 value={damping}
                             />
-                            <label htmlFor="damping">Damping</label>
+                            <label htmlFor="damping"> much</label>
+                            </div>
                         </div>
 
                     </div>

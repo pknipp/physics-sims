@@ -4,17 +4,16 @@ GENERAL:
 
 DRUMHEAD:
 * connect objects with lines
-* calculate energy (How possible w/stress terms?) to monitor errors
-* after accomplishing the former task, allow user to change timestep
+* allow user to change timestep (w/logarithmic slider)
 * refactor Row component to use 6 Element components (3 x dx & 3 x vi)
 * enable negative inputs for ICs
 * figure out how to round #'s which are displayed in input boxes
 * insert a "reset" button
 * enable "speed" to be changed without first pausing sim
-* figure out how to label BOTH ends of slider
 * auth
 * highlight somehow those particles w/non-zero IC?
 * increase order of integrator?
+* move damping slider over w/timer and speed slider?
 * figure out why styling sometimes doesn't work in jsx components
 * figure out why I should not decrease dt below 5 ms
 * insert arrows to indicate tangential velocity
