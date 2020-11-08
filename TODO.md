@@ -6,7 +6,7 @@ DRUMHEAD:
 * connect objects with lines
 * calculate energy (How possible w/stress terms?) to monitor errors
 * after accomplishing the former task, allow user to change timestep
-* enable multiplicity of particles which have nonzero IC (IC component?)
+* refactor Row component to use 6 Element components (3 x dx & 3 x vi)
 * enable negative inputs for ICs
 * figure out how to round #'s which are displayed in input boxes
 * insert a "reset" button
