@@ -86,34 +86,42 @@ class Collection extends React.Component {
     }
 
     handleDisp = e => {
-        let name = e.target.name[0];
+        let i = e.target.name[1];
+        let j = e.target.name[2];
+        let k = e.target.name[3];
         let val = Number(e.target.value);
-        let iIC = Number(e.target.name.slice(1));
-        let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
-        let newI = [...this.state.i];
-        let newJ = [...this.state.j];
-        let newRs = [...this.state.rs];
-        debugger;
-        const newDisp = newRs[newI[iIC] - 1][newJ[iIC] - 1]
-        // const newDisp = [...this.state.rs[this.state.i[iIC] - 1][this.state.j[iIC] - 1]];
-        newDisp[k] = (val === "") ? "" : Number(val);
-        newRs[newI[iIC] - 1][newJ[iIC] - 1] = newDisp;
+        // let iIC = Number(e.target.name.slice(1));
+        // let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
+        const newRs = JSON.parse(JSON.stringify(this.state.rs));
+        newRs[i][j][k] = (val === "") ? "" : Number(val);
         this.setState({rs: newRs});
     }
 
     handleVel = e => {
-        let name = e.target.name[0];
+        let i = e.target.name[1];
+        let j = e.target.name[2];
+        let k = e.target.name[3];
         let val = Number(e.target.value);
-        let iIC = Number(e.target.name.slice(1));
-        let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
-        let newI = [...this.state.i];
-        let newJ = [...this.state.j];
-        let newVs = [...this.state.vs];
-        const newVel = newVs[newI[iIC] - 1][newJ[iIC] - 1]
-        newVel[k] = (val === "") ? "" : Number(val);
-        newVs[newI[iIC] - 1][newJ[iIC] - 1] = newVel;
-        this.setState({vs: newVs});
+        // let iIC = Number(e.target.name.slice(1));
+        // let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
+        const newVs = JSON.parse(JSON.stringify(this.state.vs));
+        newVs[i][j][k] = (val === "") ? "" : Number(val);
+        this.setState({rs: newVs});
     }
+
+    // handleVel = e => {
+    //     let k = e.target.name[1];
+    //     let val = Number(e.target.value);
+    //     // let iIC = Number(e.target.name.slice(1));
+    //     // let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
+    //     let newI = [...this.state.i];
+    //     let newJ = [...this.state.j];
+    //     let newVs = [...this.state.vs];
+    //     const newVel = newVs[newI[iIC] - 1][newJ[iIC] - 1]
+    //     newVel[k] = (val === "") ? "" : Number(val);
+    //     newVs[newI[iIC] - 1][newJ[iIC] - 1] = newVel;
+    //     this.setState({vs: newVs});
+    // }
 
     nextFs = _ => {
         debugger
@@ -124,22 +132,18 @@ class Collection extends React.Component {
         for (let i = 0; i < this.state.n; i++) {
             const FCol = [];
             PEk += rs[0][i][0] ** 2 + rs[i][0][1] ** 2;
-            debugger
             PET +=
                 rs[0][i][1] ** 2 + rs[0][i][2] ** 2 +
                 rs[i][0][0] ** 2 + rs[i][0][2] ** 2;
-            debugger
             for (let j = 0; j < this.state.n; j++) {
                 const rL = (i === 0)     ? [0, 0, 0] : rs[i - 1][j];
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
                 PEk += (rs[i][j][0] - rR[0]) ** 2 + (rs[i][j][1] - rD[1]) ** 2;
-                debugger
                 PET +=
                     (rs[i][j][0] - rD[0]) ** 2 + (rs[i][j][2] - rD[2]) ** 2 +
                     (rs[i][j][1] - rR[1]) ** 2 + (rs[i][j][2] - rR[2]) ** 2;
-                debugger
                 FCol.push([
                     - damping * vs[i][j][0] + this.state.springConstant * (
                         this.state.k * (-2 * rs[i][j][0] + rL[0] + rR[0]) +
@@ -156,9 +160,7 @@ class Collection extends React.Component {
             Fs.push(FCol);
         }
         PEk *= 0.5 * this.state.k * this.state.springConstant;
-        debugger
         PET *= 0.5 * this.state.T * this.state.springConstant;
-        debugger
         this.setState({Fs, PE: PEk + PET}, () => this.nextVs(this.state.dt /  1000));
     }
 
@@ -180,7 +182,6 @@ class Collection extends React.Component {
             nextVs.push(vCol);
         }
         KE /= 2;
-        debugger
         this.setState({vs: nextVs, KE}, () => this.nextRs(this.state.dt / 1000));
     }
 

@@ -1,14 +1,14 @@
 import React from "react";
-const Row = ({ rorv, k, rvs, i, j, handle }) => {
+const Element = ({ rorv, k, rvs, i, j, handle }) => {
     debugger
     return (
         <td>
             <input
                 type="number"
-                name={`${rorv}${k}`}
+                name={`${rorv}${i}${j}${k}`}
                 onChange={handle}
                 value={rvs[i][j][k]}
-            />}
+            />
         </td>
     )
 }

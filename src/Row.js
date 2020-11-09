@@ -6,11 +6,12 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
     for (let k = 0; k < 3; k++) {
         let element = (
             <Element
+                key={`r${k}`}
                 rorv={"r"}
                 k={k}
                 rvs={rs}
-                i={i[iIC]}
-                j={j[iIC]}
+                i={i[iIC] - 1}
+                j={j[iIC] - 1}
                 handle={handleDisp}
             />
         );
@@ -19,11 +20,12 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
     for (let k = 0; k < 3; k++) {
         let element = (
             <Element
+                key={`v${k}`}
                 rorv={"v"}
                 k={k}
                 rvs={vs}
-                i={i[iIC]}
-                j={j[iIC]}
+                i={i[iIC] - 1}
+                j={j[iIC] - 1}
                 handle={handleVel}
             />
         );
@@ -49,7 +51,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
                 <select
                     onChange={handleIndex}
                     name="i"
-                    value={i[iIC]   }
+                    value={i[iIC]}
                 >
                     {optionsI.map((option, col) => (
                         <option key={col} value={col}>
@@ -58,7 +60,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
                     ))}
                 </select>
             </td>
-            {(!i || !i[iIC] || !j || !j[iIC]) ? <td colspan="4"></td> : row}
+            {(!i || !i[iIC] || !j || !j[iIC]) ? <td colSpan="4"></td> : row}
         </tr>
     )
 }
