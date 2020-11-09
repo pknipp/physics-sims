@@ -7,7 +7,7 @@ const Element = ({ rorv, k, rvs, i, j, handleIC }) => {
                 type="number"
                 name={`${rorv}${i}${j}${k}`}
                 onChange={handleIC}
-                value={rvs[i][j][k]}
+                value={Math.floor(1000*rvs[i][j][k])/1000}
             />
         </td>
     )

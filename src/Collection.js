@@ -83,7 +83,6 @@ class Collection extends React.Component {
     }
 
     handleIC = e => {
-        debugger
         let rorvs = e.target.name[0] + "s";
         let i = Number(e.target.name[1]);
         let j = Number(e.target.name[2]);
@@ -91,7 +90,6 @@ class Collection extends React.Component {
         let val = Number(e.target.value);
         const newIC = JSON.parse(JSON.stringify(this.state[rorvs]));
         newIC[i][j][k] = (val === "") ? "" : Number(val);
-        debugger
         this.setState((rorvs === "rs") ? {rs: newIC} : {vs: newIC});
     }
 
