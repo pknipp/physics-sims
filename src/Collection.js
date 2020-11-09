@@ -85,13 +85,25 @@ class Collection extends React.Component {
         this.setState(newState)
     }
 
-    handleDisp = e => {
-        let i = e.target.name[1];
-        let j = e.target.name[2];
-        let k = e.target.name[3];
+    handleIC = e => {
+        debugger
+        let rorv = e.target.name[0];
+        let i = Number(e.target.name[1]);
+        let j = Number(e.target.name[2]);
+        let k = Number(e.target.name[3]);
         let val = Number(e.target.value);
-        // let iIC = Number(e.target.name.slice(1));
-        // let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
+        const newIC = JSON.parse(JSON.stringify(this.state[rorv]));
+        newIC[i][j][k] = (val === "") ? "" : Number(val);
+        debugger
+        this.setState((rorv === "r") ? {rs: newIC} : {vs: newIC});
+    }
+
+    handleDisp = e => {
+        debugger
+        let i = Number(e.target.name[1]);
+        let j = Number(e.target.name[2]);
+        let k = Number(e.target.name[3]);
+        let val = Number(e.target.value);
         const newRs = JSON.parse(JSON.stringify(this.state.rs));
         newRs[i][j][k] = (val === "") ? "" : Number(val);
         debugger
@@ -99,30 +111,16 @@ class Collection extends React.Component {
     }
 
     handleVel = e => {
-        let i = e.target.name[1];
-        let j = e.target.name[2];
-        let k = e.target.name[3];
+        debugger
+        let i = Number(e.target.name[1]);
+        let j = Number(e.target.name[2]);
+        let k = Number(e.target.name[3]);
         let val = Number(e.target.value);
-        // let iIC = Number(e.target.name.slice(1));
-        // let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
         const newVs = JSON.parse(JSON.stringify(this.state.vs));
         newVs[i][j][k] = (val === "") ? "" : Number(val);
-        this.setState({rs: newVs});
+        debugger
+        this.setState({vs: newVs});
     }
-
-    // handleVel = e => {
-    //     let k = e.target.name[1];
-    //     let val = Number(e.target.value);
-    //     // let iIC = Number(e.target.name.slice(1));
-    //     // let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
-    //     let newI = [...this.state.i];
-    //     let newJ = [...this.state.j];
-    //     let newVs = [...this.state.vs];
-    //     const newVel = newVs[newI[iIC] - 1][newJ[iIC] - 1]
-    //     newVel[k] = (val === "") ? "" : Number(val);
-    //     newVs[newI[iIC] - 1][newJ[iIC] - 1] = newVel;
-    //     this.setState({vs: newVs});
-    // }
 
     nextFs = _ => {
         debugger

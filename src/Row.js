@@ -32,6 +32,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
             />
         );
         row.push(element);
+        debugger
     }
 
     return (
