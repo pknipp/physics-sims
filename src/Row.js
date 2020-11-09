@@ -1,6 +1,35 @@
 import React from "react";
+import Element from "./Element";
 const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, handleVel }) => {
     debugger
+    let row = [];
+    for (let k = 0; k < 3; k++) {
+        let element = (
+            <Element
+                rorv={"r"}
+                k={k}
+                rvs={rs}
+                i={i[iIC]}
+                j={j[iIC]}
+                handle={handleDisp}
+            />
+        );
+        row.push(element);
+    }
+    for (let k = 0; k < 3; k++) {
+        let element = (
+            <Element
+                rorv={"v"}
+                k={k}
+                rvs={vs}
+                i={i[iIC]}
+                j={j[iIC]}
+                handle={handleVel}
+            />
+        );
+        row.push(element);
+    }
+
     return (
         <tr>
             <td>
@@ -29,54 +58,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
                     ))}
                 </select>
             </td>
-            <td>
-                {(!i || !i[iIC] || !j || !j[iIC]) ? null : <input
-                    type="number"
-                    name={`x${iIC}`}
-                    onChange={handleDisp}
-                    value={String(rs[i[iIC] - 1][j[iIC] - 1][0])}
-                />}
-            </td>
-            <td>
-                {(!i || !i[iIC] || !j || !j[iIC]) ? null : <input
-                    type="number"
-                    name={`y${iIC}`}
-                    onChange={handleDisp}
-                    value={rs[i[iIC] - 1][j[iIC] - 1][1]}
-                />}
-            </td>
-            <td>
-                {(!i || !i[iIC] || !j || !j[iIC]) ? null : <input
-                    type="number"
-                    name={`z${iIC}`}
-                    onChange={handleDisp}
-                    value={rs[i[iIC] - 1][j[iIC] - 1][2]}
-                />}
-            </td>
-            <td>
-                {(!i || !i[iIC] || !j || !j[iIC]) ? null : <input
-                    type="number"
-                    name={`x${iIC}`}
-                    onChange={handleVel}
-                    value={String(vs[i[iIC] - 1][j[iIC] - 1][0])}
-                />}
-            </td>
-            <td>
-                {(!i || !i[iIC] || !j || !j[iIC]) ? null : <input
-                    type="number"
-                    name={`y${iIC}`}
-                    onChange={handleVel}
-                    value={vs[i[iIC] - 1][j[iIC] - 1][1]}
-                />}
-            </td>
-            <td>
-                {(!i || !i[iIC] || !j || !j[iIC]) ? null : <input
-                    type="number"
-                    name={`z${iIC}`}
-                    onChange={handleVel}
-                    value={vs[i[iIC] - 1][j[iIC] - 1][2]}
-                />}
-            </td>
+            {(!i || !i[iIC] || !j || !j[iIC]) ? <td colspan="4"></td> : row}
         </tr>
     )
 }
