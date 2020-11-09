@@ -4,7 +4,8 @@ GENERAL:
 
 DRUMHEAD:
 * connect objects with lines
-* refactor Row component to use 6 Element components (3 x dx & 3 x vi)
+* consolidate position stuff and velocity stuff into a single variable (e.g., rs & vs -> rvs)
+* consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
 * enable negative inputs for ICs
 * figure out how to round #'s which are displayed in input boxes
 * insert a "reset" button

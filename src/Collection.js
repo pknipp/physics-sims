@@ -22,9 +22,6 @@ class Collection extends React.Component {
             T: 0.5,
             k: 0.5
         }
-        // this.dt = 5;
-        // this.T = 0.5;
-        // this.k = 0.5;
     }
 
     componentDidMount() {this.makeLattice(this.state.n)}
@@ -87,39 +84,15 @@ class Collection extends React.Component {
 
     handleIC = e => {
         debugger
-        let rorv = e.target.name[0];
+        let rorvs = e.target.name[0] + "s";
         let i = Number(e.target.name[1]);
         let j = Number(e.target.name[2]);
         let k = Number(e.target.name[3]);
         let val = Number(e.target.value);
-        const newIC = JSON.parse(JSON.stringify(this.state[rorv]));
+        const newIC = JSON.parse(JSON.stringify(this.state[rorvs]));
         newIC[i][j][k] = (val === "") ? "" : Number(val);
         debugger
-        this.setState((rorv === "r") ? {rs: newIC} : {vs: newIC});
-    }
-
-    handleDisp = e => {
-        debugger
-        let i = Number(e.target.name[1]);
-        let j = Number(e.target.name[2]);
-        let k = Number(e.target.name[3]);
-        let val = Number(e.target.value);
-        const newRs = JSON.parse(JSON.stringify(this.state.rs));
-        newRs[i][j][k] = (val === "") ? "" : Number(val);
-        debugger
-        this.setState({rs: newRs});
-    }
-
-    handleVel = e => {
-        debugger
-        let i = Number(e.target.name[1]);
-        let j = Number(e.target.name[2]);
-        let k = Number(e.target.name[3]);
-        let val = Number(e.target.value);
-        const newVs = JSON.parse(JSON.stringify(this.state.vs));
-        newVs[i][j][k] = (val === "") ? "" : Number(val);
-        debugger
-        this.setState({vs: newVs});
+        this.setState((rorvs === "rs") ? {rs: newIC} : {vs: newIC});
     }
 
     nextFs = _ => {
@@ -279,8 +252,7 @@ class Collection extends React.Component {
                         j={j}
                         iIC={iIC}
                         handleIndex={this.handleIndex}
-                        handleDisp={this.handleDisp}
-                        handleVel={this.handleVel}
+                        handleIC={this.handleIC}
                     />
                 )
             }

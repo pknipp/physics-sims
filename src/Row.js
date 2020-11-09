@@ -1,6 +1,6 @@
 import React from "react";
 import Element from "./Element";
-const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, handleVel }) => {
+const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleIC}) => {
     debugger
     let row = [];
     for (let k = 0; k < 3; k++) {
@@ -13,7 +13,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
                 rvs={rs}
                 i={i[iIC] - 1}
                 j={j[iIC] - 1}
-                handle={handleDisp}
+                handleIC={handleIC}
             />
         );
         row.push(element);
@@ -28,7 +28,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
                 rvs={vs}
                 i={i[iIC] - 1}
                 j={j[iIC] - 1}
-                handle={handleVel}
+                handleIC={handleIC}
             />
         );
         row.push(element);
