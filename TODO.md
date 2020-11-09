@@ -10,8 +10,6 @@ DRUMHEAD:
 * insert a "reset" button
 * enable "speed" to be changed without first pausing sim
 * auth
-* center headings better in table
-* put lefthand items in a ul
 * highlight somehow those particles w/non-zero IC?
 * increase order of integrator?
 * figure out why styling sometimes doesn't work in jsx components

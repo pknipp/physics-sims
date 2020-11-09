@@ -124,18 +124,22 @@ class Collection extends React.Component {
         for (let i = 0; i < this.state.n; i++) {
             const FCol = [];
             PEk += rs[0][i][0] ** 2 + rs[i][0][1] ** 2;
+            debugger
             PET +=
-                rs[0][i][0] ** 2 + rs[0][i][2] ** 2 +
-                rs[i][0][1] ** 2 + rs[i][0][2] ** 2;
+                rs[0][i][1] ** 2 + rs[0][i][2] ** 2 +
+                rs[i][0][0] ** 2 + rs[i][0][2] ** 2;
+            debugger
             for (let j = 0; j < this.state.n; j++) {
                 const rL = (i === 0)     ? [0, 0, 0] : rs[i - 1][j];
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
                 PEk += (rs[i][j][0] - rR[0]) ** 2 + (rs[i][j][1] - rD[1]) ** 2;
+                debugger
                 PET +=
                     (rs[i][j][0] - rD[0]) ** 2 + (rs[i][j][2] - rD[2]) ** 2 +
                     (rs[i][j][1] - rR[1]) ** 2 + (rs[i][j][2] - rR[2]) ** 2;
+                debugger
                 FCol.push([
                     - damping * vs[i][j][0] + this.state.springConstant * (
                         this.state.k * (-2 * rs[i][j][0] + rL[0] + rR[0]) +
@@ -152,6 +156,7 @@ class Collection extends React.Component {
             Fs.push(FCol);
         }
         PEk *= 0.5 * this.state.k * this.state.springConstant;
+        debugger
         PET *= 0.5 * this.state.T * this.state.springConstant;
         debugger
         this.setState({Fs, PE: PEk + PET}, () => this.nextVs(this.state.dt /  1000));
@@ -285,71 +290,80 @@ class Collection extends React.Component {
                         <button onClick={this.toggle}>
                             {this.state.running ? "Pause" : "Run"}
                         </button>
-                        <div> time: {Math.floor(100 * time)/100} s</div>
-                        <div> potential energy: {Math.floor(1000 * this.state.PE)/1000} </div>
-                        <div> kinetic energy: {Math.floor(1000 * this.state.KE)/1000} </div>
-                        <div> (total) energy: {Math.floor(1000 * (this.state.PE + this.state.KE))/1000}</div>
-                            <div>
+                        <ul>
+                            <li> time: {Math.floor(100 * time)/100} s</li>
+                            <li>Energy:
+                                <ul>
+                                    <li> potential: {Math.floor(1000 * this.state.PE)/1000} </li>
+                                    <li> kinetic: {Math.floor(1000 * this.state.KE)/1000} </li>
+                                    <li> total: {Math.floor(1000 * (this.state.PE + this.state.KE))/1000}</li>
+                                </ul>
+                            </li>
+                            <li>
                                 Simulation speed (pause before adjusting):
-                            </div>
-                            <div>
-                            <label>slow</label>
-                            <input
-                                type="range"
-                                onChange={this.handleSpeed}
-                                name="speed"
-                                min="0"
-                                max="1"
-                                step="0.1"
-                                value={speed}
-                            />
-                            <label htmlFor="speed">regular</label>
-                        </div>
-                        <label>Damping (or "viscosity"):</label>
-                        <div>
-                            <label>none </label>
-                            <input
-                                type="range"
-                                onChange={this.handleDamping}
-                                name="damping"
-                                min="0"
-                                max="2"
-                                step="0.1"
-                                value={damping}
-                            />
-                            <label htmlFor="damping"> much</label>
-                        </div>
-                        <label>Timestep (logarithmic scale):</label>
-                        <div>
-                            <label>1 ms </label>
-                            <input
-                                type="range"
-                                onChange={this.handleLogTimeStep}
-                                name="logtimestep"
-                                min="0"
-                                max="3"
-                                step="0.15"
-                                value={logdt}
-                            />
-                            <label htmlFor="logtimestep"> 1 s</label>
-                        </div>
-                        <div>
-                            (Present value is {dt} ms.)
-                        </div>
-                        <label>Type of restoring force:</label>
-                        <div>
-                            <label>spring-like </label>
-                            <input
-                                type="range"
-                                onChange={this.handleForceType}
-                                name="forcetype"
-                                min="0"
-                                max="1"
-                                step="0.1"
-                                value={this.state.T}
-                            />
-                            <label htmlFor="force-type"> tension-like</label>
-                        </div>
+                                <div>
+                                    slow
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSpeed}
+                                        name="speed"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={speed}
+                                    />
+                                    regular
+                                </div>
+                            </li>
+                            <li>Damping (or "viscosity"):
+                                <div>
+                                    none
+                                    <input
+                                        type="range"
+                                        onChange={this.handleDamping}
+                                        name="damping"
+                                        min="0"
+                                        max="2"
+                                        step="0.1"
+                                        value={damping}
+                                    />
+                                    much
+                                </div>
+                            </li>
+                            <li>Timestep (logarithmic scale):
+                                <div>
+                                    1 ms
+                                    <input
+                                        type="range"
+                                        onChange={this.handleLogTimeStep}
+                                        name="logtimestep"
+                                        min="0"
+                                        max="3"
+                                        step="0.15"
+                                        value={logdt}
+                                    />
+                                    1 s
+                                </div>
+                                <div>
+                                    (Present value is {dt} ms.)
+                                </div>
+                            </li>
+                            <li>Type of restoring force:
+                                <div>
+                                    spring-like
+                                    <input
+                                        type="range"
+                                        onChange={this.handleForceType}
+                                        name="forcetype"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={this.state.T}
+                                    />
+                                    tension-like
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                     <div className="container">
                         <div className="drumhead">
@@ -377,8 +391,8 @@ class Collection extends React.Component {
                                     </tr>
                                     <tr>
                                         <td colSpan="2">row and column</td>
-                                        <td>x</td><td>y</td><td>z</td>
-                                        <td>x</td><td>y</td><td>z</td>
+                                        <td align="center">x</td><td align="center">y</td><td align="center">z</td>
+                                        <td align="center">x</td><td align="center">y</td><td align="center">z</td>
                                     </tr>
                                 </thead>
                                 <tbody>
