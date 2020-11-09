@@ -4,6 +4,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
     debugger
     let row = [];
     for (let k = 0; k < 3; k++) {
+        debugger
         let element = (
             <Element
                 key={`r${k}`}
@@ -18,6 +19,7 @@ const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleDisp, h
         row.push(element);
     }
     for (let k = 0; k < 3; k++) {
+        debugger
         let element = (
             <Element
                 key={`v${k}`}

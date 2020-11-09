@@ -94,6 +94,7 @@ class Collection extends React.Component {
         // let k = (name === "x") ? 0 : (name === "y") ? 1 : 2;
         const newRs = JSON.parse(JSON.stringify(this.state.rs));
         newRs[i][j][k] = (val === "") ? "" : Number(val);
+        debugger
         this.setState({rs: newRs});
     }
 
