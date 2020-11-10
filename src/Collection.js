@@ -87,7 +87,7 @@ class Collection extends React.Component {
         let i = Number(e.target.name[1]);
         let j = Number(e.target.name[2]);
         let k = Number(e.target.name[3]);
-        let val = Number(e.target.value);
+        let val = e.target.value;
         const newIC = JSON.parse(JSON.stringify(this.state[rorvs]));
         newIC[i][j][k] = (val === "") ? "" : Number(val);
         this.setState((rorvs === "rs") ? {rs: newIC} : {vs: newIC});

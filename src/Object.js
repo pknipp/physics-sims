@@ -46,7 +46,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width
                 top: `${ypx + size/2}px`,
                 zIndex: `${Math.floor(1000 * Z)}`,
                 transform: `rotate(${angleL}deg) translateX(${rL/2}px)`,
-                zIndex: 1000
+                zIndex: "1001"
             }}/>
 
             {(!XR) ? null : <div className="line" style={{
@@ -55,7 +55,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width
                 top: `${ypx + size/2}px`,
                 zIndex: `${Math.floor(1000 * Z)}`,
                 transform: `rotate(${angleR}deg) translateX(${rR/2}px)`,
-                zIndex: 1000,
+                zIndex: "1002",
             }}/>}
 
             <div className="line" style={{
@@ -64,7 +64,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width
                 top: `${ypx + size/2}px`,
                 zIndex: `${Math.floor(1000 * Z)}`,
                 transform: `rotate(${angleU}deg) translateX(${rU/2}px)`,
-                zIndex: 1000,
+                zIndex: "1003",
             }}/>
 
             {(!XD) ? null : <div className="line" style={{
@@ -73,7 +73,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width
                 top: `${ypx + size/2}px`,
                 zIndex: `${Math.floor(1000 * Z)}`,
                 transform: `rotate(${angleD}deg) translateX(${rD/2}px)`,
-                zIndex: 1000,
+                zIndex: "1004",
             }}/>}
 
             <div className="dot stationary" style={{
@@ -81,7 +81,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width
                 width:`${width}px`,
                 left:`${xpx0}px`,
                 top:`${ypx0}px`,
-                zIndex: 1000,
+                zIndex: "1005",
                 // backgroundColor: "green",
             }}/>
         </>
