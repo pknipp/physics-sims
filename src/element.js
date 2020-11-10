@@ -1,6 +1,5 @@
 import React from "react";
 const Element = ({ rorv, k, rvs, i, j, handleIC }) => {
-    debugger
     return (
         <td>
             <input

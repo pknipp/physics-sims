@@ -35,6 +35,13 @@ input {
   border-radius: 50%;
 }
 
+.box {
+  box-sizing: border-box;
+  position: absolute;
+  border-top: solid 1px;
+  
+}
+
 .stationary {
   box-sizing: border-box;
   border: 1px dashed;

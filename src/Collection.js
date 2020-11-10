@@ -83,7 +83,6 @@ class Collection extends React.Component {
     }
 
     handleIC = e => {
-        debugger
         let rorvs = e.target.name[0] + "s";
         let i = Number(e.target.name[1]);
         let j = Number(e.target.name[2]);
@@ -91,12 +90,10 @@ class Collection extends React.Component {
         let val = Number(e.target.value);
         const newIC = JSON.parse(JSON.stringify(this.state[rorvs]));
         newIC[i][j][k] = (val === "") ? "" : Number(val);
-        debugger
         this.setState((rorvs === "rs") ? {rs: newIC} : {vs: newIC});
     }
 
     nextFs = _ => {
-        debugger
         const { rs, vs, damping } = this.state;
         const Fs = [];
         let PEk = 0;
@@ -137,7 +134,6 @@ class Collection extends React.Component {
     }
 
     nextVs = dt => {
-        debugger
         const { vs, Fs } = this.state;
         const nextVs = [];
         let KE = 0;
@@ -212,12 +208,20 @@ class Collection extends React.Component {
 
                     this.state.rs.map((col, i, rs) => {
                         return col.map((r, j, col) => {
-                            let X = numPx * (this.state.xs[i] + this.state.rs[i][j][0] + 0.5);
-                            let Y = numPx * (this.state.ys[j] + this.state.rs[i][j][1] + 0.5);
                             let X0 = numPx * (this.state.xs[i] + 0.5);
                             let Y0 = numPx * (this.state.ys[j] + 0.5);
-                            // let xL = (i === 0) ? 0 : numPx * (this.props.xs[i - 1] + this.state.rs[i - 1][j] [0]  + 0. 5);
-                            // let yL = numPx * (0.5 + this.props.ys[j] + ((i === 0) ? 0 : this.state.rs[i - 1] [j]  [1]));
+                            let X = X0 + numPx * this.state.rs[i][j][0];
+                            let Y = Y0 + numPx * this.state.rs[i][j][1];
+                            let XL;
+                            let YL;
+                            if (i === 0) {
+                                debugger
+                                XL = 0;
+                                YL = numPx * (this.state.ys[j] + 0.5)
+                            } else {
+                                XL = numPx * (this.state.xs[i - 1] + 0.5 + this.state.rs[i - 1][j][0]);
+                                YL = numPx * (this.state.ys[j] + 0.5 + this.state.rs[i - 1][j][1]);
+                            }
                             return (
                                 <div key={this.state.n * i + j}>
                                 <Object
@@ -226,6 +230,8 @@ class Collection extends React.Component {
                                     X={X}
                                     Y={Y}
                                     Z={this.state.rs[i][j][2]}
+                                    XL={XL}
+                                    YL={YL}
                                     width={numPx * this.state.width}
                                     backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
                                 />
