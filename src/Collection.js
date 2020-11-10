@@ -214,13 +214,21 @@ class Collection extends React.Component {
                             let Y = Y0 + numPx * this.state.rs[i][j][1];
                             let XL;
                             let YL;
+                            let XU;
+                            let YU;
                             if (i === 0) {
-                                debugger
                                 XL = 0;
                                 YL = numPx * (this.state.ys[j] + 0.5)
                             } else {
                                 XL = numPx * (this.state.xs[i - 1] + 0.5 + this.state.rs[i - 1][j][0]);
                                 YL = numPx * (this.state.ys[j] + 0.5 + this.state.rs[i - 1][j][1]);
+                            }
+                            if (j === 0) {
+                                YU = 0;
+                                XU = numPx * (this.state.xs[i] + 0.5)
+                            } else {
+                                XU = numPx * (this.state.xs[i] + 0.5 + this.state.rs[i][j - 1][0]);
+                                YU = numPx * (this.state.ys[j - 1] + 0.5 + this.state.rs[i][j - 1][1]);
                             }
                             return (
                                 <div key={this.state.n * i + j}>
@@ -232,6 +240,8 @@ class Collection extends React.Component {
                                     Z={this.state.rs[i][j][2]}
                                     XL={XL}
                                     YL={YL}
+                                    XU={XU}
+                                    YU={YU}
                                     width={numPx * this.state.width}
                                     backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
                                 />

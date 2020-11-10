@@ -1,7 +1,9 @@
 import React from "react";
-const Object = ({ X, Y, Z, XL, YL, X0, Y0, width, backgroundColor}) => {
+const Object = ({ X, Y, Z, XL, YL, XU, YU, X0, Y0, width, backgroundColor}) => {
     let rL = Math.sqrt((X - XL) * (X - XL) + (Y - YL) * (Y - YL));
-    let angle = Math.atan2(YL - Y, XL - X) * 180 /Math.PI;
+    let rU = Math.sqrt((X - XU) * (X - XU) + (Y - YU) * (Y - YU));
+    let angleL = Math.atan2(YL - Y, XL - X) * 180 / Math.PI;
+    let angleU = Math.atan2(YU - Y, XU - X) * 180 / Math.PI;
     let xpx0 = Math.floor(X0 - width/2);
     let ypx0 = Math.floor(Y0 - width/2);
     let size = Math.floor(width * ((Z < 0) ? 1/(1 - Z) : 1 + Z));
@@ -23,7 +25,15 @@ const Object = ({ X, Y, Z, XL, YL, X0, Y0, width, backgroundColor}) => {
                 left: `${xpx + size/2 - rL/2}px`,
                 top: `${ypx + size/2}px`,
                 zIndex: `${Math.floor(1000 * Z)}`,
-                transform: `rotate(${angle}deg) translateX(${rL/2}px)`,
+                transform: `rotate(${angleL}deg) translateX(${rL/2}px)`,
+            }}/>
+
+            <div className="line" style={{
+                width:`${rU}px`,
+                left: `${xpx + size/2 - rU/2}px`,
+                top: `${ypx + size/2}px`,
+                zIndex: `${Math.floor(1000 * Z)}`,
+                transform: `rotate(${angleU}deg) translateX(${rU/2}px)`,
             }}/>
 
             <div className="dot stationary" style={{
