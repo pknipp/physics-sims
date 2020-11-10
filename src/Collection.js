@@ -245,8 +245,8 @@ class Collection extends React.Component {
                                     YL={YL}
                                     XU={XU}
                                     YU={YU}
-                                    XD={(j === n - 1) ? XD: null}
-                                    YD={(j === n - 1) ? YD: null}
+                                    XD={(j === n - 1) ? numPx * (this.state.xs[i] + 0.5): null}
+                                    YD={(j === n - 1) ? numPx: null}
                                     width={numPx * this.state.width}
                                     backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
                                 />
