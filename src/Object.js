@@ -4,7 +4,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width
     let rU = Math.sqrt((X - XU) * (X - XU) + (Y - YU) * (Y - YU));
     let rD;
     let rR;
-    let V = Math.sqrt(Vx * Vx + Vy * Vy);
+    let V = Math.sqrt(Vx * Vx + Vy * Vy)/2;
     let angleV = Math.atan2(Vy, Vx) * 180 / Math.PI;
     let angleD;
     let angleR;
@@ -34,12 +34,16 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width
                 zIndex: `${Math.floor(1000 * Z)}`,
                 backgroundColor: `${backgroundColor}`
             }}/>
+
             <div className="line" style={{
                 height:`${{size}}px`,
                 width:`${V}px`,
-                left: `${xpx}px`,
-                top: `${ypx}px`,
+                left: `${xpx + size/2 - V/2}px`,
+                top: `${ypx + size/2}px`,
+                transform: `rotate(${angleV}deg) translateX(${V/2}px)`,
+                zIndex: "1000",
             }}/>
+
             <div className="line" style={{
                 width:`${rL}px`,
                 left: `${xpx + size/2 - rL/2}px`,

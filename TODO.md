@@ -4,6 +4,7 @@ GENERAL:
 
 DRUMHEAD:
 * consolidate position stuff and velocity stuff into a single variable (e.g., rs & vs -> rvs)
+* reduce vertical extent of controls (and timer?) at the top, perhaps using grid?
 * consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
 * enable negative inputs for ICs
 * figure out why I'm receiving a warning message about duplicate key 'zIndex'
@@ -13,7 +14,7 @@ DRUMHEAD:
 * increase order of integrator?
 * figure out why styling sometimes doesn't work in jsx components
 * figure out why I should not decrease dt below 5 ms
-* insert arrows to indicate tangential velocity
+* optimize arrow length and (possibly) decorate them with an appropriate "head"
 * adjust IC by click-and-drag instead of form filling
 
 ASTEROIDS:
