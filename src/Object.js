@@ -1,9 +1,11 @@
 import React from "react";
-const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, X0, Y0, width, backgroundColor}) => {
+const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, X0, Y0, width, backgroundColor}) => {
     let rL = Math.sqrt((X - XL) * (X - XL) + (Y - YL) * (Y - YL));
     let rU = Math.sqrt((X - XU) * (X - XU) + (Y - YU) * (Y - YU));
     let rD;
     let rR;
+    let V = Math.sqrt(Vx * Vx + Vy * Vy);
+    let angleV = Math.atan2(Vy, Vx) * 180 / Math.PI;
     let angleD;
     let angleR;
     if (XD) {
@@ -31,6 +33,12 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, X0, Y0, width, backgr
                 top: `${ypx}px`,
                 zIndex: `${Math.floor(1000 * Z)}`,
                 backgroundColor: `${backgroundColor}`
+            }}/>
+            <div className="line" style={{
+                height:`${{size}}px`,
+                width:`${V}px`,
+                left: `${xpx}px`,
+                top: `${ypx}px`,
             }}/>
             <div className="line" style={{
                 width:`${rL}px`,

@@ -212,6 +212,8 @@ class Collection extends React.Component {
                             let Y0 = numPx * (this.state.ys[j] + 0.5);
                             let X = X0 + numPx * this.state.rs[i][j][0];
                             let Y = Y0 + numPx * this.state.rs[i][j][1];
+                            let Vx = numPx * this.state.vs[i][j][0]/n;
+                            let Vy = numPx * this.state.vs[i][j][1]/n;
                             let XL;
                             let YL;
                             let XU;
@@ -247,6 +249,8 @@ class Collection extends React.Component {
                                     YD={(j === n - 1) ? numPx: null}
                                     XR={(i === n - 1) ? numPx: null}
                                     YR={(i === n - 1) ? numPx * (this.state.ys[j] + 0.5): null}
+                                    Vx={Vx}
+                                    Vy={Vy}
                                     width={numPx * this.state.width}
                                     backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
                                 />
