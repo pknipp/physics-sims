@@ -18,13 +18,12 @@ const Object = ({ X, Y, Z, XL, YL, X0, Y0, width, backgroundColor}) => {
                 zIndex: `${Math.floor(1000 * Z)}`,
                 backgroundColor: `${backgroundColor}`
             }}/>
-            <div className="box" style={{
-                height:`5px`,
+            <div className="line" style={{
                 width:`${rL}px`,
-                left: `${xpx}px`,
-                top: `${ypx}px`,
+                left: `${xpx + size/2 - rL/2}px`,
+                top: `${ypx + size/2}px`,
                 zIndex: `${Math.floor(1000 * Z)}`,
-                transform: `rotate(${angle}deg) translateX(${size/2}px) translateY(${size/2}px)`,
+                transform: `rotate(${angle}deg) translateX(${rL/2}px)`,
             }}/>
 
             <div className="dot stationary" style={{

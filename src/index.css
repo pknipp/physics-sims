@@ -35,11 +35,11 @@ input {
   border-radius: 50%;
 }
 
-.box {
+.line {
   box-sizing: border-box;
   position: absolute;
   border-top: solid 1px;
-  
+  height: 1px;
 }
 
 .stationary {
