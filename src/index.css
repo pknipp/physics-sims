@@ -38,7 +38,7 @@ input {
 .stationary {
   box-sizing: border-box;
   border: 1px dashed;
-  z-index: 1000
+  z-index: 0
 }
 
 svg {

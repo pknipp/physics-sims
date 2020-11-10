@@ -21,7 +21,7 @@ const Object = ({ X, Y, Z, X0, Y0, width, backgroundColor}) => {
                 width:`${width}px`,
                 left:`${xpx0}px`,
                 top:`${ypx0}px`,
-                zIndex: 1000
+                zIndex: 0
                 // backgroundColor: "green"
             }}/>
         </>
