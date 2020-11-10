@@ -207,8 +207,6 @@ class Collection extends React.Component {
             let rComponents = (
 
                     this.state.rs.map((col, i, rs) => {
-                        let YD = numPx;
-                        let XD = numPx * (this.state.xs[i] + 0.5);
                         return col.map((r, j, col) => {
                             let X0 = numPx * (this.state.xs[i] + 0.5);
                             let Y0 = numPx * (this.state.ys[j] + 0.5);
@@ -247,6 +245,8 @@ class Collection extends React.Component {
                                     YU={YU}
                                     XD={(j === n - 1) ? numPx * (this.state.xs[i] + 0.5): null}
                                     YD={(j === n - 1) ? numPx: null}
+                                    XR={(i === n - 1) ? numPx: null}
+                                    YR={(i === n - 1) ? numPx * (this.state.ys[j] + 0.5): null}
                                     width={numPx * this.state.width}
                                     backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
                                 />
