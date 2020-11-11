@@ -6,6 +6,8 @@ DRUMHEAD:
 * consolidate position stuff and velocity stuff into a single variable (e.g., rs & vs -> rvs)
 * reduce vertical extent of controls (and timer?) at the top, perhaps using grid?
 * consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
+* include a checkbox for whether or not to include the velocity vector
+* include a checkbox for whether or not to connect masses by line segments
 * enable negative inputs for ICs
 * figure out why I'm receiving a warning message about duplicate key 'zIndex'
 * insert a "reset" button
