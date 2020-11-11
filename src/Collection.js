@@ -194,26 +194,29 @@ class Collection extends React.Component {
     render() {
         let { n } = this.state;
         const chooseN = (
-            <>
-                <form onSubmit={this.submitN}>
-                    <label>How many particles should be along each edge?</label>
-                    <input
-                        type="number"
-                        onChange={this.handleN}
-                        placeholder="# of particles"
-                        value={String(n)}
-                        min="1"
-                        step="1"
-                    />
-                </form>
-            </>
+            <form onSubmit={this.submitN}>
+                <label>How many particles should be along each edge?</label>
+                <input
+                    type="number"
+                    onChange={this.handleN}
+                    placeholder="# of particles"
+                    value={String(n)}
+                    min="1"
+                    step="1"
+                />
+            </form>
         )
-        let returnMe = [chooseN];
+        let leftSide = [chooseN];
+// Following 4 lines are needed for scoping & may be removed after the conditional is removed
+        let slider = null;
+        let IC = null;
+        let controls = null;
+        let rComponents = null;
+        let numPx = 540;
         if (this.state.n && this.state.isLattice) {
             // let { n } = this.state;
             let { time } = this.state
-            let numPx = 540;
-            let rComponents = (
+            rComponents = (
 
                     this.state.rs.map((col, i, rs) => {
                         return col.map((r, j, col) => {
@@ -268,11 +271,8 @@ class Collection extends React.Component {
                                     accelerationLength={this.state.accelerationLength}
                                     width={numPx * this.state.width}
                                     // backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
-                                    // backgroundColor="lightgrey"
                                 />
-                                {/* <svg className="isaac" viewBox={`0 0 100 100`} xmlns="http://www.w3.org/    2000/   svg">
-                                    <line x1={xL} y1={yL/2} x2={X/2} y2={Y/2} stroke="black" />
-                                </svg> */}
+
                                 </div>
                             )
                         })
@@ -297,8 +297,8 @@ class Collection extends React.Component {
                     />
                 )
             }
-            debugger
-            let controls = (
+
+            controls = (
                 <>
                     <div className="controls">
                         <button onClick={this.toggle}>
@@ -314,170 +314,184 @@ class Collection extends React.Component {
                                 </ul>
                             </li>
                         </ul>
-
-                    <div className="container">
-                        <div className="left-side">
-                            <div className="drumhead">
-                                {rComponents}
-                            </div>
-                        </div>
-                        <div className="right-side">
-                            <div className="slider">
-                                <div>
-                                    Simulation speed (pause before adjusting):
-                                    <div>
-                                        slow
-                                        <input
-                                            type="range"
-                                            onChange={this.handleSpeed}
-                                            name="speed"
-                                            min="0"
-                                            max="1"
-                                            step="0.1"
-                                            value={speed}
-                                        />
-                                        regular
-                                    </div>
-                                </div>
-                                <div>Damping (or "viscosity"):
-                                    <div>
-                                        none
-                                        <input
-                                            type="range"
-                                            onChange={this.handleDamping}
-                                            name="damping"
-                                            min="0"
-                                            max="2"
-                                            step="0.1"
-                                            value={damping}
-                                        />
-                                        much
-                                    </div>
-                                </div>
-                                <div>Timestep (logarithmic scale):
-                                    <div>
-                                        1 ms
-                                        <input
-                                            type="range"
-                                            onChange={this.handleLogTimeStep}
-                                            name="logtimestep"
-                                            min="0"
-                                            max="3"
-                                            step="0.15"
-                                            value={logdt}
-                                        />
-                                        1 s
-                                    </div>
-                                    <div>
-                                        (Present value is {dt} ms.)
-                                    </div>
-                                </div>
-                                <div>Type of restoring force:
-                                    <div>
-                                        spring-like
-                                        <input
-                                            type="range"
-                                            onChange={this.handleForceType}
-                                            name="forcetype"
-                                            min="0"
-                                            max="1"
-                                            step="0.1"
-                                            value={this.state.T}
-                                        />
-                                        tension-like
-                                    </div>
-                                </div>
-                                <div>Length of velocity arrow (green):
-                                    <div>
-                                        0
-                                        <input
-                                            type="range"
-                                            onChange={this.handleSize}
-                                            name="velocityLength"
-                                            min="0"
-                                            max="1"
-                                            step="0.1"
-                                            value={this.state.velocityLength}
-                                        />
-                                        max
-                                    </div>
-                                </div>
-                                <div>Length of acceleration arrow (red):
-                                    <div>
-                                        0
-                                        <input
-                                            type="range"
-                                            onChange={this.handleSize}
-                                            name="accelerationLength"
-                                            min="0"
-                                            max="1"
-                                            step="0.1"
-                                            value={this.state.accelerationLength}
-                                        />
-                                        max
-                                    </div>
-                                </div>
-                                <div>Width of "bond" lines (black):
-                                    <div>
-                                        invisible
-                                        <input
-                                            type="range"
-                                            onChange={this.handleSize}
-                                            name="bondThickness"
-                                            min="0"
-                                            max="2"
-                                            step="1"
-                                            value={this.state.bondThickness}
-                                        />
-                                        max
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* <div>
-                                <input type="checkbox" id="velocity" checked={this.state.showVel} name="showVel"        onChange={this.handleVector}/>
-                                <label htmlFor="velocity">Do you want to see each particle's velocity vector?</     label>
-                            </div> */}
-                            <h2>Initial conditions:</h2>
-                            <span>
-                                Specify the number of particles that you'll displace from equilibrium.
-                            </span>
-                            <div>
-                                <label htmlFor="nIC">number = </label>
-                                <input
-                                    type="number"
-                                    name="nIC"
-                                    onChange={this.handleNIC}
-                                    value={nIC} />
-                            </div>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th colSpan="2" align="center">choose particle's</th>
-                                        <th colSpan="3">displacement</th>
-                                        <th colSpan="3">velocity</th>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2">row and column</td>
-                                        <td align="center">x</td><td align="center">y</td><td align="center">z</td>
-                                        <td align="center">x</td><td align="center">y</td><td align="center">z</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Rows}
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
-
                     </div>
                 </>
             )
-            returnMe.push(controls)
+            leftSide.push(controls);
+            leftSide.push(rComponents);
+
+            slider = (
+                <div className="slider">
+                    <div>
+                        Simulation speed (pause before adjusting):
+                        <div>
+                            slow
+                            <input
+                                type="range"
+                                onChange={this.handleSpeed}
+                                name="speed"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={speed}
+                            />
+                            regular
+                        </div>
+                    </div>
+                    <div>Damping (or "viscosity"):
+                        <div>
+                            none
+                            <input
+                                type="range"
+                                onChange={this.handleDamping}
+                                name="damping"
+                                min="0"
+                                max="2"
+                                step="0.1"
+                                value={damping}
+                            />
+                            much
+                        </div>
+                    </div>
+                    <div>Timestep (logarithmic scale):
+                        <div>
+                            1 ms
+                            <input
+                                type="range"
+                                onChange={this.handleLogTimeStep}
+                                name="logtimestep"
+                                min="0"
+                                max="3"
+                                step="0.15"
+                                value={logdt}
+                            />
+                            1 s
+                        </div>
+                        <div>
+                            (Present value is {dt} ms.)
+                        </div>
+                    </div>
+                    <div>Type of restoring force:
+                        <div>
+                            spring-like
+                            <input
+                                type="range"
+                                onChange={this.handleForceType}
+                                name="forcetype"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={this.state.T}
+                            />
+                            tension-like
+                        </div>
+                    </div>
+                    <div>Length of velocity arrow (green):
+                        <div>
+                            0
+                            <input
+                                type="range"
+                                onChange={this.handleSize}
+                                name="velocityLength"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={this.state.velocityLength}
+                            />
+                            max
+                        </div>
+                    </div>
+                    <div>Length of acceleration arrow (red):
+                        <div>
+                            0
+                            <input
+                                type="range"
+                                onChange={this.handleSize}
+                                name="accelerationLength"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={this.state.accelerationLength}
+                            />
+                            max
+                        </div>
+                    </div>
+                    <div>Width of "bond" lines (black):
+                        <div>
+                            invisible
+                            <input
+                                type="range"
+                                onChange={this.handleSize}
+                                name="bondThickness"
+                                min="0"
+                                max="2"
+                                step="1"
+                                value={this.state.bondThickness}
+                            />
+                            max
+                        </div>
+                    </div>
+                    {/* <div>
+                        <input type="checkbox" id="velocity" checked={this.state.showVelname="showVel"        onChange={this.handleVector}/>
+                        <label htmlFor="velocity">Do you want to see each particle's velocitvector?</     label>
+                    </div> */}
+                </div>
+
+            );
+            IC = (
+                <>
+                    <h2>Initial conditions:</h2>
+                    <span>
+                        Specify the number of particles that you'll displace from equilibrium.
+                    </span>
+                    <div>
+                        <label htmlFor="nIC">number = </label>
+                        <input
+                            type="number"
+                            name="nIC"
+                            onChange={this.handleNIC}
+                            value={nIC} />
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colSpan="2" align="center">choose particle's</th>
+                                <th colSpan="3">displacement</th>
+                                <th colSpan="3">velocity</th>
+                            </tr>
+                            <tr>
+                                <td colSpan="2">row and column</td>
+                                <td align="center">x</td><td align="center">y</td><td align="center">z</td>
+                                <td align="center">x</td><td align="center">y</td><td align="center">z</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Rows}
+                        </tbody>
+                    </table>
+                </>
+            );
+            // returnMe.push(controls)
         }
         return (
-            <div className="controls">
-                {returnMe}
+            <div className="container">
+                <div className="side">
+                    {chooseN}
+                    {controls}
+                    <div
+                        className="drumContainer"
+                        style={{
+                            height: `${numPx}px`,
+                            width: `${numPx}px`
+                        }}
+                    >
+                        {rComponents}
+                    </div>
+                </div>
+                <div className="side">
+                    {slider}
+                    {IC}
+                </div>
             </div>
         )
     }

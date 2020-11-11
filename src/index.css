@@ -14,16 +14,22 @@ input {
   width: 5em;
 }
 
-.right-side {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
 .container {
   display: flex;
   justify-content: flex-start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.drumContainer {
+  position: relative;
+  box-sizing: border-box;
+  border: 1px;
 }
 
 .dot {
