@@ -5,8 +5,6 @@ GENERAL:
 DRUMHEAD:
 * consolidate position stuff and velocity stuff into a single variable (e.g., rs & vs -> rvs)
 * increase order of integrator (if/when the previous step is done)?
-* reduce vertical extent of controls (and timer?) at the top, perhaps using grid?
-* flexbox this, w/n-input, start button, timer, energy, and drum on left and sliders & IC on right
 * consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
 * use checkboxes (rather than sliders) for a- & v-arrows, along w/bond width?
 * make bar graph for PE & KE, and/or for energy partitioned by rows or columns?

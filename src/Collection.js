@@ -322,122 +322,187 @@ class Collection extends React.Component {
 
             slider = (
                 <div className="slider">
-                    <div>
-                        Simulation speed (pause before adjusting):
-                        <div>
-                            slow
-                            <input
-                                type="range"
-                                onChange={this.handleSpeed}
-                                name="speed"
-                                min="0"
-                                max="1"
-                                step="0.1"
-                                value={speed}
-                            />
-                            regular
-                        </div>
-                    </div>
-                    <div>Damping (or "viscosity"):
-                        <div>
-                            none
-                            <input
-                                type="range"
-                                onChange={this.handleDamping}
-                                name="damping"
-                                min="0"
-                                max="2"
-                                step="0.1"
-                                value={damping}
-                            />
-                            much
-                        </div>
-                    </div>
-                    <div>Timestep (logarithmic scale):
-                        <div>
-                            1 ms
-                            <input
-                                type="range"
-                                onChange={this.handleLogTimeStep}
-                                name="logtimestep"
-                                min="0"
-                                max="3"
-                                step="0.15"
-                                value={logdt}
-                            />
-                            1 s
-                        </div>
-                        <div>
-                            (Present value is {dt} ms.)
-                        </div>
-                    </div>
-                    <div>Type of restoring force:
-                        <div>
-                            spring-like
-                            <input
-                                type="range"
-                                onChange={this.handleForceType}
-                                name="forcetype"
-                                min="0"
-                                max="1"
-                                step="0.1"
-                                value={this.state.T}
-                            />
-                            tension-like
-                        </div>
-                    </div>
-                    <div>Length of velocity arrow (green):
-                        <div>
-                            0
-                            <input
-                                type="range"
-                                onChange={this.handleSize}
-                                name="velocityLength"
-                                min="0"
-                                max="1"
-                                step="0.1"
-                                value={this.state.velocityLength}
-                            />
-                            max
-                        </div>
-                    </div>
-                    <div>Length of acceleration arrow (red):
-                        <div>
-                            0
-                            <input
-                                type="range"
-                                onChange={this.handleSize}
-                                name="accelerationLength"
-                                min="0"
-                                max="1"
-                                step="0.1"
-                                value={this.state.accelerationLength}
-                            />
-                            max
-                        </div>
-                    </div>
-                    <div>Width of "bond" lines (black):
-                        <div>
-                            invisible
-                            <input
-                                type="range"
-                                onChange={this.handleSize}
-                                name="bondThickness"
-                                min="0"
-                                max="2"
-                                step="1"
-                                value={this.state.bondThickness}
-                            />
-                            max
-                        </div>
-                    </div>
+                    <h2>Simulation parameters:</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colSpan="4" align="left"> Slider functionality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr rowspan="2">
+                                <td>
+                                    Simulation speed:
+                                </td>
+                                <td>
+                                    slow
+                                </td>
+                                <td>
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSpeed}
+                                        name="speed"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={speed}
+                                    />
+                                </td>
+                                <td>
+                                    regular
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" align="left">
+                                    ("Pause/Run" before change takes affect.)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Damping (or "viscosity"):
+                                </td>
+                                <td>
+                                    none
+                                </td>
+                                <td>
+                                    <input
+                                        type="range"
+                                        onChange={this.handleDamping}
+                                        name="damping"
+                                        min="0"
+                                        max="2"
+                                        step="0.1"
+                                        value={damping}
+                                    />
+                                </td>
+                                <td>
+                                    much
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Timestep (logarithmic scale):
+                                </td>
+                                <td>
+                                     1 ms
+                                </td>
+                                <td>
+                                    <input
+                                        type="range"
+                                        onChange={this.handleLogTimeStep}
+                                        name="logtimestep"
+                                        min="0"
+                                        max="3"
+                                        step="0.15"
+                                        value={logdt}
+                                    />
+                                </td>
+                                <td>
+                                     1 s
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" align="left">
+                                    (Present value is {dt} ms.)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Type of restoring force:
+                                </td>
+                                <td>
+                                    spring-like
+                                </td>
+                                <td>
+                                    <input
+                                        type="range"
+                                        onChange={this.handleForceType}
+                                        name="forcetype"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={this.state.T}
+                                    />
+                                </td>
+                                <td>
+                                    tension-like
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Length of velocity arrow (green):
+                                </td>
+                                <td>
+                                    0
+                                </td>
+                                <td>
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSize}
+                                        name="velocityLength"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={this.state.velocityLength}
+                                    />
+                                </td>
+                                <td>
+                                    max
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Length of acceleration arrow (red):
+                                </td>
+                                <td>
+                                    0
+                                </td>
+                                <td>
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSize}
+                                        name="accelerationLength"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={this.state.accelerationLength}
+                                    />
+                                </td>
+                                <td>
+                                    max
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Width of "bond" lines (black):
+                                </td>
+                                <td>
+                                    invisible
+                                </td>
+                                <td>
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSize}
+                                        name="bondThickness"
+                                        min="0"
+                                        max="2"
+                                        step="1"
+                                        value={this.state.bondThickness}
+                                    />
+                                </td>
+                                <td>
+                                    max
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     {/* <div>
                         <input type="checkbox" id="velocity" checked={this.state.showVelname="showVel"        onChange={this.handleVector}/>
                         <label htmlFor="velocity">Do you want to see each particle's velocitvector?</     label>
                     </div> */}
                 </div>
-
             );
+
             IC = (
                 <>
                     <h2>Initial conditions:</h2>
@@ -471,8 +536,8 @@ class Collection extends React.Component {
                     </table>
                 </>
             );
-            // returnMe.push(controls)
         }
+
         return (
             <div className="container">
                 <div className="side">
