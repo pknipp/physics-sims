@@ -10,11 +10,6 @@
   border: 1px solid;
 }
 
-/* .ic {
-  display: flex;
-  flex-direction: column;
-} */
-
 input {
   width: 5em;
 }
@@ -31,25 +26,36 @@ input {
 
 .dot {
   box-sizing: border-box;
+  border-width: 1px;
   position: absolute;
   border-radius: 50%;
+}
+
+.stationary {
+  border-style: dashed;
+  z-index: 1000
+}
+
+.moving {
+  background-color: lightgrey;
+  border-style: solid;
 }
 
 .line {
   box-sizing: border-box;
   position: absolute;
-  border-top: solid 1px;
-  height: 1px;
+  height: 0px;
   z-index: 1000;
 }
 
-.stationary {
-  box-sizing: border-box;
-  border: 1px dashed;
-  z-index: 1000
+.bond {
+  border-top: solid 1px black;
 }
 
-svg {
-  border: 2px solid;
-  z-index: -1;
+.velocity {
+  border-top: solid 2px green;
+}
+
+.acceleration {
+  border-top: solid 2px red;
 }

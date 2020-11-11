@@ -20,7 +20,10 @@ class Collection extends React.Component {
             dt: 3,
             logdt: 0.5,
             T: 0.5,
-            k: 0.5
+            k: 0.5,
+            bondThickness: 1,
+            velocityLength: 1,
+            accelerationLength: 1,
         }
     }
 
@@ -91,6 +94,12 @@ class Collection extends React.Component {
         const newIC = JSON.parse(JSON.stringify(this.state[rorvs]));
         newIC[i][j][k] = (val === "") ? "" : Number(val);
         this.setState((rorvs === "rs") ? {rs: newIC} : {vs: newIC});
+    }
+
+    handleSize = e => {
+        const newState = {};
+        newState[e.target.name] = e.target.value;
+        this.setState(newState);
     }
 
     nextFs = _ => {
@@ -214,6 +223,8 @@ class Collection extends React.Component {
                             let Y = Y0 + numPx * this.state.rs[i][j][1];
                             let Vx = numPx * this.state.vs[i][j][0]/n;
                             let Vy = numPx * this.state.vs[i][j][1]/n;
+                            let Ax = numPx * this.state.Fs[i][j][0]/n;
+                            let Ay = numPx * this.state.Fs[i][j][1]/n;
                             let XL;
                             let YL;
                             let XU;
@@ -232,7 +243,6 @@ class Collection extends React.Component {
                                 XU = numPx * (this.state.xs[i] + 0.5 + this.state.rs[i][j - 1][0]);
                                 YU = numPx * (this.state.ys[j - 1] + 0.5 + this.state.rs[i][j - 1][1]);
                             }
-                            debugger
                             return (
                                 <div key={this.state.n * i + j}>
                                 <Object
@@ -251,8 +261,14 @@ class Collection extends React.Component {
                                     YR={(i === n - 1) ? numPx * (this.state.ys[j] + 0.5): null}
                                     Vx={Vx}
                                     Vy={Vy}
+                                    Ax={Ax}
+                                    Ay={Ay}
+                                    bondThickness={this.state.bondThickness}
+                                    velocityLength={this.state.velocityLength}
+                                    accelerationLength={this.state.accelerationLength}
                                     width={numPx * this.state.width}
-                                    backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
+                                    // backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
+                                    // backgroundColor="lightgrey"
                                 />
                                 {/* <svg className="isaac" viewBox={`0 0 100 100`} xmlns="http://www.w3.org/    2000/   svg">
                                     <line x1={xL} y1={yL/2} x2={X/2} y2={Y/2} stroke="black" />
@@ -281,6 +297,7 @@ class Collection extends React.Component {
                     />
                 )
             }
+            debugger
             let controls = (
                 <>
                     <div className="controls">
@@ -360,8 +377,57 @@ class Collection extends React.Component {
                                     tension-like
                                 </div>
                             </li>
+                            <li>Length of velocity arrow (green):
+                                <div>
+                                    0
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSize}
+                                        name="velocityLength"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={this.state.velocityLength}
+                                    />
+                                    max
+                                </div>
+                            </li>
+                            <li>Length of acceleration arrow (red):
+                                <div>
+                                    0
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSize}
+                                        name="accelerationLength"
+                                        min="0"
+                                        max="1"
+                                        step="0.1"
+                                        value={this.state.accelerationLength}
+                                    />
+                                    max
+                                </div>
+                            </li>
+                            <li>Width of "bond" lines (black):
+                                <div>
+                                    invisible
+                                    <input
+                                        type="range"
+                                        onChange={this.handleSize}
+                                        name="bondThickness"
+                                        min="0"
+                                        max="2"
+                                        step="1"
+                                        value={this.state.bondThickness}
+                                    />
+                                    max
+                                </div>
+                            </li>
                         </ul>
                     </div>
+                    {/* <div>
+                        <input type="checkbox" id="velocity" checked={this.state.showVel} name="showVel" onChange={this.handleVector}/>
+                        <label htmlFor="velocity">Do you want to see each particle's velocity vector?</label>
+                    </div> */}
                     <div className="container">
                         <div className="drumhead">
                             {rComponents}
