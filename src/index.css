@@ -26,10 +26,20 @@ input {
   justify-content: flex-start;
 }
 
+tr {
+  margin: 40px
+}
+
+td {
+  box-sizing: border-box;
+  margin: 20px;
+}
+
 .drumContainer {
   position: relative;
   box-sizing: border-box;
-  border: 1px;
+  margin: 40px;
+  border: 2px solid black;
 }
 
 .dot {

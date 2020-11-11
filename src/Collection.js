@@ -330,7 +330,7 @@ class Collection extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr rowspan="2">
+                            <tr rowSpan="2">
                                 <td>
                                     Simulation speed:
                                 </td>
@@ -353,7 +353,7 @@ class Collection extends React.Component {
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4" align="left">
+                                <td colSpan="4" align="left">
                                     ("Pause/Run" before change takes affect.)
                                 </td>
                             </tr>
@@ -402,7 +402,7 @@ class Collection extends React.Component {
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="4" align="left">
+                                <td colSpan="4" align="left">
                                     (Present value is {dt} ms.)
                                 </td>
                             </tr>
