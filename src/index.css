@@ -42,6 +42,18 @@ td {
   border: 2px solid black;
 }
 
+.bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.bar {
+  box-sizing: border-box;
+  width: 100px;
+  background-color: black;
+}
+
 .dot {
   box-sizing: border-box;
   border-width: 1px;

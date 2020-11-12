@@ -299,23 +299,26 @@ class Collection extends React.Component {
             }
 
             controls = (
-                <>
-                    <div className="controls">
-                        <button onClick={this.toggle}>
-                            {this.state.running ? "Pause" : "Run"}
-                        </button>
-                        <ul>
-                            <li> time: {Math.floor(100 * time)/100} s</li>
-                            <li>Energy:
-                                <ul>
-                                    <li> potential: {Math.floor(1000 * this.state.PE)/1000} </li>
-                                    <li> kinetic: {Math.floor(1000 * this.state.KE)/1000} </li>
-                                    <li> total: {Math.floor(1000 * (this.state.PE + this.state.KE))/1000}</li>
-                                </ul>
-                            </li>
-                        </ul>
+                <div className="controls">
+                    <button onClick={this.toggle}>
+                        {this.state.running ? "Pause" : "Run"}
+                    </button>
+                    time: {Math.floor(100 * time)/100} s
+                                            {Math.floor(1000 * this.state.PE)/1000}
+                                            {Math.floor(1000 * this.state.KE)/1000}
+                                            {Math.floor(1000 * (this.state.PE + this.state.KE))/1000}
+                    <div className="bar-container">
+                        <div
+                            className="bar" style={{height:`${Math.floor(1000 * this.state.PE)}px`}}>
+                        </div>
+                        <div
+                            className="bar" style={{height:`${Math.floor(1000 * this.state.KE)}px`}}>
+                        </div>
+                        <div
+                            className="bar" style={{height:`${Math.floor(1000 * (this.state.PE + this.state.KE))}px`}}>
+                        </div>
                     </div>
-                </>
+                </div>
             )
             leftSide.push(controls);
             leftSide.push(rComponents);
