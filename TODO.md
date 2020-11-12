@@ -5,9 +5,6 @@ GENERAL:
 DRUMHEAD:
 * make a script for presentation
 * consolidate position stuff and velocity stuff into a single variable (e.g., rs & vs -> rvs)
-* use scaling (w/n) so that dx = 1 corresponds to barely touching nearest neighbor
-* use scaling (w/n) to ensure that length of v- and a-vectors are comparable
-* use scaling (w/n) to ensure that energy values don't vary much
 * increase order of integrator (if/when the previous step is done)?
 * consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
 * use checkboxes (rather than sliders) for a- & v-arrows, along w/bond width?

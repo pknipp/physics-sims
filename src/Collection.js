@@ -59,7 +59,7 @@ class Collection extends React.Component {
     }
 
     makeLattice = n => {
-        let springConstant = n * n;
+        let springConstant = (n + 1) * (n + 1);
         let xs = [];
         let ys = [];
         let rs = [];
@@ -200,7 +200,7 @@ class Collection extends React.Component {
         let { n } = this.state;
         const chooseN = (
             <form onSubmit={this.submitN}>
-                <label>How many particles should be along each edge?</label>
+                <label>How many particles should be along each edge? </label>
                 <input
                     type="number"
                     onChange={this.handleN}
@@ -229,10 +229,11 @@ class Collection extends React.Component {
                             let Y0 = numPx * (this.state.ys[j] + 0.5);
                             let X = X0 + numPx * this.state.rs[i][j][0];
                             let Y = Y0 + numPx * this.state.rs[i][j][1];
-                            let Vx = numPx * this.state.vs[i][j][0]/n;
-                            let Vy = numPx * this.state.vs[i][j][1]/n;
-                            let Ax = numPx * this.state.Fs[i][j][0]/n;
-                            let Ay = numPx * this.state.Fs[i][j][1]/n;
+        // coefficients on following 4 lines are not that crucial
+                            let Vx = 3 * numPx * this.state.vs[i][j][0]/n;
+                            let Vy = 3 * numPx * this.state.vs[i][j][1]/n;
+                            let Ax = 3 * numPx * this.state.Fs[i][j][0]/n/n;
+                            let Ay = 3 * numPx * this.state.Fs[i][j][1]/n/n;
                             let XL;
                             let YL;
                             let XU;
@@ -307,9 +308,11 @@ class Collection extends React.Component {
             Efac = Efac/6;
             controls = (
                 <div className="controls">
+                    <span className="button-container">
                     <button onClick={this.toggle}>
                         {this.state.running ? "Pause" : "Run"}
                     </button>
+                    </span>
                     time: {Math.floor(100 * time)/100} s
 
                     <div className="graph container">

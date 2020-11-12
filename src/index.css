@@ -76,6 +76,11 @@ td {
 .bar.tot {grid-area: bartot}
 .bar.i   {grid-area: bari}
 
+.button-container {
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
 .bar {
   box-sizing: border-box;
   width: 100px;
