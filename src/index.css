@@ -38,7 +38,7 @@ td {
 .drumContainer {
   position: relative;
   box-sizing: border-box;
-  margin: 40px;
+  margin: 20px;
   border: 2px solid black;
 }
 
@@ -47,6 +47,34 @@ td {
   justify-content: center;
   align-items: flex-end;
 }
+
+.graph.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    align-items: end;
+    grid-template-areas:
+    "graphtitle graphtitle graphtitle graphtitle"
+    "titleke titlepe titletot titlei"
+    "valke valpe valtot vali"
+    "barke barpe bartot bari";
+}
+
+.graph .title {grid-area: graphtitle}
+.graph * {justify-self: center}
+
+.title.ke {grid-area: titleke}
+.title.pe {grid-area: titlepe}
+.title.tot {grid-area: titletot}
+.title.i {grid-area: titlei}
+.val.ke {grid-area: valke}
+.val.pe {grid-area: valpe}
+.val.tot {grid-area: valtot}
+.val.i {grid-area: vali}
+.bar.ke  {grid-area: barke}
+.bar.pe  {grid-area: barpe}
+.bar.tot {grid-area: bartot}
+.bar.i   {grid-area: bari}
 
 .bar {
   box-sizing: border-box;

@@ -17,6 +17,8 @@ class Collection extends React.Component {
             j: [],
             PE: 0,
             KE: 0,
+            E: 0,
+            Ei: 0,
             dt: 3,
             logdt: 0.5,
             T: 0.5,
@@ -24,6 +26,7 @@ class Collection extends React.Component {
             bondThickness: 1,
             velocityLength: 1,
             accelerationLength: 1,
+            calcEi: false,
         }
     }
 
@@ -159,7 +162,9 @@ class Collection extends React.Component {
             nextVs.push(vCol);
         }
         KE /= 2;
-        this.setState({vs: nextVs, KE}, () => this.nextRs(this.state.dt / 1000));
+        let E = this.state.PE + KE;
+        let Ei = (this.state.calcEi) ? this.state.Ei : E;
+        this.setState({vs: nextVs, KE, E, Ei, calcEi: true}, () => this.nextRs(this.state.dt / 1000));
     }
 
     nextRs = dt => {
@@ -297,25 +302,47 @@ class Collection extends React.Component {
                     />
                 )
             }
-
+            let Efac = (this.state.Ei) ? this.state.Ei : (this.state.PE) ? this.state.PE : 1;
+            // The following numerator is arbitrary, to give bar chart "right" height
+            Efac = Efac/6;
             controls = (
                 <div className="controls">
                     <button onClick={this.toggle}>
                         {this.state.running ? "Pause" : "Run"}
                     </button>
                     time: {Math.floor(100 * time)/100} s
-                                            {Math.floor(1000 * this.state.PE)/1000}
-                                            {Math.floor(1000 * this.state.KE)/1000}
-                                            {Math.floor(1000 * (this.state.PE + this.state.KE))/1000}
-                    <div className="bar-container">
-                        <div
-                            className="bar" style={{height:`${Math.floor(1000 * this.state.PE)}px`}}>
+
+                    <div className="graph container">
+                        <div className="title">
+                            <h3>Energies (arbitrary units)</h3>
+                        </div>
+                        <div className="title ke">kinetic</div>
+                        <div className="title pe">potential</div>
+                        <div className="title tot">total</div>
+                        <div className="title i">initial</div>
+                        <div className="val ke">
+                            {Math.floor(1000 * this.state.KE)/1000}
+                        </div>
+                        <div className="val pe">
+                            {Math.floor(1000 * this.state.PE)/1000}
+                        </div>
+                        <div className="val tot">
+                           {Math.floor(1000 * this.state.E)/1000}
+                        </div>
+                        <div className="val i">
+                           {Math.floor(1000 * this.state.Ei)/1000}
                         </div>
                         <div
-                            className="bar" style={{height:`${Math.floor(1000 * this.state.KE)}px`}}>
+                            className="bar ke" style={{height:`${Math.floor(10 * this.state.KE/Efac)}px`}}>
                         </div>
                         <div
-                            className="bar" style={{height:`${Math.floor(1000 * (this.state.PE + this.state.KE))}px`}}>
+                            className="bar pe" style={{height:`${Math.floor(10 * this.state.PE/Efac)}px`}}>
+                        </div>
+                        <div
+                            className="bar tot" style={{height:`${Math.floor(10 * this.state.E/Efac)}px`}}>
+                        </div>
+                        <div
+                            className="bar i" style={{height:`${Math.floor(10 * this.state.Ei/Efac)}px`}}>
                         </div>
                     </div>
                 </div>

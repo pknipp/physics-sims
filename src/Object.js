@@ -25,7 +25,6 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y
     let size = Math.floor(width * ((Z < 0) ? 1/(1 - Z) : 1 + Z));
     let xpx = Math.floor(X - size/2);
     let ypx = Math.floor(Y - size/2);
-    debugger
     return (
         <>
             <div className="dot moving" style={{
