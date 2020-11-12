@@ -13,21 +13,6 @@ module.exports = {
         type: Sequelize.STRING(255),
         unique: true,
       },
-      firstName: {
-        allowNull: false,
-        type: Sequelize.STRING(255),
-      },
-      lastName: {
-        allowNull: false,
-        type: Sequelize.STRING(255),
-      },
-      optStuff: {
-        type: Sequelize.TEXT
-      },
-      wantsEmail: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN
-      },
       tokenId: {
         type: Sequelize.STRING(36),
       },

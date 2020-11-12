@@ -15,8 +15,8 @@ function r(o) {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Users', [
-      r({firstName:'Demo',lastName:"User",email:'demo@aol.com',wantsEmail:true,optStuff:"blah",hashedPassword:await bcrypt.hash('password',10)}),
-      r({firstName:'John',lastName:"Doe",email: 'jdoe@aol.com',wantsEmail:false,optStuff:null, hashedPassword:await bcrypt.hash('password', 10)}),
+      r({email:'demo@aol.com',hashedPassword:await bcrypt.hash('password',10)}),
+      r({email: 'jdoe@aol.com', hashedPassword:await bcrypt.hash('password', 10)}),
     ]);
   },
 

@@ -14,25 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         //   len: [3, 255],
         // },
       },
-      firstName: {
-        allowNull: false,
-        type: DataTypes.STRING,
-        // validates: {
-        //   len: [1, 255],
-        // },
-      },
       lastName: {
         allowNull: false,
         type: DataTypes.STRING,
         // validates: {
         //   len: [1, 255],
         // },
-      },
-      optStuff: {
-        type: DataTypes.TEXT
-      },
-      wantsEmail: {
-        type: DataTypes.BOOLEAN
       },
       tokenId: {
         type: DataTypes.STRING
@@ -63,22 +50,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  User.associate = function(models) {
-    User.hasMany(models.Subscription, {foreignKey: "userId"});
-    let columnMapping = {foreignKey: "userId", through: "Subscription", otherKey: "classId"};
-    User.belongsToMany(models.Class, columnMapping);
-    columnMapping = {foreignKey: "userId", through: "History", otherKey: "cardId"};
-    User.belongsToMany(models.Card, columnMapping);
-  };
+  User.associate = function(models) {};
 
   User.prototype.toSafeObject = function () {
     return {
       createdAt: this.createdAt,
       email: this.email,
       id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      optStuff: this.optStuff,
     };
   }
 
@@ -91,15 +69,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.signup = async function({ firstName, lastName, optStuff, email, wantsEmail, password }) {
     const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      optStuff,
-      email,
-      wantsEmail,
-      hashedPassword
-    });
+    const user = await User.create({email, hashedPassword});
     return await User.scope("currentUser").findByPk(user.id);
   };
 
