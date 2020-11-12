@@ -16,7 +16,9 @@ class Login extends Component {
     this.props.login(this.state.email, this.state.password);
   }
 
-  updateValue = name => e => this.setState({ [name]: e.target.value });
+  updateValue = name => e => {
+    this.setState({ [name]: e.target.value });
+  };
 
   render() {
     return (this.props.currentUserId) ? <Redirect to="/" /> : (

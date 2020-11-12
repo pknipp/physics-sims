@@ -10,10 +10,12 @@ export const removeUser = _    => ({ type: REMOVE_USER    })
 export const newUser    = user => ({ type: NEW_USER, user })
 
 export const login = (email, password) => {
+  // debugger
   return async dispatch => {
     const response = await fetch(`/api/session`, { method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })});
+      body: JSON.stringify({ email, password })
+    });
     if (response.ok) dispatch(setUser((await response.json()).user))
   };
 };

@@ -10,11 +10,14 @@ const router = express.Router();
 const email = check('email').isEmail().withMessage('Provide valid email').normalizeEmail();
 const password = check('password').not().isEmpty().withMessage('Provide password');
 
-//router.put('*', asyncHandler(async function (req, res, next) {res.json({message: "Hello world"});}));
+router.get('/', asyncHandler(async function (req, res, next) {res.json({message: "Hello world"});}));
 
-router.put('/', [email, password], asyncHandler(async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
+router.put('/',
+// [email, password],
+asyncHandler(async (req, res, next) => {
+  console.log("top of login route handler, with ", email, password)
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
   const { email, password } = req.body;
   let user;
   try {
