@@ -1,0 +1,9 @@
+export default function shortDate(date) {
+  debugger;
+  let month= date.getMonth() + 1;
+  month = ((month < 10) ? "0" : "") + String(month);
+  const year = date.getFullYear();
+  let day  = date.getDate();
+  day = ((day < 10) ? "0" : "") + String(day);
+  return `${year}-${month}-${day}`;
+}

@@ -1,0 +1,27 @@
+Merge react code w/front-end solution 2b for Hooks, so that auth still works (why?!)
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch is up to date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   client/package-lock.json
+#	modified:   client/package.json
+#	modified:   client/src/App.js
+#	new file:   client/src/AppREDUX.js
+#	new file:   client/src/actions/authentication.js
+#	new file:   client/src/actions/pokemon.js
+#	new file:   client/src/components/Fab.js
+#	new file:   client/src/components/LoginPanel.js
+#	new file:   client/src/components/LogoutButton.js
+#	modified:   client/src/components/Signup.js
+#	new file:   client/src/config.js
+#	modified:   client/src/index.js
+#	new file:   client/src/indexREACT.js
+#	new file:   client/src/indexREDUX.css
+#	new file:   client/src/reducers/authentication.js
+#	new file:   client/src/reducers/pokemon.js
+#	new file:   client/src/reducers/root.js
+#	new file:   client/src/store.js
+#

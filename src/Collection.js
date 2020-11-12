@@ -316,9 +316,9 @@ class Collection extends React.Component {
                         <div className="title">
                             <h3>Energies (arbitrary units)</h3>
                         </div>
-                        <div className="title ke">kinetic</div>
-                        <div className="title pe">potential</div>
-                        <div className="title tot">total</div>
+                        <div className="title ke">kinetic (KE)</div>
+                        <div className="title pe">potential (PE)</div>
+                        <div className="title tot">total (KE + PE)</div>
                         <div className="title i">initial</div>
                         <div className="val ke">
                             {Math.floor(1000 * this.state.KE)/1000}
@@ -460,7 +460,7 @@ class Collection extends React.Component {
                             </tr>
                             <tr>
                                 <td>
-                                    Length of velocity arrow (green):
+                                    Length of velocity arrow (green dotted):
                                 </td>
                                 <td>
                                     0

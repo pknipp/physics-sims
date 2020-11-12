@@ -79,7 +79,7 @@ td {
 .bar {
   box-sizing: border-box;
   width: 100px;
-  background-color: black;
+  background-color: lightgrey;
 }
 
 .dot {
@@ -111,7 +111,7 @@ td {
 }
 
 .velocity {
-  border-top: solid 2px green;
+  border-top: dotted 4px green;
 }
 
 .acceleration {
