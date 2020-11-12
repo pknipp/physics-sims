@@ -3,6 +3,7 @@ GENERAL:
 * auth?
 
 DRUMHEAD:
+* make a script for presentation
 * consolidate position stuff and velocity stuff into a single variable (e.g., rs & vs -> rvs)
 * use scaling (w/n) so that dx = 1 corresponds to barely touching nearest neighbor
 * use scaling (w/n) to ensure that length of v- and a-vectors are comparable
