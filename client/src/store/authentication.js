@@ -16,6 +16,9 @@ export const login = (email, password) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
+    console.log("after fetch call");
+    console.log("response.ok = ", response.ok);
+    //console.log("(await response.json()).user = ", (await response.json()).user);
     if (response.ok) dispatch(setUser((await response.json()).user))
   };
 };
