@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         //   len: [3, 255],
         // },
       },
-      lastName: {
-        allowNull: false,
-        type: DataTypes.STRING,
-        // validates: {
-        //   len: [1, 255],
-        // },
-      },
+      // lastName: {
+      //   allowNull: false,
+      //   type: DataTypes.STRING,
+      //   // validates: {
+      //   //   len: [1, 255],
+      //   // },
+      // },
       tokenId: {
         type: DataTypes.STRING
       },
