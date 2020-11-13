@@ -1,28 +1,13 @@
 import React from "react";
 import Element from "./Element";
-const Row = ({ optionsI, optionsJ, rs, vs, i, j, iIC, handleIndex, handleIC}) => {
+const Row = ({ optionsI, optionsJ, rvs, i, j, iIC, handleIndex, handleIC}) => {
     let row = [];
-    for (let k = 0; k < 3; k++) {
+    for (let k = 0; k < 6; k++) {
         let element = (
             <Element
-                key={`r${k}`}
-                rorv={"r"}
+                key={k}
                 k={k}
-                rvs={rs}
-                i={i[iIC] - 1}
-                j={j[iIC] - 1}
-                handleIC={handleIC}
-            />
-        );
-        row.push(element);
-    }
-    for (let k = 0; k < 3; k++) {
-        let element = (
-            <Element
-                key={`v${k}`}
-                rorv={"v"}
-                k={k}
-                rvs={vs}
+                rvs={rvs}
                 i={i[iIC] - 1}
                 j={j[iIC] - 1}
                 handleIC={handleIC}

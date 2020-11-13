@@ -19,10 +19,10 @@ class Collection extends React.Component {
             KE: 0,
             E: 0,
             Ei: 0,
-            dt: 3,
-            logdt: 0.5,
-            T: 0.5,
-            k: 0.5,
+            dt: 31,
+            logdt: 1.5,
+            T: 0,
+            k: 1,
             bondThickness: 1,
             velocityLength: 1,
             accelerationLength: 1,
@@ -30,11 +30,14 @@ class Collection extends React.Component {
         }
     }
 
-    componentDidMount() {this.makeLattice(this.state.n)}
+    componentDidMount() {
+        console.log("Component did mount.")
+        this.makeLattice(this.state.n)
+    }
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
-        this.setState({time: nextT}, () => this.nextFs())
+        this.setState({time: nextT}, () => this.nextRvs())
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
@@ -62,41 +65,35 @@ class Collection extends React.Component {
         let springConstant = (n + 1) * (n + 1);
         let xs = [];
         let ys = [];
-        let rs = [];
-        let vs = [];
-        let Fs = [];
+        let zero6 = [];
         let optionsI = ["col"];
         let optionsJ = ["row"];
         for (let i = 0; i < n; i++) xs.push(-0.5 + (i + 1)/(n + 1));
         for (let j = 0; j < n; j++) ys.push(-0.5 + (j + 1)/(n + 1));
         for (let i = 0; i < n; i++) {
-          const colr = [];
-          const colv = [];
-          const colF = [];
+          const colZero6 = [];
           for (let j = 0; j < n; j++) {
-            colr.push([0,0,0]);
-            colv.push([0,0,0]);
-            colF.push([0,0,0]);
+            colZero6.push([0,0,0,0,0,0]);
           }
           optionsI.push(i + 1);
           optionsJ.push(i + 1);
-          rs.push(colr);
-          vs.push(colv);
-          Fs.push(colF)
+          zero6.push(colZero6);
         }
-        const newState = {springConstant, xs, ys, rs, vs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true};
+        let rvs = JSON.parse(JSON.stringify(zero6));
+        let Fs = JSON.parse(JSON.stringify(zero6));
+        const newState = {springConstant, xs, ys, rvs, Fs, zero6,
+            optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
     }
 
     handleIC = e => {
-        let rorvs = e.target.name[0] + "s";
-        let i = Number(e.target.name[1]);
-        let j = Number(e.target.name[2]);
-        let k = Number(e.target.name[3]);
+        let i = Number(e.target.name[0]);
+        let j = Number(e.target.name[1]);
+        let k = Number(e.target.name[2]);
         let val = e.target.value;
-        const newIC = JSON.parse(JSON.stringify(this.state[rorvs]));
+        const newIC = JSON.parse(JSON.stringify(this.state.rvs));
         newIC[i][j][k] = (val === "") ? "" : Number(val);
-        this.setState((rorvs === "rs") ? {rs: newIC} : {vs: newIC});
+        this.setState({rvs: newIC});
     }
 
     handleSize = e => {
@@ -105,83 +102,71 @@ class Collection extends React.Component {
         this.setState(newState);
     }
 
-    nextFs = _ => {
-        const { rs, vs, damping } = this.state;
-        const Fs = [];
+    Fs = rvs => {
+        // const isFirst = rvs === this.state.rvs;
+        const { damping } = this.state;
+        let Fs = JSON.parse(JSON.stringify(this.state.zero6));
         let PEk = 0;
-        let PET = 0;
-        for (let i = 0; i < this.state.n; i++) {
-            const FCol = [];
-            PEk += rs[0][i][0] ** 2 + rs[i][0][1] ** 2;
-            PET +=
-                rs[0][i][1] ** 2 + rs[0][i][2] ** 2 +
-                rs[i][0][0] ** 2 + rs[i][0][2] ** 2;
-            for (let j = 0; j < this.state.n; j++) {
-                const rL = (i === 0)     ? [0, 0, 0] : rs[i - 1][j];
-                const rR = (i === this.state.n - 1)? [0, 0, 0] : rs[i + 1][j];
-                const rU = (j === 0)     ? [0, 0, 0] : rs[i][j - 1];
-                const rD = (j === this.state.n - 1)? [0, 0, 0] : rs[i][j + 1];
-                PEk += (rs[i][j][0] - rR[0]) ** 2 + (rs[i][j][1] - rD[1]) ** 2;
-                PET +=
-                    (rs[i][j][0] - rD[0]) ** 2 + (rs[i][j][2] - rD[2]) ** 2 +
-                    (rs[i][j][1] - rR[1]) ** 2 + (rs[i][j][2] - rR[2]) ** 2;
-                FCol.push([
-                    - damping * vs[i][j][0] + this.state.springConstant * (
-                        this.state.k * (-2 * rs[i][j][0] + rL[0] + rR[0]) +
-                        this.state.T * (-2 * rs[i][j][0] + rU[0] + rD[0])
-                    ),
-                    - damping * vs[i][j][1] + this.state.springConstant * (
-                        this.state.k * (-2 * rs[i][j][1] + rU[1] + rD[1]) +
-                        this.state.T * (-2 * rs[i][j][1] + rL[1] + rR[1])
-                    ),
-                    - damping * vs[i][j][2] + this.state.springConstant * this.state.T * (
-                        -4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]),
-                ]);
-            }
-            Fs.push(FCol);
-        }
-        PEk *= 0.5 * this.state.k * this.state.springConstant;
-        PET *= 0.5 * this.state.T * this.state.springConstant;
-        this.setState({Fs, PE: PEk + PET}, () => this.nextVs(this.state.dt /  1000));
-    }
-
-    nextVs = dt => {
-        const { vs, Fs } = this.state;
-        const nextVs = [];
+        // let PET = 0;
         let KE = 0;
         for (let i = 0; i < this.state.n; i++) {
-            const vCol = [];
             for (let j = 0; j < this.state.n; j++) {
-                const v = [];
                 for (let k = 0; k < 3; k++) {
-                    v.push(vs[i][j][k] + Fs[i][j][k] * dt);
-                    KE += vs[i][j][k] * vs[i][j][k];
+                    Fs[i][j][k] = rvs[i][j][k + 3];
+                    KE += rvs[i][j][k + 3] * rvs[i][j][k + 3];
                 }
-                vCol.push(v);
+                const rL = (i === 0)     ? [0, 0, 0] : rvs[i - 1][j];
+                const rR = (i === this.state.n - 1)? [0, 0, 0] : rvs[i + 1][j];
+                const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
+                const rD = (j === this.state.n - 1)? [0, 0, 0] : rvs[i][j + 1];
+                Fs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
+                        this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0]) +
+                        this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
+                Fs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
+                        this.state.k * (-2 * rvs[i][j][1] + rL[1] + rR[1]) +
+                        this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
+                Fs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
+                        this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
+                let dxL = rvs[i][j][0] - rL[0];
+                let dxR = rvs[i][j][0] - rR[0];
+                let dyU = rvs[i][j][1] - rU[1];
+                let dyD = rvs[i][j][1] - rD[1];
+                PEk += dxL * dxL + dxR * dxR + dyU * dyU + dyD * dyD;
             }
-            nextVs.push(vCol);
         }
         KE /= 2;
-        let E = this.state.PE + KE;
-        let Ei = (this.state.calcEi) ? this.state.Ei : E;
-        this.setState({vs: nextVs, KE, E, Ei, calcEi: true}, () => this.nextRs(this.state.dt / 1000));
+        PEk *= this.state.springConstant * this.state.k / 2;
+        // debugger
+        // if (isFirst) this.setState(Fs);
+        return [Fs, KE, PEk];
     }
 
-    nextRs = dt => {
-        const { rs, vs } = this.state;
-        const nextRs = [];
+    nextRvs = _ => {
+        const { rvs, dt } = this.state;
+        let firstCall = this.Fs(rvs);
+        let Fs1 = firstCall[0];
+
+        let rvs2 = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
-            const nextRcol = [];
             for (let j = 0; j < this.state.n; j++) {
-                const nextR = [];
-                for (let k = 0; k < 3; k++) {
-                    nextR.push(rs[i][j][k] + vs[i][j][k] * dt)
+                for (let k = 0; k < 6; k++) {
+                    rvs2[i][j][k] += Fs1[i][j][k] * dt/1000;
                 }
-                nextRcol.push(nextR);
             }
-            nextRs.push(nextRcol);
         }
-        this.setState({rs: nextRs});
+        let Fs2 = this.Fs(rvs2)[0];
+
+        let nextRvs = JSON.parse(JSON.stringify(rvs));
+        for (let i = 0; i < this.state.n; i++) {
+            for (let j = 0; j < this.state.n; j++) {
+                for (let k = 0; k < 6; k++) {
+                    nextRvs[i][j][k] += (
+                        Fs1[i][j][k] + Fs2[i][j][k]
+                        ) * dt/ 1000 / 2;
+                }
+            }
+        }
+        this.setState({rvs: nextRvs, Fs: Fs1, KE: firstCall[1], PE: firstCall[2], E: firstCall[1] + firstCall[2]});
     }
 
     toggle = () => {
@@ -223,34 +208,35 @@ class Collection extends React.Component {
             let { time } = this.state
             rComponents = (
 
-                    this.state.rs.map((col, i, rs) => {
-                        return col.map((r, j, col) => {
-                            let X0 = numPx * (this.state.xs[i] + 0.5);
-                            let Y0 = numPx * (this.state.ys[j] + 0.5);
-                            let X = X0 + numPx * this.state.rs[i][j][0];
-                            let Y = Y0 + numPx * this.state.rs[i][j][1];
+                    this.state.xs.map((x, i, xs) => {
+                        return this.state.ys.map((y, j, ys) => {
+                            let X0 = numPx * (x + 0.5);
+                            let Y0 = numPx * (y + 0.5);
+                            let X = X0 + numPx * this.state.rvs[i][j][0];
+                            let Y = Y0 + numPx * this.state.rvs[i][j][1];
         // coefficients on following 4 lines are not that crucial
-                            let Vx = 3 * numPx * this.state.vs[i][j][0]/n;
-                            let Vy = 3 * numPx * this.state.vs[i][j][1]/n;
-                            let Ax = 3 * numPx * this.state.Fs[i][j][0]/n/n;
-                            let Ay = 3 * numPx * this.state.Fs[i][j][1]/n/n;
+                            let Vx = 3 * numPx * this.state.rvs[i][j][3]/n;
+                            let Vy = 3 * numPx * this.state.rvs[i][j][4]/n;
+                            let Ax = 3 * numPx * this.state.Fs[i][j][3]/n/n;
+                            let Ay = 3 * numPx * this.state.Fs[i][j][4]/n/n;
+                            debugger
                             let XL;
                             let YL;
                             let XU;
                             let YU;
                             if (i === 0) {
                                 XL = 0;
-                                YL = numPx * (this.state.ys[j] + 0.5)
+                                YL = numPx * (y + 0.5)
                             } else {
-                                XL = numPx * (this.state.xs[i - 1] + 0.5 + this.state.rs[i - 1][j][0]);
-                                YL = numPx * (this.state.ys[j] + 0.5 + this.state.rs[i - 1][j][1]);
+                                XL = numPx * (xs[i - 1] + 0.5 + this.state.rvs[i - 1][j][0]);
+                                YL = numPx * (y + 0.5 + this.state.rvs[i - 1][j][1]);
                             }
                             if (j === 0) {
                                 YU = 0;
-                                XU = numPx * (this.state.xs[i] + 0.5)
+                                XU = numPx * (x + 0.5)
                             } else {
-                                XU = numPx * (this.state.xs[i] + 0.5 + this.state.rs[i][j - 1][0]);
-                                YU = numPx * (this.state.ys[j - 1] + 0.5 + this.state.rs[i][j - 1][1]);
+                                XU = numPx * (x + 0.5 + this.state.rvs[i][j - 1][0]);
+                                YU = numPx * (ys[j - 1] + 0.5 + this.state.rvs[i][j - 1][1]);
                             }
                             return (
                                 <div key={this.state.n * i + j}>
@@ -259,15 +245,15 @@ class Collection extends React.Component {
                                     Y0={Y0}
                                     X={X}
                                     Y={Y}
-                                    Z={this.state.rs[i][j][2]}
+                                    Z={this.state.rvs[i][j][2]}
                                     XL={XL}
                                     YL={YL}
                                     XU={XU}
                                     YU={YU}
-                                    XD={(j === n - 1) ? numPx * (this.state.xs[i] + 0.5): null}
+                                    XD={(j === n - 1) ? numPx * (x + 0.5): null}
                                     YD={(j === n - 1) ? numPx: null}
                                     XR={(i === n - 1) ? numPx: null}
-                                    YR={(i === n - 1) ? numPx * (this.state.ys[j] + 0.5): null}
+                                    YR={(i === n - 1) ? numPx * (y + 0.5): null}
                                     Vx={Vx}
                                     Vy={Vy}
                                     Ax={Ax}
@@ -285,7 +271,7 @@ class Collection extends React.Component {
                     })
 
             )
-            let { i, j, optionsI, optionsJ, rs, vs, damping, speed, nIC, logdt, dt } = this.state;
+            let { i, j, optionsI, optionsJ, rvs, damping, speed, nIC, logdt, dt } = this.state;
             let Rows = [];
             for (let iIC = 0; iIC < nIC; iIC++) {
                 Rows.push(
@@ -293,8 +279,7 @@ class Collection extends React.Component {
                         key={iIC}
                         optionsI={optionsI}
                         optionsJ={optionsJ}
-                        rs={rs}
-                        vs={vs}
+                        rvs={rvs}
                         i={i}
                         j={j}
                         iIC={iIC}
