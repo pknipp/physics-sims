@@ -12,15 +12,15 @@ class Collection extends React.Component {
             n: 1,
             nIC: 1,
             damping: 0,
-            speed: 0.1,
+            speed: 1,
             i: [],
             j: [],
             PE: 0,
             KE: 0,
             E: 0,
             Ei: 0,
-            dt: 3,
-            logdt: 0.5,
+            dt: 31,
+            logdt: 1.5,
             T: 0.5,
             k: 0.5,
             bondThickness: 1,
@@ -62,31 +62,28 @@ class Collection extends React.Component {
         let springConstant = (n + 1) * (n + 1);
         let xs = [];
         let ys = [];
-        let rvs = [];
-        let Fs = [];
+        let zero6 = [];
+        let zero3 = [];
         let optionsI = ["col"];
         let optionsJ = ["row"];
         for (let i = 0; i < n; i++) xs.push(-0.5 + (i + 1)/(n + 1));
         for (let j = 0; j < n; j++) ys.push(-0.5 + (j + 1)/(n + 1));
         for (let i = 0; i < n; i++) {
-          const colrv = [];
-          const colF = [];
+          const colZero6 = [];
+          const colZero3 = [];
           for (let j = 0; j < n; j++) {
-            colrv.push([0,0,0,0,0,0]);
-            colF.push([0,0,0]);
+            colZero6.push([0,0,0,0,0,0]);
+            colZero3.push([0,0,0]);
           }
           optionsI.push(i + 1);
           optionsJ.push(i + 1);
-          rvs.push(colrv);
-          Fs.push(colF)
+          zero6.push(colZero6);
+          zero3.push(colZero3);
         }
-        // const rvs1 = JSON.parse(JSON.stringify(rvs));
-        // const rvs2 = JSON.parse(JSON.stringify(rvs));
-        // const rvs3 = JSON.parse(JSON.stringify(rvs));
-        // const rvs4 = JSON.parse(JSON.stringify(rvs));
-        const newState = {springConstant, xs, ys, rvs,
-            // rvs1, rvs2, rvs3, rvs4,
-            Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true};
+        let rvs = JSON.parse(JSON.stringify(zero6));
+        let Fs = JSON.parse(JSON.stringify(zero3));
+        const newState = {springConstant, xs, ys, rvs, Fs, zero6, zero3,
+            optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
     }
 
@@ -108,7 +105,7 @@ class Collection extends React.Component {
 
     dRvs = rvs => {
         const { damping } = this.state;
-        let dRvs = [[[]]];
+        let dRvs = JSON.parse(JSON.stringify(this.state.zero6));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 3; k++) {
@@ -137,6 +134,7 @@ class Collection extends React.Component {
     nextRvs = _ => {
         const { rvs, dt } = this.state;
         let dRvs1 = this.dRvs(rvs);
+
         let rvs2 = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
@@ -146,17 +144,12 @@ class Collection extends React.Component {
             }
         }
         let dRvs2 = this.dRvs(rvs2);
-        // let rvs2 = this.newRvs(rvs1, 1)
-        // this.setState({rvs1: this.f()})
-        // let fk1 = this.f(fk0, 1);
-        // let fk2 = this.f(fk1, 2);
-        // let fk3 = this.f(fk2, 2);
-        // let fk4 = this.f(fk3, 1);
+
+
         let nextRvs = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {
-                    debugger
                     nextRvs[i][j][k] += (
                         dRvs1[i][j][k] + dRvs2[i][j][k]
                         ) * dt/ 1000 / 2;
