@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         //   len: [3, 255],
         // },
       },
+<<<<<<< HEAD:db/models/user.js
       lastName: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -21,6 +22,15 @@ module.exports = (sequelize, DataTypes) => {
         //   len: [1, 255],
         // },
       },
+=======
+      // lastName: {
+      //   allowNull: false,
+      //   type: DataTypes.STRING,
+      //   // validates: {
+      //   //   len: [1, 255],
+      //   // },
+      // },
+>>>>>>> login:BrainScapeClone/old/nonRedux/db/models/user.js
       tokenId: {
         type: DataTypes.STRING
       },
