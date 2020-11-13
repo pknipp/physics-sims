@@ -12,7 +12,7 @@ class Collection extends React.Component {
             n: 1,
             nIC: 1,
             damping: 0,
-            speed: 1,
+            speed: 0.1,
             i: [],
             j: [],
             PE: 0,
@@ -34,7 +34,7 @@ class Collection extends React.Component {
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
-        this.setState({time: nextT}, () => this.nextFs())
+        this.setState({time: nextT}, () => this.nextRvs())
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
@@ -80,7 +80,13 @@ class Collection extends React.Component {
           rvs.push(colrv);
           Fs.push(colF)
         }
-        const newState = {springConstant, xs, ys, rvs, Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true};
+        // const rvs1 = JSON.parse(JSON.stringify(rvs));
+        // const rvs2 = JSON.parse(JSON.stringify(rvs));
+        // const rvs3 = JSON.parse(JSON.stringify(rvs));
+        // const rvs4 = JSON.parse(JSON.stringify(rvs));
+        const newState = {springConstant, xs, ys, rvs,
+            // rvs1, rvs2, rvs3, rvs4,
+            Fs, optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
     }
 
@@ -91,7 +97,6 @@ class Collection extends React.Component {
         let val = e.target.value;
         const newIC = JSON.parse(JSON.stringify(this.state.rvs));
         newIC[i][j][k] = (val === "") ? "" : Number(val);
-        debugger
         this.setState({rvs: newIC});
     }
 
@@ -101,54 +106,64 @@ class Collection extends React.Component {
         this.setState(newState);
     }
 
-    f = (fk, n) => {
-        const { rvs, damping } = this.state;
-        let f;
+    dRvs = rvs => {
+        const { damping } = this.state;
+        let dRvs = [[[]]];
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 3; k++) {
-                    f[i][j][k] = rvs[i][j][k + 3] + fk[i][j][k]/n
+                    dRvs[i][j][k] = rvs[i][j][k + 3];
                 }
                 const rL = (i === 0)     ? [0, 0, 0] : rvs[i - 1][j];
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rvs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rvs[i][j + 1];
-                f[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
+                dRvs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
                         this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0]) +
-                        this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0])) + fk[i][j][3]/n;
-                f[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
+                        this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
+                dRvs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
                         this.state.k * (-2 * rvs[i][j][1] + rL[1] + rR[1]) +
-                        this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1])) + fk[i][j][4]/n;
-                f[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
-                        this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]) + fk[i][j][5]/n;
+                        this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
+                dRvs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
+                        this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
+                // for (let k = 0; k < 6; k++) {
+                //     newRvs[i][j][k] = rvs[i][j][k] + drvs[i][j][k] * dt / 1000;
+                // }
             }
         }
-        return f;
+        return dRvs;
     }
 
-    nextRvs = dt => {
-        const { rvs, Fs } = this.state;
-        const nextRvs = [];
-        let KE = 0;
+    nextRvs = _ => {
+        const { rvs, dt } = this.state;
+        let dRvs1 = this.dRvs(rvs);
+        let rvs2 = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
-            const rvCol = [];
             for (let j = 0; j < this.state.n; j++) {
-                const rv = [];
-                for (let k = 0; k < 3; k++) {
-                    rv.push(rvs[i][j][k] + rvs[i][j][k + 3] * dt)
+                for (let k = 0; k < 6; k++) {
+                    rvs2[i][j][k] += dRvs1[i][j][k] * dt/1000;
                 }
-                for (let k = 0; k < 3; k++) {
-                    rv.push(rvs[i][j][k + 3] + Fs[i][j][k] * dt);
-                    KE += rvs[i][j][k + 3] * rvs[i][j][k + 3];
-                }
-                rvCol.push(rv);
             }
-            nextRvs.push(rvCol);
         }
-        KE /= 2;
-        let E = this.state.PE + KE;
-        let Ei = (this.state.calcEi) ? this.state.Ei : E;
-        this.setState({rvs: nextRvs, KE, E, Ei, calcEi: true});
+        let dRvs2 = this.dRvs(rvs2);
+        // let rvs2 = this.newRvs(rvs1, 1)
+        // this.setState({rvs1: this.f()})
+        // let fk1 = this.f(fk0, 1);
+        // let fk2 = this.f(fk1, 2);
+        // let fk3 = this.f(fk2, 2);
+        // let fk4 = this.f(fk3, 1);
+        let nextRvs = JSON.parse(JSON.stringify(rvs));
+        for (let i = 0; i < this.state.n; i++) {
+            for (let j = 0; j < this.state.n; j++) {
+                for (let k = 0; k < 6; k++) {
+                    debugger
+                    nextRvs[i][j][k] += (
+                        dRvs1[i][j][k] + dRvs2[i][j][k]
+                        ) * dt/ 1000 / 2;
+                }
+            }
+        }
+        this.setState({rvs: nextRvs});
     }
 
     toggle = () => {
