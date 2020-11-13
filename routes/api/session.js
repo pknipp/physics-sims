@@ -14,17 +14,10 @@ router.get('/', asyncHandler(async function (req, res, next) {res.json({message:
 
 router.put('/', [email, password],
   asyncHandler(async (req, res, next) => {
-<<<<<<< HEAD:routes/api/session.js
-  console.log("top of login route handler, with ", email, password)
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
-  return res.json({message: "return from line 21"});
-=======
   // console.log("top of login route handler, with ", email, password)
   const errors = validationResult(req);
   if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
   // return res.json({message: "return from line 21"});
->>>>>>> login:BrainScapeClone/old/nonRedux/routes/api/session.js
   const { email, password } = req.body;
   let user;
   try {
