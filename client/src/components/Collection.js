@@ -120,13 +120,14 @@ class Collection extends React.Component {
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rvs[i][j + 1];
                 Fs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
-                        this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0]) +
-                        this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
+                        this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0]))
+                        // + this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
                 Fs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
-                        this.state.k * (-2 * rvs[i][j][1] + rL[1] + rR[1]) +
-                        this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
-                Fs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
-                        this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
+                        this.state.k * (-2 * rvs[i][j][1] + rU[1] + rD[1]))
+                        //+ this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
+                Fs[i][j][5] = 0
+                // - damping * rvs[i][j][5] + this.state.springConstant *
+                            // this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
                 let dxL = rvs[i][j][0] - rL[0];
                 let dxR = rvs[i][j][0] - rR[0];
                 let dyU = rvs[i][j][1] - rU[1];
@@ -137,15 +138,15 @@ class Collection extends React.Component {
         KE /= 2;
         PEk *= this.state.springConstant * this.state.k / 2;
         PET *= this.state.springConstant * this.state.T / 2;
-        PE = PET + PEk;
-        E = PE + KE;
+        const PE = PET + PEk;
+        const E = PE + KE;
         return [Fs, KE, PE, E];
     }
 
     nextRvs = _ => {
         const { rvs, dt } = this.state;
-        let firstCall = this.Fs(rvs);
-        let Fs1 = firstCall[0];
+        let all4 = this.Fs(rvs);
+        let Fs1 = all4[0];
 
         let rvs2 = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
@@ -167,10 +168,9 @@ class Collection extends React.Component {
                 }
             }
         }
-
-        if (!calcEi) {}
-
-        this.setState({rvs: nextRvs, Fs: Fs1, KE: firstCall[1], PE: firstCall[2], E: firstCall[3], Ei, calcEi: true});
+        let E = all4[3];
+        let Ei = (this.state.calcEi) ? this.state.Ei : E;
+        this.setState({rvs: nextRvs, Fs: Fs1, KE: all4[1], PE: all4[2], E, Ei, calcEi: true});
     }
 
     toggle = () => {
