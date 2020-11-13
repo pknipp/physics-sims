@@ -103,55 +103,52 @@ class Collection extends React.Component {
         this.setState(newState);
     }
 
-    dRvs = rvs => {
+    Fs = rvs => {
         const { damping } = this.state;
-        let dRvs = JSON.parse(JSON.stringify(this.state.zero6));
+        let Fs = JSON.parse(JSON.stringify(this.state.zero6));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 3; k++) {
-                    dRvs[i][j][k] = rvs[i][j][k + 3];
+                    Fs[i][j][k] = rvs[i][j][k + 3];
                 }
                 const rL = (i === 0)     ? [0, 0, 0] : rvs[i - 1][j];
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rvs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rvs[i][j + 1];
-                dRvs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
+                Fs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
                         this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0]) +
                         this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
-                dRvs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
+                Fs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
                         this.state.k * (-2 * rvs[i][j][1] + rL[1] + rR[1]) +
                         this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
-                dRvs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
+                Fs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
                         this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
-                // for (let k = 0; k < 6; k++) {
-                //     newRvs[i][j][k] = rvs[i][j][k] + drvs[i][j][k] * dt / 1000;
-                // }
             }
         }
-        return dRvs;
+        if (rvs === this.state.rvs) this.setState(Fs);
+        return Fs;
     }
 
     nextRvs = _ => {
         const { rvs, dt } = this.state;
-        let dRvs1 = this.dRvs(rvs);
+        let Fs1 = this.Fs(rvs);
 
         let rvs2 = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {
-                    rvs2[i][j][k] += dRvs1[i][j][k] * dt/1000;
+                    rvs2[i][j][k] += Fs1[i][j][k] * dt/1000;
                 }
             }
         }
-        let dRvs2 = this.dRvs(rvs2);
-
+        let Fs2 = this.Fs(rvs2);
 
         let nextRvs = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {
                     nextRvs[i][j][k] += (
-                        dRvs1[i][j][k] + dRvs2[i][j][k]
+                        Fs1[i][j][k] + Fs2[i][j][k]
                         ) * dt/ 1000 / 2;
                 }
             }
@@ -207,8 +204,9 @@ class Collection extends React.Component {
         // coefficients on following 4 lines are not that crucial
                             let Vx = 3 * numPx * this.state.rvs[i][j][3]/n;
                             let Vy = 3 * numPx * this.state.rvs[i][j][4]/n;
-                            let Ax = 3 * numPx * this.state.Fs[i][j][0]/n/n;
-                            let Ay = 3 * numPx * this.state.Fs[i][j][1]/n/n;
+                            let Ax = 3 * numPx * this.state.Fs[i][j][3]/n/n;
+                            let Ay = 3 * numPx * this.state.Fs[i][j][4]/n/n;
+                            debugger
                             let XL;
                             let YL;
                             let XU;
