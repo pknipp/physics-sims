@@ -30,7 +30,10 @@ class Collection extends React.Component {
         }
     }
 
-    componentDidMount() {this.makeLattice(this.state.n)}
+    componentDidMount() {
+        console.log("Component did mount.")
+        this.makeLattice(this.state.n)
+    }
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
@@ -81,7 +84,7 @@ class Collection extends React.Component {
           zero3.push(colZero3);
         }
         let rvs = JSON.parse(JSON.stringify(zero6));
-        let Fs = JSON.parse(JSON.stringify(zero3));
+        let Fs = JSON.parse(JSON.stringify(zero6));
         const newState = {springConstant, xs, ys, rvs, Fs, zero6, zero3,
             optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
@@ -104,6 +107,7 @@ class Collection extends React.Component {
     }
 
     Fs = rvs => {
+        // const isFirst = rvs === this.state.rvs;
         const { damping } = this.state;
         let Fs = JSON.parse(JSON.stringify(this.state.zero6));
         for (let i = 0; i < this.state.n; i++) {
@@ -125,7 +129,8 @@ class Collection extends React.Component {
                         this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
             }
         }
-        if (rvs === this.state.rvs) this.setState(Fs);
+        // debugger
+        // if (isFirst) this.setState(Fs);
         return Fs;
     }
 
@@ -153,7 +158,7 @@ class Collection extends React.Component {
                 }
             }
         }
-        this.setState({rvs: nextRvs});
+        this.setState({rvs: nextRvs, Fs: Fs1});
     }
 
     toggle = () => {
