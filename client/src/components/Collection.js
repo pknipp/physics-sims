@@ -103,11 +103,11 @@ class Collection extends React.Component {
     }
 
     Fs = rvs => {
-        // const isFirst = rvs === this.state.rvs;
         const { damping } = this.state;
         let Fs = JSON.parse(JSON.stringify(this.state.zero6));
         let PEk = 0;
-        // let PET = 0;
+        // I still need to calculate PET.
+        let PET = 0;
         let KE = 0;
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
@@ -136,9 +136,10 @@ class Collection extends React.Component {
         }
         KE /= 2;
         PEk *= this.state.springConstant * this.state.k / 2;
-        // debugger
-        // if (isFirst) this.setState(Fs);
-        return [Fs, KE, PEk];
+        PET *= this.state.springConstant * this.state.T / 2;
+        PE = PET + PEk;
+        E = PE + KE;
+        return [Fs, KE, PE, E];
     }
 
     nextRvs = _ => {
@@ -166,7 +167,10 @@ class Collection extends React.Component {
                 }
             }
         }
-        this.setState({rvs: nextRvs, Fs: Fs1, KE: firstCall[1], PE: firstCall[2], E: firstCall[1] + firstCall[2]});
+
+        if (!calcEi) {}
+
+        this.setState({rvs: nextRvs, Fs: Fs1, KE: firstCall[1], PE: firstCall[2], E: firstCall[3], Ei, calcEi: true});
     }
 
     toggle = () => {
