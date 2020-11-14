@@ -119,42 +119,23 @@ class Collection extends React.Component {
                     KE += rvs[i][j][k + 3] * rvs[i][j][k + 3];
                 }
                 const rL = (i === 0)     ? [0, 0, 0] : rvs[i - 1][j];
-             // const rL = (i === 0)     ? [0, 0, 0] :  rs[i - 1][j];
                 const rR = (i === this.state.n - 1)? [0, 0, 0] : rvs[i + 1][j];
-             // const rR = (i === this.state.n - 1)? [0, 0, 0] :  rs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
-             // const rU = (j === 0)     ? [0, 0, 0] :  rs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rvs[i][j + 1];
-             // const rD = (j === this.state.n - 1)? [0, 0, 0] :  rs[i][j + 1];
-
                 Fs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
-                       //     - damping *  vs[i][j][0] + this.state.springConstant * (
                         this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0])
-             //         this.state.k * (-2 *  rs[i][j][0] + rL[0] + rR[0]) +
                         + this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
-                //        this.state.T * (-2 *  rs[i][j][0] + rU[0] + rD[0]))
-
                 Fs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
-                       //     - damping *  vs[i][j][1] + this.state.springConstant * (
                         this.state.k * (-2 * rvs[i][j][1] + rU[1] + rD[1])
-             //         this.state.k * (-2 *  rs[i][j][1] + rU[1] + rD[1]) +
                         + this.state.T * (-2 * rvs[i][j][1] + rL[1] + rR[1]));
-                //        this.state.T * (-2 *  rs[i][j][1] + rL[1] + rR[1]))
-
                 Fs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
                             this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
-                //     - damping * vs[i][j][2] + this.state.springConstant * this.state.T * (
-                //         -4 * rs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2])
                 let dxR = rvs[i][j][0] - rR[0];
                 let dyD = rvs[i][j][1] - rD[1];
                 PEk += dxR * dxR + dyD * dyD;
-                // PEk += (rs[i][j][0] - rR[0]) ** 2 + (rs[i][j][1] - rD[1]) ** 2;
                 PET +=
                     (rvs[i][j][0] - rD[0]) ** 2 + (rvs[i][j][2] - rD[2]) ** 2 +
                     (rvs[i][j][1] - rR[1]) ** 2 + (rvs[i][j][2] - rR[2]) ** 2;
-                // PET +=
-                //     (rs[i][j][0] - rD[0]) ** 2 + (rs[i][j][2] - rD[2]) ** 2 +
-                //     (rs[i][j][1] - rR[1]) ** 2 + (rs[i][j][2] - rR[2]) ** 2;
             }
         }
         KE /= 2;
@@ -170,6 +151,9 @@ class Collection extends React.Component {
         let all4 = this.Fs(rvs);
         let Fs1 = all4[0];
         let rvs2 = JSON.parse(JSON.stringify(rvs));
+        // rvs2.forEach((col, i) => col.forEach((obj, j) => obj.forEach((rv, k) => {
+        //     rv += Fs1[i][j][k] * dt / 1000;
+        // })))
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {

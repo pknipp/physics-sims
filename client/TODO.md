@@ -3,19 +3,17 @@ GENERAL:
 * auth?
 
 DRUMHEAD:
+* increase order of integrator from rk2 to rk4?
 * revise script for presentation
-* reinsert calculation for PET
-* readjust scaling for lengths of a-vectors and v-vectors
+* readjust scaling for energies?
 * insert asteroids component to page reached after login
 * insert CRUD for user (signup, account details, edit details, delete user)
 * change nested for-loops to nested list-comprehensions?
-* increase order of integrator from rk2 to rk4?
 * consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
 * use checkboxes (rather than sliders) for a- & v-arrows, along w/bond width?
 * make it easier for user to enable negative inputs for ICs
 * insert a "reset" button
 * enable "speed" to be changed without first pausing sim?
-* auth
 * figure out why I should not decrease dt below 5 ms
 * adjust IC by click-and-drag instead of form filling?
 

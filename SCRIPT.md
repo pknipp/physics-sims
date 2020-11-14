@@ -35,4 +35,5 @@ angleR = Math.atan2(YR - Y, XR - X) * 180 / Math.PI;    // arctangent yields the
 * show effect of damping
 * show effect of timestep
 * talk about accuracy = O(dt^n), for scientific computing
-* demo for a larger grid of particles
+* demo for a larger grid of particles (w/reduced timestep)
+* note time-lagging (and speed-up when time-step is increased)
