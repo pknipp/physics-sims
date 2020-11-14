@@ -130,11 +130,11 @@ class Collection extends React.Component {
                         + this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
                 Fs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
                             this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
-                let dxL = rvs[i][j][0] - rL[0];
+                 // let dxL = rvs[i][j][0] - rL[0];
                 let dxR = rvs[i][j][0] - rR[0];
-                let dyU = rvs[i][j][1] - rU[1];
+                // let dyU = rvs[i][j][0] - rU[1]
                 let dyD = rvs[i][j][1] - rD[1];
-                PEk += dxL * dxL + dxR * dxR + dyU * dyU + dyD * dyD;
+                PEk += dxR * dxR + dyD * dyD;
                 PET +=
                     (rvs[i][j][0] - rD[0]) ** 2 + (rvs[i][j][2] - rD[2]) ** 2 +
                     (rvs[i][j][1] - rR[1]) ** 2 + (rvs[i][j][2] - rR[2]) ** 2;
