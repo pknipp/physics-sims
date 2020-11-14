@@ -5,9 +5,9 @@ class Collection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            now: 0,
+            // now: 0,
             running: false,
-            start: 0,
+            // start: 0,
             time: 0,
             n: 1,
             nIC: 1,
@@ -24,8 +24,8 @@ class Collection extends React.Component {
             T: 0.5,
             k: 0.5,
             bondThickness: 1,
-            velocityLength: 1,
-            accelerationLength: 1,
+            velocityLength: 0,
+            accelerationLength: 0,
             calcEi: false,
         }
     }
@@ -132,6 +132,9 @@ class Collection extends React.Component {
                 let dyU = rvs[i][j][1] - rU[1];
                 let dyD = rvs[i][j][1] - rD[1];
                 PEk += dxL * dxL + dxR * dxR + dyU * dyU + dyD * dyD;
+                PET +=
+                    (rvs[i][j][0] - rD[0]) ** 2 + (rvs[i][j][2] - rD[2]) ** 2 +
+                    (rvs[i][j][1] - rR[1]) ** 2 + (rvs[i][j][2] - rR[2]) ** 2;
             }
         }
         KE /= 2;
