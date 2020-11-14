@@ -106,10 +106,13 @@ class Collection extends React.Component {
         const { damping } = this.state;
         let Fs = JSON.parse(JSON.stringify(this.state.zero6));
         let PEk = 0;
-        // I still need to calculate PET.
         let PET = 0;
         let KE = 0;
         for (let i = 0; i < this.state.n; i++) {
+            PEk += rvs[0][i][0] ** 2 + rvs[i][0][1] ** 2;
+            PET +=
+                rvs[0][i][1] ** 2 + rvs[0][i][2] ** 2 +
+                rvs[i][0][0] ** 2 + rvs[i][0][2] ** 2;
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 3; k++) {
                     Fs[i][j][k] = rvs[i][j][k + 3];
