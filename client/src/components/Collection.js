@@ -21,8 +21,8 @@ class Collection extends React.Component {
             Ei: 0,
             dt: 31,
             logdt: 1.5,
-            T: 0,
-            k: 1,
+            T: 0.5,
+            k: 0.5,
             bondThickness: 1,
             velocityLength: 1,
             accelerationLength: 1,
@@ -120,14 +120,13 @@ class Collection extends React.Component {
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
                 const rD = (j === this.state.n - 1)? [0, 0, 0] : rvs[i][j + 1];
                 Fs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
-                        this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0]))
-                        // + this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
+                        this.state.k * (-2 * rvs[i][j][0] + rL[0] + rR[0])
+                        + this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
                 Fs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
-                        this.state.k * (-2 * rvs[i][j][1] + rU[1] + rD[1]))
-                        //+ this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
-                Fs[i][j][5] = 0
-                // - damping * rvs[i][j][5] + this.state.springConstant *
-                            // this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
+                        this.state.k * (-2 * rvs[i][j][1] + rU[1] + rD[1])
+                        + this.state.T * (-2 * rvs[i][j][1] + rU[1] + rD[1]));
+                Fs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
+                            this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
                 let dxL = rvs[i][j][0] - rL[0];
                 let dxR = rvs[i][j][0] - rR[0];
                 let dyU = rvs[i][j][1] - rU[1];
@@ -147,7 +146,6 @@ class Collection extends React.Component {
         const { rvs, dt } = this.state;
         let all4 = this.Fs(rvs);
         let Fs1 = all4[0];
-
         let rvs2 = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
@@ -293,8 +291,6 @@ class Collection extends React.Component {
                 )
             }
             let Efac = (this.state.Ei) ? this.state.Ei : (this.state.PE) ? this.state.PE : 1;
-            // The following numerator is arbitrary, to give bar chart "right" height
-            Efac = Efac/6;
             controls = (
                 <div className="controls">
                     <span className="button-container">
@@ -313,28 +309,28 @@ class Collection extends React.Component {
                         <div className="title tot">total (KE + PE)</div>
                         <div className="title i">initial</div>
                         <div className="val ke">
-                            {Math.floor(1000 * this.state.KE)/1000}
+                            {Math.floor(1000 * this.state.KE/Efac)/1000}
                         </div>
                         <div className="val pe">
-                            {Math.floor(1000 * this.state.PE)/1000}
+                            {Math.floor(1000 * this.state.PE/Efac)/1000}
                         </div>
                         <div className="val tot">
-                           {Math.floor(1000 * this.state.E)/1000}
+                           {Math.floor(1000 * this.state.E/Efac)/1000}
                         </div>
                         <div className="val i">
-                           {Math.floor(1000 * this.state.Ei)/1000}
+                           {Math.floor(1000 * this.state.Ei/Efac)/1000}
                         </div>
                         <div
-                            className="bar ke" style={{height:`${Math.floor(10 * this.state.KE/Efac)}px`}}>
+                            className="bar ke" style={{height:`${Math.floor(60 * this.state.KE/Efac)}px`}}>
                         </div>
                         <div
-                            className="bar pe" style={{height:`${Math.floor(10 * this.state.PE/Efac)}px`}}>
+                            className="bar pe" style={{height:`${Math.floor(60 * this.state.PE/Efac)}px`}}>
                         </div>
                         <div
-                            className="bar tot" style={{height:`${Math.floor(10 * this.state.E/Efac)}px`}}>
+                            className="bar tot" style={{height:`${Math.floor(60 * this.state.E/Efac)}px`}}>
                         </div>
                         <div
-                            className="bar i" style={{height:`${Math.floor(10 * this.state.Ei/Efac)}px`}}>
+                            className="bar i" style={{height:`${Math.floor(60 * this.state.Ei/Efac)}px`}}>
                         </div>
                     </div>
                 </div>

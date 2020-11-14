@@ -3,9 +3,13 @@ GENERAL:
 * auth?
 
 DRUMHEAD:
-* make a script for presentation
-* consolidate position stuff and velocity stuff into a single variable (e.g., rs & vs -> rvs)
-* increase order of integrator (if/when the previous step is done)?
+* revise script for presentation
+* reinsert calculation for PET
+* readjust scaling for lengths of a-vectors and v-vectors
+* insert asteroids component to page reached after login
+* insert CRUD for user (signup, account details, edit details, delete user)
+* change nested for-loops to nested list-comprehensions?
+* increase order of integrator from rk2 to rk4?
 * consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
 * use checkboxes (rather than sliders) for a- & v-arrows, along w/bond width?
 * make it easier for user to enable negative inputs for ICs
