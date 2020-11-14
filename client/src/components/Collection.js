@@ -5,9 +5,7 @@ class Collection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // now: 0,
             running: false,
-            // start: 0,
             time: 0,
             n: 1,
             nIC: 1,
@@ -30,10 +28,7 @@ class Collection extends React.Component {
         }
     }
 
-    componentDidMount() {
-        console.log("Component did mount.")
-        this.makeLattice(this.state.n)
-    }
+    componentDidMount() {this.makeLattice(this.state.n)}
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
@@ -41,14 +36,22 @@ class Collection extends React.Component {
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
-    handleNIC = e => this.setState({nIC: Number(e.target.value)});
-    submitN = e => e.preventDefault();
-    handleDamping = e => this.setState({damping: Number(e.target.value)});
-    handleSpeed = e => this.setState({speed: Number(e.target.value)});
+    // handleNIC = e => this.setState({nIC: Number(e.target.value)});
+    // submitN = e => e.preventDefault();
     handleLogTimeStep = e => {
         const logdt = Number(e.target.value);
         this.setState({logdt, dt: Math.floor(10 ** logdt)});
     }
+    handleIC = e => {
+        let i = Number(e.target.name[0]);
+        let j = Number(e.target.name[1]);
+        let k = Number(e.target.name[2]);
+        let val = e.target.value;
+        const newIC = JSON.parse(JSON.stringify(this.state.rvs));
+        newIC[i][j][k] = (val === "") ? "" : Number(val);
+        this.setState({rvs: newIC});
+    }
+
     handleForceType = e => {
         const T = Number(e.target.value);
         this.setState({T, k: 1 - T});
@@ -59,6 +62,13 @@ class Collection extends React.Component {
         const newIndices = {i: iNew, j: jNew};
         newIndices[e.target.name].push(Number(e.target.value));
         this.setState(newIndices);
+    }
+
+    // The following handles many inputs
+    handleInput = e => {
+        const newState = {};
+        newState[e.target.name] = e.target.value;
+        this.setState(newState);
     }
 
     makeLattice = n => {
@@ -86,21 +96,7 @@ class Collection extends React.Component {
         this.setState(newState)
     }
 
-    handleIC = e => {
-        let i = Number(e.target.name[0]);
-        let j = Number(e.target.name[1]);
-        let k = Number(e.target.name[2]);
-        let val = e.target.value;
-        const newIC = JSON.parse(JSON.stringify(this.state.rvs));
-        newIC[i][j][k] = (val === "") ? "" : Number(val);
-        this.setState({rvs: newIC});
-    }
 
-    handleSize = e => {
-        const newState = {};
-        newState[e.target.name] = e.target.value;
-        this.setState(newState);
-    }
 
     // Calculate (generalized) force, KE, PE, and E for a particular point in phase space
     Fs = rvs => {
@@ -201,7 +197,7 @@ class Collection extends React.Component {
     render() {
         let { n } = this.state;
         const chooseN = (
-            <form onSubmit={this.submitN}>
+            <form>
                 <label>How many particles should be along each edge? </label>
                 <input
                     type="number"
@@ -214,14 +210,13 @@ class Collection extends React.Component {
             </form>
         )
         let leftSide = [chooseN];
-// Following 4 lines are needed for scoping & may be removed after the conditional is removed
+// Following 4 lines are needed for scoping
         let slider = null;
         let IC = null;
         let controls = null;
         let rComponents = null;
         let numPx = 540;
         if (this.state.n && this.state.isLattice) {
-            // let { n } = this.state;
             let { time } = this.state
             rComponents = (
 
@@ -236,7 +231,6 @@ class Collection extends React.Component {
                             let Vy = 3 * numPx * this.state.rvs[i][j][4]/n;
                             let Ax = 3 * numPx * this.state.Fs[i][j][3]/n/n;
                             let Ay = 3 * numPx * this.state.Fs[i][j][4]/n/n;
-                            debugger
                             let XL;
                             let YL;
                             let XU;
@@ -257,31 +251,29 @@ class Collection extends React.Component {
                             }
                             return (
                                 <div key={this.state.n * i + j}>
-                                <Object
-                                    X0={X0}
-                                    Y0={Y0}
-                                    X={X}
-                                    Y={Y}
-                                    Z={this.state.rvs[i][j][2]}
-                                    XL={XL}
-                                    YL={YL}
-                                    XU={XU}
-                                    YU={YU}
-                                    XD={(j === n - 1) ? numPx * (x + 0.5): null}
-                                    YD={(j === n - 1) ? numPx: null}
-                                    XR={(i === n - 1) ? numPx: null}
-                                    YR={(i === n - 1) ? numPx * (y + 0.5): null}
-                                    Vx={Vx}
-                                    Vy={Vy}
-                                    Ax={Ax}
-                                    Ay={Ay}
-                                    bondThickness={this.state.bondThickness}
-                                    velocityLength={this.state.velocityLength}
-                                    accelerationLength={this.state.accelerationLength}
-                                    width={numPx * this.state.width}
-                                    // backgroundColor={i % 2 === j % 2 ? "red" : "blue"}
-                                />
-
+                                    <Object
+                                        X0={X0}
+                                        Y0={Y0}
+                                        X={X}
+                                        Y={Y}
+                                        Z={this.state.rvs[i][j][2]}
+                                        XL={XL}
+                                        YL={YL}
+                                        XU={XU}
+                                        YU={YU}
+                                        XD={(j === n - 1) ? numPx * (x + 0.5): null}
+                                        YD={(j === n - 1) ? numPx: null}
+                                        XR={(i === n - 1) ? numPx: null}
+                                        YR={(i === n - 1) ? numPx * (y + 0.5): null}
+                                        Vx={Vx}
+                                        Vy={Vy}
+                                        Ax={Ax}
+                                        Ay={Ay}
+                                        bondThickness={this.state.bondThickness}
+                                        velocityLength={this.state.velocityLength}
+                                        accelerationLength={this.state.accelerationLength}
+                                        width={numPx * this.state.width}
+                                    />
                                 </div>
                             )
                         })
@@ -373,7 +365,7 @@ class Collection extends React.Component {
                                 <td>
                                     <input
                                         type="range"
-                                        onChange={this.handleSpeed}
+                                        onChange={this.handleInput}
                                         name="speed"
                                         min="0"
                                         max="1"
@@ -400,7 +392,7 @@ class Collection extends React.Component {
                                 <td>
                                     <input
                                         type="range"
-                                        onChange={this.handleDamping}
+                                        onChange={this.handleInput}
                                         name="damping"
                                         min="0"
                                         max="2"
@@ -471,7 +463,7 @@ class Collection extends React.Component {
                                 <td>
                                     <input
                                         type="range"
-                                        onChange={this.handleSize}
+                                        onChange={this.handleInput}
                                         name="velocityLength"
                                         min="0"
                                         max="1"
@@ -493,7 +485,7 @@ class Collection extends React.Component {
                                 <td>
                                     <input
                                         type="range"
-                                        onChange={this.handleSize}
+                                        onChange={this.handleInput}
                                         name="accelerationLength"
                                         min="0"
                                         max="1"
@@ -515,7 +507,7 @@ class Collection extends React.Component {
                                 <td>
                                     <input
                                         type="range"
-                                        onChange={this.handleSize}
+                                        onChange={this.handleInput}
                                         name="bondThickness"
                                         min="0"
                                         max="2"
@@ -547,7 +539,7 @@ class Collection extends React.Component {
                         <input
                             type="number"
                             name="nIC"
-                            onChange={this.handleNIC}
+                            onChange={this.handleInput}
                             value={nIC} />
                     </div>
                     <table>
