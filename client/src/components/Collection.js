@@ -8,7 +8,7 @@ class Collection extends React.Component {
             running: false,
             time: 0,
             n: 1,
-            nIC: 1,
+            nIC: 0,
             damping: 0,
             speed: 1,
             i: [],
@@ -36,8 +36,6 @@ class Collection extends React.Component {
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
-    // handleNIC = e => this.setState({nIC: Number(e.target.value)});
-    // submitN = e => e.preventDefault();
     handleLogTimeStep = e => {
         const logdt = Number(e.target.value);
         this.setState({logdt, dt: Math.floor(10 ** logdt)});
@@ -51,7 +49,6 @@ class Collection extends React.Component {
         newIC[i][j][k] = (val === "") ? "" : Number(val);
         this.setState({rvs: newIC});
     }
-
     handleForceType = e => {
         const T = Number(e.target.value);
         this.setState({T, k: 1 - T});
@@ -63,8 +60,7 @@ class Collection extends React.Component {
         newIndices[e.target.name].push(Number(e.target.value));
         this.setState(newIndices);
     }
-
-    // The following handles many inputs
+    // The following method handles many inputs
     handleInput = e => {
         const newState = {};
         newState[e.target.name] = e.target.value;
@@ -74,13 +70,11 @@ class Collection extends React.Component {
     makeLattice = n => {
         let springConstant = (n + 1) * (n + 1);
         let xs = [];
-        let ys = [];
         let zero6 = [];
         let optionsI = ["col"];
         let optionsJ = ["row"];
-        for (let i = 0; i < n; i++) xs.push(-0.5 + (i + 1)/(n + 1));
-        for (let j = 0; j < n; j++) ys.push(-0.5 + (j + 1)/(n + 1));
         for (let i = 0; i < n; i++) {
+          xs.push(-0.5 + (i + 1)/(n + 1));
           const colZero6 = [];
           for (let j = 0; j < n; j++) {
             colZero6.push([0,0,0,0,0,0]);
@@ -89,14 +83,13 @@ class Collection extends React.Component {
           optionsJ.push(i + 1);
           zero6.push(colZero6);
         }
+        let ys  = JSON.parse(JSON.stringify(xs));
         let rvs = JSON.parse(JSON.stringify(zero6));
         let Fs = JSON.parse(JSON.stringify(zero6));
         const newState = {springConstant, xs, ys, rvs, Fs, zero6,
             optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
     }
-
-
 
     // Calculate (generalized) force, KE, PE, and E for a particular point in phase space
     Fs = rvs => {
@@ -534,14 +527,17 @@ class Collection extends React.Component {
                     <span>
                         Specify the number of particles that you'll displace from equilibrium.
                     </span>
-                    <div>
+                    <form>
                         <label htmlFor="nIC">number = </label>
                         <input
                             type="number"
                             name="nIC"
                             onChange={this.handleInput}
-                            value={nIC} />
-                    </div>
+                            value={nIC}
+                            min="0"
+                            step="1"
+                        />
+                    </form>
                     <table>
                         <thead>
                             <tr>
