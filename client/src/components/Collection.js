@@ -150,26 +150,44 @@ class Collection extends React.Component {
         const { rvs, dt } = this.state;
         let all4 = this.Fs(rvs);
         let Fs1 = all4[0];
+
         let rvs2 = JSON.parse(JSON.stringify(rvs));
-        // rvs2.forEach((col, i) => col.forEach((obj, j) => obj.forEach((rv, k) => {
-        //     rv += Fs1[i][j][k] * dt / 1000;
-        // })))
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {
-                    rvs2[i][j][k] += Fs1[i][j][k] * dt/1000;
+                    rvs2[i][j][k] += Fs1[i][j][k] * dt / 1000 / 2;
                 }
             }
         }
         let Fs2 = this.Fs(rvs2)[0];
+
+        let rvs3 = JSON.parse(JSON.stringify(rvs));
+        for (let i = 0; i < this.state.n; i++) {
+            for (let j = 0; j < this.state.n; j++) {
+                for (let k = 0; k < 6; k++) {
+                    rvs3[i][j][k] += Fs2[i][j][k] * dt / 1000 / 2;
+                }
+            }
+        }
+        let Fs3 = this.Fs(rvs3)[0];
+
+        let rvs4 = JSON.parse(JSON.stringify(rvs));
+        for (let i = 0; i < this.state.n; i++) {
+            for (let j = 0; j < this.state.n; j++) {
+                for (let k = 0; k < 6; k++) {
+                    rvs4[i][j][k] += Fs3[i][j][k] * dt / 1000 / 1;
+                }
+            }
+        }
+        let Fs4 = this.Fs(rvs4)[0];
 
         let nextRvs = JSON.parse(JSON.stringify(rvs));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {
                     nextRvs[i][j][k] += (
-                        Fs1[i][j][k] + Fs2[i][j][k]
-                        ) * dt/ 1000 / 2;
+                        Fs1[i][j][k] + Fs4[i][j][k] + 2 * (Fs2[i][j][k] + Fs3[i][j][k])
+                        ) * dt/ 1000 / 6;
                 }
             }
         }

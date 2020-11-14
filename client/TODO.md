@@ -3,7 +3,6 @@ GENERAL:
 * auth?
 
 DRUMHEAD:
-* increase order of integrator from rk2 to rk4?
 * revise script for presentation
 * readjust scaling for energies?
 * insert asteroids component to page reached after login
