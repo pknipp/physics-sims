@@ -102,6 +102,7 @@ class Collection extends React.Component {
         this.setState(newState);
     }
 
+    // Calculate (generalized) force, KE, PE, and E for a particular point in phase space
     Fs = rvs => {
         const { damping } = this.state;
         let Fs = JSON.parse(JSON.stringify(this.state.zero6));
@@ -145,49 +146,38 @@ class Collection extends React.Component {
         const E = PE + KE;
         return [Fs, KE, PE, E];
     }
+        // With the present phase-space coordinate ...
+        // 1) ... finds the present generalized force,
+        // 2) ... propagates through phase-space for a particular amount of time (= dt/2),
+        // 3) ... and then returns the final value of the generalized force.
+        nextFs = (Fs, n) => {
+            let rvs = JSON.parse(JSON.stringify(this.state.rvs));
+            for (let i = 0; i < this.state.n; i++) {
+                for (let j = 0; j < this.state.n; j++) {
+                    for (let k = 0; k < 6; k++) {
+                        rvs[i][j][k] += Fs[i][j][k] * this.state.dt / 1000 / n;
+                    }
+                }
+            }
+            return this.Fs(rvs)[0];
+        }
 
+        // 4th-order Runge-Kutta method for propagating thru phase-space for a timestep dt
+        // This also sets state for the generalized force and the KE, PE, and E.
     nextRvs = _ => {
-        const { rvs, dt } = this.state;
-        let all4 = this.Fs(rvs);
+        let all4 = this.Fs(this.state.rvs);
         let Fs1 = all4[0];
+        let Fs2 = this.nextFs(Fs1, 2);
+        let Fs3 = this.nextFs(Fs2, 2);
+        let Fs4 = this.nextFs(Fs3, 1);
 
-        let rvs2 = JSON.parse(JSON.stringify(rvs));
-        for (let i = 0; i < this.state.n; i++) {
-            for (let j = 0; j < this.state.n; j++) {
-                for (let k = 0; k < 6; k++) {
-                    rvs2[i][j][k] += Fs1[i][j][k] * dt / 1000 / 2;
-                }
-            }
-        }
-        let Fs2 = this.Fs(rvs2)[0];
-
-        let rvs3 = JSON.parse(JSON.stringify(rvs));
-        for (let i = 0; i < this.state.n; i++) {
-            for (let j = 0; j < this.state.n; j++) {
-                for (let k = 0; k < 6; k++) {
-                    rvs3[i][j][k] += Fs2[i][j][k] * dt / 1000 / 2;
-                }
-            }
-        }
-        let Fs3 = this.Fs(rvs3)[0];
-
-        let rvs4 = JSON.parse(JSON.stringify(rvs));
-        for (let i = 0; i < this.state.n; i++) {
-            for (let j = 0; j < this.state.n; j++) {
-                for (let k = 0; k < 6; k++) {
-                    rvs4[i][j][k] += Fs3[i][j][k] * dt / 1000 / 1;
-                }
-            }
-        }
-        let Fs4 = this.Fs(rvs4)[0];
-
-        let nextRvs = JSON.parse(JSON.stringify(rvs));
+        let nextRvs = JSON.parse(JSON.stringify(this.state.rvs));
         for (let i = 0; i < this.state.n; i++) {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {
                     nextRvs[i][j][k] += (
                         Fs1[i][j][k] + Fs4[i][j][k] + 2 * (Fs2[i][j][k] + Fs3[i][j][k])
-                        ) * dt/ 1000 / 6;
+                        ) * this.state.dt/ 1000 / 6;
                 }
             }
         }
