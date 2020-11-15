@@ -1,6 +1,7 @@
 import React from "react";
 import Object from "./Object";
 import Row from "./Row";
+import Graph from "./Graph";
 class Collection extends React.Component {
     constructor(props) {
         super(props);
@@ -293,8 +294,8 @@ class Collection extends React.Component {
                     </button>
                     </span>
                     time: {Math.floor(100 * time)/100} s
-
-                    <div className="graph container">
+                    <Graph KE={this.state.KE} PE={this.state.PE} E={this.state.E} Ei={this.state.Ei} />
+                    {/* <div className="graph container">
                         <div className="title">
                             <h3>Energies (arbitrary units)</h3>
                         </div>
@@ -326,7 +327,9 @@ class Collection extends React.Component {
                         <div
                             className="bar i" style={{height:`${Math.floor(60 * this.state.Ei/Efac)}px`}}>
                         </div>
-                    </div>
+                    </div> */}
+
+
                 </div>
             )
             leftSide.push(controls);
