@@ -25,7 +25,7 @@ class Container extends React.Component {
         <Switch>
           <Route path="/logout"       component={Logout}     />
           <Route path="/drum"       component={Collection}     />
-          <Route path="/asteroids" component={Asteroids} />
+            <Route path="/asteroids" component={Asteroids} />
           {/* <Route path="/account"      component={Account}    /> */}
         </Switch>
       </BrowserRouter>

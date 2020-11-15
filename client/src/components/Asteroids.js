@@ -1,6 +1,6 @@
 import React from "react";
 import Rock from "./Rock";
-class Collection extends React.Component {
+class Asteroids extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -55,4 +55,4 @@ class Collection extends React.Component {
     }
 }
 
-export default Collection;
+export default Asteroids;
