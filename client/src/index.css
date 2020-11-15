@@ -55,9 +55,9 @@ td {
     align-items: end;
     grid-template-areas:
     "graphtitle graphtitle graphtitle graphtitle"
-    "titleke titlepe titletot titlei"
-    "valke valpe valtot vali"
-    "barke barpe bartot bari";
+    "titleke titlepe titlee titleei"
+    "valke valpe vale valei"
+    "barke barpe bare barei";
 }
 
 .graph .title {grid-area: graphtitle}
@@ -65,16 +65,18 @@ td {
 
 .title.ke {grid-area: titleke}
 .title.pe {grid-area: titlepe}
-.title.tot {grid-area: titletot}
-.title.i {grid-area: titlei}
-.val.ke {grid-area: valke}
-.val.pe {grid-area: valpe}
-.val.tot {grid-area: valtot}
-.val.i {grid-area: vali}
-.bar.ke  {grid-area: barke}
-.bar.pe  {grid-area: barpe}
-.bar.tot {grid-area: bartot}
-.bar.i   {grid-area: bari}
+.title.e  {grid-area: titlee}
+.title.ei {grid-area: titleei}
+
+.val.ke   {grid-area: valke}
+.val.pe   {grid-area: valpe}
+.val.e    {grid-area: vale}
+.val.ei   {grid-area: valei}
+
+.bar.ke   {grid-area: barke}
+.bar.pe   {grid-area: barpe}
+.bar.e    {grid-area: bare}
+.bar.ei   {grid-area: barei}
 
 .button-container {
   padding-top: 10px;
