@@ -37,7 +37,7 @@ class Collection extends React.Component {
     }
 
     handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
-    handleLogTimeStep = e => {
+    handleLogdt = e => {
         const logdt = Number(e.target.value);
         this.setState({logdt, dt: Math.floor(10 ** logdt)});
     }
@@ -300,190 +300,6 @@ class Collection extends React.Component {
             leftSide.push(controls);
             leftSide.push(rComponents);
 
-            // slider = (
-            //     <div className="slider">
-            //         <h2>Simulation parameters:</h2>
-            //         <table>
-            //             <thead>
-            //                 <tr>
-            //                     <th colSpan="4" align="left"> Slider functionality</th>
-            //                 </tr>
-            //             </thead>
-            //             <tbody>
-            //                 <tr rowSpan="2">
-            //                     <td>
-            //                         Simulation speed:
-            //                     </td>
-            //                     <td>
-            //                         slow
-            //                     </td>
-            //                     <td>
-            //                         <input
-            //                             type="range"
-            //                             onChange={this.handleInput}
-            //                             name="speed"
-            //                             min="0"
-            //                             max="1"
-            //                             step="0.1"
-            //                             value={speed}
-            //                         />
-            //                     </td>
-            //                     <td>
-            //                         regular
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td colSpan="4" align="left">
-            //                         ("Pause/Run" before change takes affect.)
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td>
-            //                         Damping (or "viscosity"):
-            //                     </td>
-            //                     <td>
-            //                         none
-            //                     </td>
-            //                     <td>
-            //                         <input
-            //                             type="range"
-            //                             onChange={this.handleInput}
-            //                             name="damping"
-            //                             min="0"
-            //                             max="2"
-            //                             step="0.1"
-            //                             value={damping}
-            //                         />
-            //                     </td>
-            //                     <td>
-            //                         much
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td>
-            //                         Timestep (logarithmic scale):
-            //                     </td>
-            //                     <td>
-            //                          1 ms
-            //                     </td>
-            //                     <td>
-            //                         <input
-            //                             type="range"
-            //                             onChange={this.handleLogTimeStep}
-            //                             name="logtimestep"
-            //                             min="0"
-            //                             max="3"
-            //                             step="0.15"
-            //                             value={logdt}
-            //                         />
-            //                     </td>
-            //                     <td>
-            //                          1 s
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td colSpan="4" align="left">
-            //                         (Present value is {dt} ms.)
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td>
-            //                         Type of restoring force:
-            //                     </td>
-            //                     <td>
-            //                         spring-like
-            //                     </td>
-            //                     <td>
-            //                         <input
-            //                             type="range"
-            //                             onChange={this.handleInput}
-            //                             name="T"
-            //                             min="0"
-            //                             max="1"
-            //                             step="0.1"
-            //                             value={this.state.T}
-            //                         />
-            //                     </td>
-            //                     <td>
-            //                         tension-like
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td>
-            //                         Length of velocity arrow (green dotted):
-            //                     </td>
-            //                     <td>
-            //                         0
-            //                     </td>
-            //                     <td>
-            //                         <input
-            //                             type="range"
-            //                             onChange={this.handleInput}
-            //                             name="velocityLength"
-            //                             min="0"
-            //                             max="1"
-            //                             step="0.1"
-            //                             value={this.state.velocityLength}
-            //                         />
-            //                     </td>
-            //                     <td>
-            //                         max
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td>
-            //                         Length of acceleration arrow (red):
-            //                     </td>
-            //                     <td>
-            //                         0
-            //                     </td>
-            //                     <td>
-            //                         <input
-            //                             type="range"
-            //                             onChange={this.handleInput}
-            //                             name="accelerationLength"
-            //                             min="0"
-            //                             max="1"
-            //                             step="0.1"
-            //                             value={this.state.accelerationLength}
-            //                         />
-            //                     </td>
-            //                     <td>
-            //                         max
-            //                     </td>
-            //                 </tr>
-            //                 <tr>
-            //                     <td>
-            //                         Width of "bond" lines (black):
-            //                     </td>
-            //                     <td>
-            //                         invisible
-            //                     </td>
-            //                     <td>
-            //                         <input
-            //                             type="range"
-            //                             onChange={this.handleInput}
-            //                             name="bondThickness"
-            //                             min="0"
-            //                             max="2"
-            //                             step="1"
-            //                             value={this.state.bondThickness}
-            //                         />
-            //                     </td>
-            //                     <td>
-            //                         max
-            //                     </td>
-            //                 </tr>
-            //             </tbody>
-            //         </table>
-            //         {/* <div>
-            //             <input type="checkbox" id="velocity" checked={this.state.showVelname="showVel"        onChange={this.handleVector}/>
-            //             <label htmlFor="velocity">Do you want to see each particle's velocitvector?</     label>
-            //         </div> */}
-            //     </div>
-            // );
-
-
             IC = (
                 <>
                     <h2>Initial conditions:</h2>
@@ -548,7 +364,7 @@ class Collection extends React.Component {
                         accelerationLength={this.state.accelerationLength}
                         bondThickness={this.state.bondThickness}
                         handleInput={this.handleInput}
-                        handleLogTimeStep={this.handleLogTimeStep} />
+                        handleLogdt={this.handleLogdt} />
                     {slider}
                     {IC}
                 </div>

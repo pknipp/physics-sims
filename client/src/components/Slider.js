@@ -15,7 +15,7 @@ const Slider = ({label, secondLine, minText, maxText, name, minVal,
                         type="range"
                         onChange={handler}
                         name={`${name}`}
-                        min={`${minVal}`}
+                        min="0"
                         max={`${maxVal}`}
                         step={`${stepSize}`}
                         value={quantity}
@@ -26,11 +26,11 @@ const Slider = ({label, secondLine, minText, maxText, name, minVal,
                 </td>
             </>
         </tr>
-        <tr>
+        {(!secondLine) ? null : <tr>
             <td colSpan="4" align="left">
                 ({secondLine})
             </td>
-        </tr>
+        </tr>}
     </>
 )
 export default Slider;
