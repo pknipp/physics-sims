@@ -20,7 +20,7 @@ class Collection extends React.Component {
             logdt: 1.5,
             T: 0.5,
             bondThickness: 1,
-            velocityLength: 0,
+            velocityLength: 1,
             accelerationLength: 0,
             calcEi: false,
             springConstant: 1,
@@ -40,13 +40,11 @@ class Collection extends React.Component {
         this.setState({logdt, dt: Math.floor(10 ** logdt)});
     }
     handleIC = e => {
-        let i = Number(e.target.name[0]);
-        let j = Number(e.target.name[1]);
-        let k = Number(e.target.name[2]);
+        let [i, j, k] = e.target.name.split("").map(char => Number(char));
         let val = e.target.value;
-        const newIC = JSON.parse(JSON.stringify(this.state.rvs));
-        newIC[i][j][k] = (val === "") ? "" : Number(val);
-        this.setState({rvs: newIC});
+        let rvs = JSON.parse(JSON.stringify(this.state.rvs));
+        rvs[i][j][k] = (val === "") ? "" : Number(val);
+        this.setState({rvs});
     }
     handleIndex = e => {
         const iNew = [...this.state.i];
