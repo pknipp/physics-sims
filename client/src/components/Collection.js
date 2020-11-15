@@ -200,7 +200,7 @@ class Collection extends React.Component {
         )
         let leftSide = [chooseN];
 // Following 4 lines are needed for scoping
-        let slider = null;
+        // let slider = null;
         let IC = null;
         let controls = null;
         let rComponents = null;
@@ -365,7 +365,6 @@ class Collection extends React.Component {
                         bondThickness={this.state.bondThickness}
                         handleInput={this.handleInput}
                         handleLogdt={this.handleLogdt} />
-                    {slider}
                     {IC}
                 </div>
             </div>
