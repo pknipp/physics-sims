@@ -17,7 +17,6 @@ class Collection extends React.Component {
             KE: 0,
             E: 0,
             Ei: 0,
-            dt: 31,
             logdt: 1.5,
             T: 0.5,
             k: 0.5,
@@ -25,6 +24,7 @@ class Collection extends React.Component {
             velocityLength: 0,
             accelerationLength: 0,
             calcEi: false,
+            springConstant: 1,
         }
     }
 
@@ -68,7 +68,7 @@ class Collection extends React.Component {
     }
 
     makeLattice = n => {
-        let springConstant = (n + 1) * (n + 1);
+        // let springConstant = (n + 1) * (n + 1);
         let xs = [];
         let zero6 = [];
         let optionsI = ["col"];
@@ -86,7 +86,7 @@ class Collection extends React.Component {
         let ys  = JSON.parse(JSON.stringify(xs));
         let rvs = JSON.parse(JSON.stringify(zero6));
         let Fs = JSON.parse(JSON.stringify(zero6));
-        const newState = {springConstant, xs, ys, rvs, Fs, zero6,
+        const newState = {xs, ys, rvs, Fs, zero6, dt: Math.floor(10 ** this.state.logdt),
             optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
     }
@@ -220,10 +220,10 @@ class Collection extends React.Component {
                             let X = X0 + numPx * this.state.rvs[i][j][0];
                             let Y = Y0 + numPx * this.state.rvs[i][j][1];
         // coefficients on following 4 lines are not that crucial
-                            let Vx = 3 * numPx * this.state.rvs[i][j][3]/n;
-                            let Vy = 3 * numPx * this.state.rvs[i][j][4]/n;
-                            let Ax = 3 * numPx * this.state.Fs[i][j][3]/n/n;
-                            let Ay = 3 * numPx * this.state.Fs[i][j][4]/n/n;
+                            let Vx = 3 * numPx * this.state.rvs[i][j][3]/1;
+                            let Vy = 3 * numPx * this.state.rvs[i][j][4]/1;
+                            let Ax = 3 * numPx * this.state.Fs[i][j][3]/1/1;
+                            let Ay = 3 * numPx * this.state.Fs[i][j][4]/1/1;
                             let XL;
                             let YL;
                             let XU;
