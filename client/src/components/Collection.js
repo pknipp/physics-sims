@@ -1,8 +1,9 @@
 import React from "react";
-import Object from "./Object";
+// import Object from "./Object";
 import Row from "./Row";
 import Graph from "./Graph";
 import Sliders from "./Sliders";
+import Drumhead from "./Drumhead";
 class Collection extends React.Component {
     constructor(props) {
         super(props);
@@ -63,7 +64,6 @@ class Collection extends React.Component {
     }
 
     makeLattice = n => {
-        // let springConstant = (n + 1) * (n + 1);
         let xs = [];
         let zero6 = [];
         let optionsI = ["col"];
@@ -208,67 +208,6 @@ class Collection extends React.Component {
         let numPx = 540;
         if (this.state.n && this.state.isLattice) {
             let { time } = this.state
-            rComponents = (
-                    this.state.xs.map((x, i, xs) => {
-                        return this.state.ys.map((y, j, ys) => {
-                            let X0 = numPx * (x + 0.5);
-                            let Y0 = numPx * (y + 0.5);
-                            let X = X0 + numPx * this.state.rvs[i][j][0];
-                            let Y = Y0 + numPx * this.state.rvs[i][j][1];
-        // coefficients on following 4 lines are not that crucial
-                            let Vx = 3 * numPx * this.state.rvs[i][j][3]/1;
-                            let Vy = 3 * numPx * this.state.rvs[i][j][4]/1;
-                            let Ax = 3 * numPx * this.state.Fs[i][j][3]/1/1;
-                            let Ay = 3 * numPx * this.state.Fs[i][j][4]/1/1;
-                            let XL;
-                            let YL;
-                            let XU;
-                            let YU;
-                            if (i === 0) {
-                                XL = 0;
-                                YL = numPx * (y + 0.5)
-                            } else {
-                                XL = numPx * (xs[i - 1] + 0.5 + this.state.rvs[i - 1][j][0]);
-                                YL = numPx * (y + 0.5 + this.state.rvs[i - 1][j][1]);
-                            }
-                            if (j === 0) {
-                                YU = 0;
-                                XU = numPx * (x + 0.5)
-                            } else {
-                                XU = numPx * (x + 0.5 + this.state.rvs[i][j - 1][0]);
-                                YU = numPx * (ys[j - 1] + 0.5 + this.state.rvs[i][j - 1][1]);
-                            }
-                            return (
-                                <div key={this.state.n * i + j}>
-                                    <Object
-                                        X0={X0}
-                                        Y0={Y0}
-                                        X={X}
-                                        Y={Y}
-                                        Z={this.state.rvs[i][j][2]}
-                                        XL={XL}
-                                        YL={YL}
-                                        XU={XU}
-                                        YU={YU}
-                                        XD={(j === n - 1) ? numPx * (x + 0.5): null}
-                                        YD={(j === n - 1) ? numPx: null}
-                                        XR={(i === n - 1) ? numPx: null}
-                                        YR={(i === n - 1) ? numPx * (y + 0.5): null}
-                                        Vx={Vx}
-                                        Vy={Vy}
-                                        Ax={Ax}
-                                        Ay={Ay}
-                                        bondThickness={this.state.bondThickness}
-                                        velocityLength={this.state.velocityLength}
-                                        accelerationLength={this.state.accelerationLength}
-                                        width={numPx * this.state.width}
-                                    />
-                                </div>
-                            )
-                        })
-                    })
-
-            )
             let { i, j, optionsI, optionsJ, rvs, damping, speed, nIC, logdt, dt } = this.state;
             let Rows = [];
             for (let iIC = 0; iIC < nIC; iIC++) {
@@ -351,7 +290,21 @@ class Collection extends React.Component {
                             width: `${numPx}px`
                         }}
                     >
-                        {rComponents}
+                        <>
+                        {/* {rComponents} */}
+                        {(!this.state.isLattice) ? null :
+                        <Drumhead
+                            n={n}
+                            xs={this.state.xs}
+                            ys={this.state.ys}
+                            rvs={this.state.rvs}
+                            Fs={this.state.Fs}
+                            width={this.state.width}
+                            velocityLength={this.state.velocityLength}
+                            accelerationLength={this.state.accelerationLength}
+                            bondWidth={this.state.bondWidth}
+                        />}
+                        </>
                     </div>
                 </div>
                 <div className="side">
