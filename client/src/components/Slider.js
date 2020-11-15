@@ -1,32 +1,36 @@
 import React from "react";
-const Slider = ({speed, damping, logdt, dt, T, velocityLength,
-    accelerationLength, bondThickness, handleInput, handleLogTimeStep}) => (
-    <tr rowSpan="2">
-        <td>
-            Simulation speed:
-        </td>
-        <td>
-            slow
-        </td>
-        <td>
-            <input
-                type="range"
-                onChange={handleInput}
-                name="speed"
-                min="0"
-                max="1"
-                step="0.1"
-                value={speed}
-            />
-        </td>
-        <td>
-            regular
-        </td>
-    </tr>
-    <tr>
-        <td colSpan="4" align="left">
-            ("Pause/Run" before change takes affect.)
-        </td>
-    </tr>
+const Slider = ({label, secondLine, minText, maxText, name, minVal,
+    maxVal, stepSize, quantity, handler}) => (
+    <>
+        <tr rowSpan="2">
+            <>
+                <td>
+                    {label}:
+                </td>
+                <td>
+                    {minText}
+                </td>
+                <td>
+                    <input
+                        type="range"
+                        onChange={handler}
+                        name={`${name}`}
+                        min={`${minVal}`}
+                        max={`${maxVal}`}
+                        step={`${stepSize}`}
+                        value={quantity}
+                    />
+                </td>
+                <td>
+                    {maxText}
+                </td>
+            </>
+        </tr>
+        <tr>
+            <td colSpan="4" align="left">
+                ({secondLine})
+            </td>
+        </tr>
+    </>
 )
 export default Slider;

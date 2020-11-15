@@ -1,4 +1,5 @@
 import React from "react";
+import Slider from "./Slider";
 const Sliders = ({speed, damping, logdt, dt, T, velocityLength,
     accelerationLength, bondThickness, handleInput, handleLogTimeStep}) => (
     <div className="slider">
@@ -10,33 +11,20 @@ const Sliders = ({speed, damping, logdt, dt, T, velocityLength,
                 </tr>
             </thead>
             <tbody>
-                <tr rowSpan="2">
-                    <td>
-                        Simulation speed:
-                    </td>
-                    <td>
-                        slow
-                    </td>
-                    <td>
-                        <input
-                            type="range"
-                            onChange={handleInput}
-                            name="speed"
-                            min="0"
-                            max="1"
-                            step="0.1"
-                            value={speed}
-                        />
-                    </td>
-                    <td>
-                        regular
-                    </td>
-                </tr>
-                <tr>
-                    <td colSpan="4" align="left">
-                        ("Pause/Run" before change takes affect.)
-                    </td>
-                </tr>
+                <Slider
+                    key="speed"
+                    label="Simulation speed"
+                    secondLine="(Pause/Run before change takes effect.)"
+                    minText="slow"
+                    maxText="regular"
+                    handler={handleInput}
+                    name="speed"
+                    minVal="0"
+                    maxVal="1"
+                    stepSize="0.1"
+                    quantity={speed}
+                    handler={handleLogTimeStep}
+                />
                 <tr>
                     <td>
                         Damping (or "viscosity"):
