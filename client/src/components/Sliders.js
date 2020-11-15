@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from "./Slider";
-const Sliders = ({speed, damping, logdt, dt, T, velocityLength,
+const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
     accelerationLength, bondThickness, handleInput, handleLogdt}) => (
     <div className="slider">
         <h2>Simulation parameters:</h2>
@@ -58,6 +58,18 @@ const Sliders = ({speed, damping, logdt, dt, T, velocityLength,
                     maxVal="1"
                     stepSize="0.1"
                     quantity={T}
+                />
+                <Slider
+                    key="springConstant"
+                    label='"Stiffness" of restoring force'
+                    secondLine=""
+                    minText="nonexistent"
+                    maxText="stiff"
+                    handler={handleInput}
+                    name="springConstant"
+                    maxVal="2"
+                    stepSize="0.2"
+                    quantity={springConstant}
                 />
                 <Slider
                     key="velocityLength"

@@ -183,6 +183,7 @@ class Collection extends React.Component {
         this.setState({ running });
     };
 
+
     render() {
         let { n } = this.state;
         const chooseN = (
@@ -208,7 +209,6 @@ class Collection extends React.Component {
         if (this.state.n && this.state.isLattice) {
             let { time } = this.state
             rComponents = (
-
                     this.state.xs.map((x, i, xs) => {
                         return this.state.ys.map((y, j, ys) => {
                             let X0 = numPx * (x + 0.5);
@@ -314,6 +314,7 @@ class Collection extends React.Component {
                             onChange={this.handleInput}
                             value={nIC}
                             min="0"
+                            max={n * n}
                             step="1"
                         />
                     </form>
