@@ -17,7 +17,7 @@ class Container extends React.Component {
           <div className="nav-bar">
             <span><NavLink className="nav" exact to="/"       activeClassName="active">Home           </NavLink></span>
             <span><NavLink className="nav" to="/drum" activeClassName="active">Drum</NavLink></span>
-            <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroids</NavLink></span>
+            <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroids (under construction)</NavLink></span>
             <span><NavLink className="nav" to="/account"      activeClassName="active">Account details</NavLink></span>
             <span><NavLink className="nav" to="/logout"       activeClassName="active">Logout         </NavLink></span>
           </div>
@@ -25,7 +25,7 @@ class Container extends React.Component {
         <Switch>
           <Route path="/logout"       component={Logout}     />
           <Route path="/drum"       component={Collection}     />
-            <Route path="/asteroids" component={Asteroids} />
+            {/* <Route path="/asteroids" component={Asteroids} /> */}
           <Route path="/account"      component={Account}    />
         </Switch>
       </BrowserRouter>
