@@ -4,6 +4,7 @@ import Row from "./Row";
 import Graph from "./Graph";
 import Sliders from "./Sliders";
 import Drumhead from "./Drumhead";
+import IC from "./IC";
 class Collection extends React.Component {
     constructor(props) {
         super(props);
@@ -185,104 +186,48 @@ class Collection extends React.Component {
 
 
     render() {
-        let { n } = this.state;
-        const chooseN = (
-            <form>
-                <label>How many particles should be along each edge? </label>
-                <input
-                    type="number"
-                    onChange={this.handleN}
-                    placeholder="# of particles"
-                    value={String(n)}
-                    min="1"
-                    step="1"
-                />
-            </form>
-        )
-        let leftSide = [chooseN];
-// Following 4 lines are needed for scoping
-        // let slider = null;
-        let IC = null;
-        let controls = null;
-        let rComponents = null;
         let numPx = 540;
-        if (this.state.n && this.state.isLattice) {
-            let { time } = this.state
-            let { i, j, optionsI, optionsJ, rvs, damping, speed, nIC, logdt, dt } = this.state;
-            let Rows = [];
-            for (let iIC = 0; iIC < nIC; iIC++) {
-                Rows.push(
-                    <Row
-                        key={iIC}
-                        optionsI={optionsI}
-                        optionsJ={optionsJ}
-                        rvs={rvs}
-                        i={i}
-                        j={j}
-                        iIC={iIC}
-                        handleIndex={this.handleIndex}
-                        handleIC={this.handleIC}
-                    />
-                )
-            }
-            controls = (
-                <div className="controls">
-                    <span className="button-container">
-                    <button onClick={this.toggle}>
-                        {this.state.running ? "Pause" : "Run"}
-                    </button>
-                    </span>
-                    time: {Math.floor(100 * time)/100} s
-                    <Graph KE={this.state.KE} PE={this.state.PE} E={this.state.E} Ei={this.state.Ei} />
-                </div>
+        let { i, j, n, time, optionsI, optionsJ, rvs, nIC } = this.state;
+        let Rows = [];
+        for (let iIC = 0; iIC < nIC; iIC++) {
+            Rows.push(
+                <Row
+                    key={iIC}
+                    optionsI={optionsI}
+                    optionsJ={optionsJ}
+                    rvs={rvs}
+                    i={i}
+                    j={j}
+                    iIC={iIC}
+                    handleIndex={this.handleIndex}
+                    handleIC={this.handleIC}
+                />
             )
-            leftSide.push(controls);
-            leftSide.push(rComponents);
-
-            IC = (
-                <>
-                    <h2>Initial conditions:</h2>
-                    <span>
-                        Specify the number of particles that you'll displace from equilibrium.
-                    </span>
-                    <form>
-                        <label htmlFor="nIC">number = </label>
-                        <input
-                            type="number"
-                            name="nIC"
-                            onChange={this.handleInput}
-                            value={nIC}
-                            min="0"
-                            max={n * n}
-                            step="1"
-                        />
-                    </form>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th colSpan="2" align="center">choose particle's</th>
-                                <th colSpan="3">displacement</th>
-                                <th colSpan="3">velocity</th>
-                            </tr>
-                            <tr>
-                                <td colSpan="2">row and column</td>
-                                <td align="center">x</td><td align="center">y</td><td align="center">z</td>
-                                <td align="center">x</td><td align="center">y</td><td align="center">z</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Rows}
-                        </tbody>
-                    </table>
-                </>
-            );
         }
 
         return (
             <div className="container">
                 <div className="side">
-                    {chooseN}
-                    {controls}
+                    <form>
+                        <label>How many particles should be along each edge? </label>
+                        <input
+                            type="number"
+                            onChange={this.handleN}
+                            placeholder="# of particles"
+                            value={String(n)}
+                            min="1"
+                            step="1"
+                        />
+                    </form>
+                    <div className="controls">
+                        <span className="button-container">
+                            <button onClick={this.toggle}>
+                                {this.state.running ? "Pause" : "Run"}
+                            </button>
+                        </span>
+                        time: {Math.floor(100 * time)/100} s
+                    </div>
+                    <Graph KE={this.state.KE} PE={this.state.PE} E={this.state.E} Ei={this.state.Ei} />
                     <div
                         className="drumContainer"
                         style={{
@@ -291,19 +236,19 @@ class Collection extends React.Component {
                         }}
                     >
                         <>
-                        {/* {rComponents} */}
-                        {(!this.state.isLattice) ? null :
-                        <Drumhead
-                            n={n}
-                            xs={this.state.xs}
-                            ys={this.state.ys}
-                            rvs={this.state.rvs}
-                            Fs={this.state.Fs}
-                            width={this.state.width}
-                            velocityLength={this.state.velocityLength}
-                            accelerationLength={this.state.accelerationLength}
-                            bondWidth={this.state.bondWidth}
-                        />}
+                            {(!this.state.isLattice) ? null :
+                                <Drumhead
+                                    n={n}
+                                    xs={this.state.xs}
+                                    ys={this.state.ys}
+                                    rvs={this.state.rvs}
+                                    Fs={this.state.Fs}
+                                    width={this.state.width}
+                                    velocityLength={this.state.velocityLength}
+                                    accelerationLength={this.state.accelerationLength}
+                                    bondWidth={this.state.bondWidth}
+                                />
+                            }
                         </>
                     </div>
                 </div>
@@ -318,8 +263,19 @@ class Collection extends React.Component {
                         accelerationLength={this.state.accelerationLength}
                         bondThickness={this.state.bondThickness}
                         handleInput={this.handleInput}
-                        handleLogdt={this.handleLogdt} />
-                    {IC}
+                        handleLogdt={this.handleLogdt}
+                    />
+                    <IC
+                        nIC={this.state.nIC}
+                        i={this.state.i}
+                        j={this.state.j}
+                        rvs={this.state.rvs}
+                        optionsI={this.state.optionsI}
+                        optionsJ={this.state.optionsJ}
+                        handleInput={this.handleInput}
+                        handleIndex={this.handleIndex}
+                        handleIC={this.handleIC}
+                    />
                 </div>
             </div>
         )
