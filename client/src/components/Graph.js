@@ -12,14 +12,14 @@ const Graph = ({KE, PE, E, Ei}) => {
             <div className="title pe">potential (PE)</div>
             <div className="title e">total (KE + PE)</div>
             <div className="title ei">initial</div>
-            <Number key="ke" e={"ke"} E={KE} Efac={Efac} />
-            <Number key="pe" e={"pe"} E={PE} Efac={Efac} />
-            <Number key="e"  e={"e"}  E={E}  Efac={Efac} />
-            <Number key="ei" e={"ei"} E={Ei} Efac={Efac} />
-            <Bar key="ke" e={"ke"} E={KE} Efac={Efac} />
-            <Bar key="pe" e={"pe"} E={PE} Efac={Efac} />
-            <Bar key="e"  e={"e"}  E={E}  Efac={Efac} />
-            <Bar key="ei" e={"ei"} E={Ei} Efac={Efac} />
+            <Number key="nke" e={"ke"} E={KE} Efac={Efac} />
+            <Number key="npe" e={"pe"} E={PE} Efac={Efac} />
+            <Number key="ne"  e={"e"}  E={E}  Efac={Efac} />
+            <Number key="nei" e={"ei"} E={Ei} Efac={Efac} />
+            <Bar key="bke" e={"ke"} E={KE} Efac={Efac} />
+            <Bar key="bpe" e={"pe"} E={PE} Efac={Efac} />
+            <Bar key="be"  e={"e"}  E={E}  Efac={Efac} />
+            <Bar key="bei" e={"ei"} E={Ei} Efac={Efac} />
         </div>
     )
 }

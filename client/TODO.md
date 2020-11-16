@@ -5,7 +5,7 @@ GENERAL:
 DRUMHEAD:
 * revise script for presentation
 * readjust scaling for energies?
-* figure out why sim goes berzerk when speed = 0
+* ensure that user can only enter unique (i,j) combos for IC
 * insert asteroids component to page reached after login
 * insert CRUD for user (signup, account details, edit details, delete user)
 * change nested for-loops to nested list-comprehensions?

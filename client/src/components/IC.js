@@ -17,7 +17,6 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
             />
         )
     }
-    console.log(nIC, Rows.length);
     return (
         <>
             <h2>Initial conditions:</h2>

@@ -89,34 +89,34 @@ class Collection extends React.Component {
 
     // Calculate (generalized) force, KE, PE, and E for a particular point in phase space
     Fs = rvs => {
-        let kConst = 1 - this.state.T;
-        const { damping } = this.state;
+        const { damping, n, T, springConstant } = this.state;
+        let kConst = 1 - T;
         let Fs = JSON.parse(JSON.stringify(this.state.zero6));
         let PEk = 0;
         let PET = 0;
         let KE = 0;
-        for (let i = 0; i < this.state.n; i++) {
+        for (let i = 0; i < n; i++) {
             PEk += rvs[0][i][0] ** 2 + rvs[i][0][1] ** 2;
             PET +=
                 rvs[0][i][1] ** 2 + rvs[0][i][2] ** 2 +
                 rvs[i][0][0] ** 2 + rvs[i][0][2] ** 2;
-            for (let j = 0; j < this.state.n; j++) {
+            for (let j = 0; j < n; j++) {
                 for (let k = 0; k < 3; k++) {
                     Fs[i][j][k] = rvs[i][j][k + 3];
                     KE += rvs[i][j][k + 3] * rvs[i][j][k + 3];
                 }
                 const rL = (i === 0)     ? [0, 0, 0] : rvs[i - 1][j];
-                const rR = (i === this.state.n - 1)? [0, 0, 0] : rvs[i + 1][j];
+                const rR = (i === n - 1)? [0, 0, 0] : rvs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
-                const rD = (j === this.state.n - 1)? [0, 0, 0] : rvs[i][j + 1];
-                Fs[i][j][3] = - damping * rvs[i][j][3] + this.state.springConstant * (
+                const rD = (j === n - 1)? [0, 0, 0] : rvs[i][j + 1];
+                Fs[i][j][3] = - damping * rvs[i][j][3] + springConstant * (
                         kConst * (-2 * rvs[i][j][0] + rL[0] + rR[0])
-                        + this.state.T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
-                Fs[i][j][4] = - damping * rvs[i][j][4] + this.state.springConstant * (
+                        + T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
+                Fs[i][j][4] = - damping * rvs[i][j][4] + springConstant * (
                         kConst * (-2 * rvs[i][j][1] + rU[1] + rD[1])
-                        + this.state.T * (-2 * rvs[i][j][1] + rL[1] + rR[1]));
-                Fs[i][j][5] = - damping * rvs[i][j][5] + this.state.springConstant *
-                            this.state.T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
+                        + T * (-2 * rvs[i][j][1] + rL[1] + rR[1]));
+                Fs[i][j][5] = - damping * rvs[i][j][5] + springConstant *
+                            T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
                 let dxR = rvs[i][j][0] - rR[0];
                 let dyD = rvs[i][j][1] - rD[1];
                 PEk += dxR * dxR + dyD * dyD;
@@ -126,8 +126,8 @@ class Collection extends React.Component {
             }
         }
         KE /= 2;
-        PEk *= this.state.springConstant * kConst / 2;
-        PET *= this.state.springConstant * this.state.T / 2;
+        PEk *= springConstant * kConst / 2;
+        PET *= springConstant * T / 2;
         const PE = PET + PEk;
         const E = PE + KE;
         return [Fs, KE, PE, E];
@@ -136,12 +136,12 @@ class Collection extends React.Component {
         // 1) ... finds the present generalized force,
         // 2) ... propagates through phase-space for a particular amount of time (= dt/2),
         // 3) ... and then returns the final value of the generalized force.
-        nextFs = (Fs, n) => {
+        nextFs = (Fs, m) => {
             let rvs = JSON.parse(JSON.stringify(this.state.rvs));
             for (let i = 0; i < this.state.n; i++) {
                 for (let j = 0; j < this.state.n; j++) {
                     for (let k = 0; k < 6; k++) {
-                        rvs[i][j][k] += Fs[i][j][k] * this.state.dt / 1000 / n;
+                        rvs[i][j][k] += Fs[i][j][k] * this.state.dt / 1000 / m;
                     }
                 }
             }
@@ -175,7 +175,9 @@ class Collection extends React.Component {
     toggle = () => {
         const running = !this.state.running;
         if (running) {
-          this.interval = setInterval(this.tick, Math.floor(this.state.dt/this.state.speed));
+          this.interval = setInterval(
+              this.tick,
+              Math.floor(this.state.dt/Math.max(0.1, this.state.speed)));
           this.setState({t: 0});
         } else {
           clearInterval(this.interval);
@@ -187,17 +189,17 @@ class Collection extends React.Component {
 
     render() {
         let numPx = 540;
-        let { i, j, n, time, optionsI, optionsJ, rvs, nIC } = this.state;
+        let { n, rvs, velocityLength, accelerationLength, bondWidth } = this.state;
         let Rows = [];
-        for (let iIC = 0; iIC < nIC; iIC++) {
+        for (let iIC = 0; iIC < this.state.nIC; iIC++) {
             Rows.push(
                 <Row
                     key={iIC}
-                    optionsI={optionsI}
-                    optionsJ={optionsJ}
+                    optionsI={this.state.optionsI}
+                    optionsJ={this.state.optionsJ}
                     rvs={rvs}
-                    i={i}
-                    j={j}
+                    i={this.state.i}
+                    j={this.state.j}
                     iIC={iIC}
                     handleIndex={this.handleIndex}
                     handleIC={this.handleIC}
@@ -225,7 +227,7 @@ class Collection extends React.Component {
                                 {this.state.running ? "Pause" : "Run"}
                             </button>
                         </span>
-                        time: {Math.floor(100 * time)/100} s
+                        time: {Math.floor(100 * this.state.time)/100} s
                     </div>
                     <Graph KE={this.state.KE} PE={this.state.PE} E={this.state.E} Ei={this.state.Ei} />
                     <div
@@ -241,12 +243,12 @@ class Collection extends React.Component {
                                     n={n}
                                     xs={this.state.xs}
                                     ys={this.state.ys}
-                                    rvs={this.state.rvs}
+                                    rvs={rvs}
                                     Fs={this.state.Fs}
                                     width={this.state.width}
-                                    velocityLength={this.state.velocityLength}
-                                    accelerationLength={this.state.accelerationLength}
-                                    bondWidth={this.state.bondWidth}
+                                    velocityLength={velocityLength}
+                                    accelerationLength={accelerationLength}
+                                    bondWidth={bondWidth}
                                 />
                             }
                         </>
@@ -267,6 +269,7 @@ class Collection extends React.Component {
                     />
                     <IC
                         nIC={this.state.nIC}
+                        n={n}
                         i={this.state.i}
                         j={this.state.j}
                         rvs={this.state.rvs}
