@@ -1,6 +1,8 @@
 1. front: js/react/redux and back: js/express/sequelize
+1. dynamic styling: left (x), top (y), z-index/height/width (z), transform: rotate
+1. math for styling: trig (SOHCAHTOA & pythagorean theorem)
+1. math for dynamics: 4th-order Runge-Kutta integrator for differential equations
 1. timer based on setInterval (as in clock component of "widgets")
-1. object is simply a rounded box w/absolute positioning and dynamic styling
 ```
 // xpx, ypx, and Z are parts of state, and "size" is derived from Z
 <div className="dot moving" style={{
@@ -13,7 +15,6 @@
 ```
 4. nothing happens until object is displaced from "equilibrium" (initial conditions)
 1. demo running (1-d?) behavior w/nonzero IC (w/no v-vector or a-vector)
-1. drawing angled lines w/css "transform" and SOHCAHTOA
 ```
 // basic trig required to get angled lines:
 rR = Math.sqrt((X - XR) * (X - XR) + (Y - YR) * (Y - YR));  // Pythagorean theorem

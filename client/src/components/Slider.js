@@ -1,6 +1,8 @@
 import React from "react";
-const Slider = ({label, secondLine, minText, maxText, name, minVal,
-    maxVal, stepSize, quantity, handler}) => (
+const Slider = ({label, secondLine, minText, maxText, name,
+    maxVal, stepSize, quantity, handler}) => {
+        debugger
+        return (
     <>
         <tr rowSpan="2">
             <>
@@ -32,5 +34,5 @@ const Slider = ({label, secondLine, minText, maxText, name, minVal,
             </td>
         </tr>}
     </>
-)
+)}
 export default Slider;

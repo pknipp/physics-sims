@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Logout from "./components/Logout";
 import Collection from "./components/Collection";
-import Asteroids from "./components/Asteroids";
+// import Asteroids from "./components/Asteroids";
 import Account from "./components/Account";
 
 class Container extends React.Component {

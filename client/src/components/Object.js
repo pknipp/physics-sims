@@ -1,5 +1,6 @@
 import React from "react";
 const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y0, width, bondThickness, velocityLength, accelerationLength, backgroundColor}) => {
+    debugger
     let rL = Math.sqrt((X - XL) * (X - XL) + (Y - YL) * (Y - YL));
     let rU = Math.sqrt((X - XU) * (X - XU) + (Y - YU) * (Y - YU));
     let rD;

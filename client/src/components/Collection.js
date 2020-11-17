@@ -13,10 +13,13 @@ class Collection extends React.Component {
             time: 0,
             n: 1,
             nIC: 0,
+            // optionsI: ["row", 1],
+            // optionsJ: ["column", 1],
+            // rvs: [0.4, 0, 1, 0, 0.7, 0],
             damping: 0,
             speed: 1,
-            i: [],
-            j: [],
+            i: [1],
+            j: [1],
             PE: 0,
             KE: 0,
             E: 0,
@@ -25,7 +28,7 @@ class Collection extends React.Component {
             T: 0.5,
             bondThickness: 1,
             velocityLength: 1,
-            accelerationLength: 0,
+            accelerationLength: 1,
             calcEi: false,
             springConstant: 1,
         }
@@ -59,6 +62,7 @@ class Collection extends React.Component {
     }
     // The following method handles many inputs
     handleInput = e => {
+        debugger
         const newState = {};
         newState[e.target.name] = e.target.value;
         this.setState(newState);
@@ -189,7 +193,8 @@ class Collection extends React.Component {
 
     render() {
         let numPx = 540;
-        let { n, rvs, velocityLength, accelerationLength, bondWidth } = this.state;
+        let { n, rvs, velocityLength, accelerationLength, bondThickness } = this.state;
+        debugger
         let Rows = [];
         for (let iIC = 0; iIC < this.state.nIC; iIC++) {
             Rows.push(
@@ -248,7 +253,7 @@ class Collection extends React.Component {
                                     width={this.state.width}
                                     velocityLength={velocityLength}
                                     accelerationLength={accelerationLength}
-                                    bondWidth={bondWidth}
+                                    bondThickness={bondThickness}
                                 />
                             }
                         </>
