@@ -2,7 +2,6 @@ import React from "react";
 import Object from "./Object";
 
 const Drumhead = ({n, xs, ys, rvs, Fs, velocityLength, accelerationLength, bondThickness, width}) => {
-    debugger
     let numPx = 540;
     let rComponents = (
         xs.map((x, i) => {

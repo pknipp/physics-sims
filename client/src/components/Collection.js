@@ -12,10 +12,10 @@ class Collection extends React.Component {
             running: false,
             time: 0,
             n: 1,
-            nIC: 0,
-            // optionsI: ["row", 1],
-            // optionsJ: ["column", 1],
-            // rvs: [0.4, 0, 1, 0, 0.7, 0],
+            nIC: 1,
+            optionsI: ["row", 1],
+            optionsJ: ["column", 1],
+            rvs: [[[0.2, 0, 0.8, 0, 0.3, 0]]],
             damping: 0,
             speed: 1,
             i: [1],
@@ -26,9 +26,9 @@ class Collection extends React.Component {
             Ei: 0,
             logdt: 1.5,
             T: 0.5,
-            bondThickness: 1,
-            velocityLength: 1,
-            accelerationLength: 1,
+            bondThickness: 0.5,
+            velocityLength: 0.5,
+            accelerationLength: 0.5,
             calcEi: false,
             springConstant: 1,
         }
@@ -41,10 +41,15 @@ class Collection extends React.Component {
         this.setState({time: nextT}, () => this.nextRvs())
     }
 
-    handleN = e => this.setState({n: Number(e.target.value)}, () => this.makeLattice(this.state.n));
+    handleN = e => {
+        this.setState(
+            {n: Number(e.target.value), isLattice: false},
+            () => this.makeLattice(this.state.n)
+        );
+    }
     handleLogdt = e => {
         const logdt = Number(e.target.value);
-        this.setState({logdt, dt: Math.floor(10 ** logdt)});
+        this.setState({logdt, dt: Math.round(10 ** logdt)});
     }
     handleIC = e => {
         let [i, j, k] = e.target.name.split("").map(char => Number(char));
@@ -62,7 +67,6 @@ class Collection extends React.Component {
     }
     // The following method handles many inputs
     handleInput = e => {
-        debugger
         const newState = {};
         newState[e.target.name] = e.target.value;
         this.setState(newState);
@@ -85,8 +89,10 @@ class Collection extends React.Component {
         }
         let ys  = JSON.parse(JSON.stringify(xs));
         let rvs = JSON.parse(JSON.stringify(zero6));
+        rvs[0][0] = JSON.parse(JSON.stringify(this.state.rvs[0][0]));
         let Fs = JSON.parse(JSON.stringify(zero6));
-        const newState = {xs, ys, rvs, Fs, zero6, dt: Math.floor(10 ** this.state.logdt),
+        const newState = {xs, ys, rvs,
+            Fs, zero6, dt: Math.round(10 ** this.state.logdt),
             optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
     }
@@ -181,7 +187,7 @@ class Collection extends React.Component {
         if (running) {
           this.interval = setInterval(
               this.tick,
-              Math.floor(this.state.dt/Math.max(0.1, this.state.speed)));
+              Math.round(this.state.dt/Math.max(0.1, this.state.speed)));
           this.setState({t: 0});
         } else {
           clearInterval(this.interval);
@@ -194,7 +200,6 @@ class Collection extends React.Component {
     render() {
         let numPx = 540;
         let { n, rvs, velocityLength, accelerationLength, bondThickness } = this.state;
-        debugger
         let Rows = [];
         for (let iIC = 0; iIC < this.state.nIC; iIC++) {
             Rows.push(
@@ -232,7 +237,7 @@ class Collection extends React.Component {
                                 {this.state.running ? "Pause" : "Run"}
                             </button>
                         </span>
-                        time: {Math.floor(100 * this.state.time)/100} s
+                        time: {Math.round(100 * this.state.time)/100} s
                     </div>
                     <Graph KE={this.state.KE} PE={this.state.PE} E={this.state.E} Ei={this.state.Ei} />
                     <div

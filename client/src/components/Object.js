@@ -1,6 +1,5 @@
 import React from "react";
 const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y0, width, bondThickness, velocityLength, accelerationLength, backgroundColor}) => {
-    debugger
     let rL = Math.sqrt((X - XL) * (X - XL) + (Y - YL) * (Y - YL));
     let rU = Math.sqrt((X - XU) * (X - XU) + (Y - YU) * (Y - YU));
     let rD;
@@ -21,11 +20,11 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y
     }
     let angleL = Math.atan2(YL - Y, XL - X) * 180 / Math.PI;
     let angleU = Math.atan2(YU - Y, XU - X) * 180 / Math.PI;
-    let xpx0 = Math.floor(X0 - width/2);
-    let ypx0 = Math.floor(Y0 - width/2);
-    let size = Math.floor(width * ((Z < 0) ? 1/(1 - Z) : 1 + Z));
-    let xpx = Math.floor(X - size/2);
-    let ypx = Math.floor(Y - size/2);
+    let xpx0 = Math.round(X0 - width/2);
+    let ypx0 = Math.round(Y0 - width/2);
+    let size = Math.round(width * ((Z < 0) ? 1/(1 - Z) : 1 + Z));
+    let xpx = Math.round(X - size/2);
+    let ypx = Math.round(Y - size/2);
     return (
         <>
             <div className="dot moving" style={{
@@ -33,7 +32,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y
                 width:`${size}px`,
                 left: `${xpx}px`,
                 top: `${ypx}px`,
-                zIndex: `${Math.floor(1000 * Z)}`,
+                zIndex: `${Math.round(1000 * Z)}`,
             }}/>
 
             <div className="dot stationary" style={{
