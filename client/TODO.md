@@ -5,7 +5,7 @@ GENERAL:
 DRUMHEAD:
 * revise script for final presentation
 * insert instructions (w/checkbox for whether or not to display?)
-* insert default IC which'll essentially make instructions unnecessary
+* break down some components?
 * readjust scaling for energies?
 * ensure that user can only enter unique (i,j) combos for IC
 * insert asteroids component to page reached after login
