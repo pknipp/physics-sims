@@ -2,7 +2,6 @@ import React from "react";
 
 const Bond = ({x, y, z, x1, y1, width, size, bondThickness}) => {
     if (x1 === null || y1 === null) return null;
-    debugger
     const dx = x1 - x;
     const dy = y1 - y;
     const r = Math.sqrt(dx * dx + dy * dy);
