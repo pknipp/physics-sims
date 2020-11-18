@@ -15,8 +15,17 @@ export const login = (email, password) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    console.log("after fetch call");
-    console.log("response.ok = ", response.ok);
+    if (response.ok) dispatch(setUser((await response.json()).user))
+  };
+};
+
+export const signup = (email, password) => {
+  console.log("top of signup function in authentication.js");
+  return async dispatch => {
+    const response = await fetch(`/api/users`, { method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
     if (response.ok) dispatch(setUser((await response.json()).user))
   };
 };

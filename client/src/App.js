@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Login from './components/Login';
+import Signup from './components/Signup';
+import Navbar from './components/Navbar';
 import Container from "./Container";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -13,8 +15,10 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
+        <Navbar />
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
           <PrivateRoute
             path="/"
             // exact={true}
