@@ -11,7 +11,6 @@ DRUMHEAD:
 * insert asteroids component to page reached after login
 * insert CU for user (signup and edit details)
 * change nested for-loops to nested list-comprehensions?
-* consolitate column-choice and row-choice into a single component ("ChooseIndex"), thereby DRY-ing somewhat.
 * use checkboxes (rather than sliders) for a- & v-arrows, along w/bond width?
 * make it easier for user to enable negative inputs for ICs
 * insert a "reset" button

@@ -1,5 +1,6 @@
 import React from "react";
 import Element from "./Element";
+import ChooseIndex from "./ChooseIndex";
 const Row = ({ optionsI, optionsJ, rvs, i, j, iIC, handleIndex, handleIC}) => {
     let row = [];
     for (let k = 0; k < 6; k++) {
@@ -15,38 +16,12 @@ const Row = ({ optionsI, optionsJ, rvs, i, j, iIC, handleIndex, handleIC}) => {
         );
         row.push(element);
     }
-
     return (
         <tr>
-            <td>
-                <select
-                    onChange={handleIndex}
-                    name="j"
-                    value={j[iIC]}
-                >
-                    {optionsJ.map((option, row) => (
-                        <option key={row} value={row}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-            </td>
-            <td>
-                <select
-                    onChange={handleIndex}
-                    name="i"
-                    value={i[iIC]}
-                >
-                    {optionsI.map((option, col) => (
-                        <option key={col} value={col}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-            </td>
+            <ChooseIndex options={optionsJ} name={`j${iIC}`} iorj={j[iIC]} handleIndex={handleIndex} />
+            <ChooseIndex options={optionsI} name={`i${iIC}`} iorj={i[iIC]} handleIndex={handleIndex} />
             {(!i || !i[iIC] || !j || !j[iIC]) ? <td colSpan="4"></td> : row}
         </tr>
     )
 }
-
 export default Row;

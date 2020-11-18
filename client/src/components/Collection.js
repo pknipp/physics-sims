@@ -59,10 +59,12 @@ class Collection extends React.Component {
         this.setState({rvs});
     }
     handleIndex = e => {
+        const name = e.target.name;
         const iNew = [...this.state.i];
         const jNew = [...this.state.j];
         const newIndices = {i: iNew, j: jNew};
-        newIndices[e.target.name].push(Number(e.target.value));
+        newIndices[name[0]][Number(name.slice(1))] = Number(e.target.value);
+        debugger
         this.setState(newIndices);
     }
     // The following method handles many inputs
