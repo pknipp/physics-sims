@@ -26,3 +26,22 @@ PLANETARY MOTION:
 * 2-d motion of planets (using exact solution)
 Stretch:
 * make this 3-d
+
+VIBRATING BEAM:
+* display either horizontally or vertically
+* choose which BC to zero: (1) y & y', (2) y & y'', etc
+* unforced oscillations: how to displace it initially (at end?)
+* forced oscillations: displacement at end, rotation at end, uniformly along length?, all w/damping?
+
+EULER's TORQUE-FREE motion:
+* 3-d rendering of a rectangular parallelipiped w/a stationary mass-center
+
+COLLISIONS:
+* tunable coefficient of restitution (e)
+* during each timestep, determine if there'll be a collision, and which'll be the first one (work from there)
+* each timestep involves a large array of line segments, SOME of which intersect
+* determine the earliest point of any of these intersection, enforce this collision, and then find the next collision
+* 1-d, 2-d, and 3-d
+
+VIBRATING STRING:
+* 1-d version of Drumhead

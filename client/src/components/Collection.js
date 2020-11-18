@@ -15,7 +15,7 @@ class Collection extends React.Component {
             nIC: 1,
             optionsI: ["row", 1],
             optionsJ: ["column", 1],
-            rvs: [[[0.2, 0, 0.8, 0, 0.3, 0]]],
+            rvs: [[[0.0, 0, 0.0, 0, 0.0, 0]]],
             damping: 0,
             speed: 1,
             i: [1],
