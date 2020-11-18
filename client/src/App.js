@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Navbar from './components/Navbar';
 import Container from "./Container";
+import Container2 from './Container2';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
@@ -15,13 +16,19 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Navbar />
+        {/* <Navbar currentUserId={this.props.currentUserId} /> */}
         <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
+          {/* <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} /> */}
           <PrivateRoute
             path="/"
             // exact={true}
+            needLogin={!this.props.needLogin}
+            component={Container2}
+          />
+          <PrivateRoute
+            path="/"
+            exact={true}
             needLogin={this.props.needLogin}
             component={Container}
           />

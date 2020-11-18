@@ -5,7 +5,10 @@ const SET_USER = "physics_sims/authentication/SET_USER";
 const REMOVE_USER = "physics_sims/authentication/REMOVE_USER";
 const NEW_USER = "physics_sims/authentication/NEW_USER";
 
-export const setUser    = user => ({ type: SET_USER, user })
+export const setUser    = user => {
+  console.log("top of setUser action creator");
+  return { type: SET_USER, user };
+}
 export const removeUser = _    => ({ type: REMOVE_USER    })
 export const newUser    = user => ({ type: NEW_USER, user })
 
@@ -54,6 +57,7 @@ const loadUser = () => {
 export default function reducer(state=loadUser(), action) {
   switch (action.type) {
     case SET_USER:
+      console.log("inside set_user case of reducer");
       return action.user;
     case REMOVE_USER:
       return {};
