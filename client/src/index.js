@@ -8,7 +8,7 @@ import App from './App';
 import configureStore from './store/configureStore';
 require("dotenv").config();
 
-const store = configureStore();
+export const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,3 +19,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+// export default store;

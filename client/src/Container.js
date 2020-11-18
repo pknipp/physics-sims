@@ -8,7 +8,6 @@ import Collection from "./components/Collection";
 import Account from "./components/Account";
 
 class Container extends React.Component {
-  // componentDidMount() {this.props.fetchClasses()}
   render() {
     return (
       <BrowserRouter>
