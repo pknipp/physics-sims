@@ -8,9 +8,13 @@ import Signup from "./components/Signup";
 import Collection from "./components/Collection";
 // import Asteroids from "./components/Asteroids";
 import Account from "./components/Account";
+import { store } from "./index.js";
 
 class Container2 extends React.Component {
   // componentDidMount() {this.props.fetchClasses()}
+  componentDidMount() {this.unsubscribe = store.subscribe(() => this.forceUpdate())};
+  componentWillUnmount() {if (this.unsubscribe) this.unsubscribe()};
+
   render() {
     return (
       <BrowserRouter>
