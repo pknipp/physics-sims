@@ -16,8 +16,8 @@ class Container extends React.Component {
           <h1>{this.props.email} welcome to my physics simulations</h1>
           <div className="nav-bar">
             <span><NavLink className="nav" exact to="/"       activeClassName="active">Home           </NavLink></span>
-            <span><NavLink className="nav" to="/drum" activeClassName="active">Drum</NavLink></span>
-            <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroids (under construction)</NavLink></span>
+            <span><NavLink className="nav" to="/drum" activeClassName="active">Drumhead</NavLink></span>
+            <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroids (work in progress)</NavLink></span>
             <span><NavLink className="nav" to="/account"      activeClassName="active">Account details</NavLink></span>
             <span><NavLink className="nav" to="/logout"       activeClassName="active">Logout         </NavLink></span>
           </div>

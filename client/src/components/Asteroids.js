@@ -10,27 +10,34 @@ class Asteroids extends React.Component {
             n_rocks: 500,
             rocks: [],
         }
+        this.nx = 1400;
+        this.ny = 660;
     }
 
     componentDidMount() {this.setRocks()}
 
+    newRock = z => {
+        let rock = {};
+        rock.xi = Math.random() - 0.5;
+        rock.yi = Math.random() - 0.5;
+        rock.zi = (z === undefined) ? Math.random() : z;
+        rock.vx = 0.01 * (Math.random() - 0.5)
+        rock.vy = 0.005 * (Math.random() - 0.5);
+        rock.vz = 0.02 * (1 + 0.2 * (Math.random() - 0.5));
+        rock.R = Math.floor(255 * Math.random());
+        rock.G = Math.floor(255 * Math.random());
+        rock.B = Math.floor(255 * Math.random());
+        return rock;
+    }
+
+    isVisible = (X, Y, size) => (size < 0 || Math.abs(X) > 0.5 || Math.abs(Y) > 0.5);
+
     setRocks = () => {
         const rocks = [];
         for (let i = 0; i < this.state.n_rocks; i++) {
-            let rock = {};
-            rock.xi = Math.random() - 0.5;
-            rock.yi = Math.random() - 0.5;
-            rock.zi = Math.random();
-            rock.vx = 0.01 * (Math.random() - 0.5)
-            rock.vy = 0.005 * (Math.random() - 0.5);
-            rock.vz = 0.02 * (1 + 0.2 * (Math.random() - 0.5));
-            rock.R = Math.floor(255 * Math.random());
-            rock.G = Math.floor(255 * Math.random());
-            rock.B = Math.floor(255 * Math.random());
-            rocks.push(rock);
-            this.setState({rocks});
+            rocks.push(this.newRock());
         }
-
+        this.setState({rocks});
     }
 
     tick = () => this.setState({ now: new Date().valueOf() });
@@ -53,16 +60,23 @@ class Asteroids extends React.Component {
     render() {
         let t = (this.state.now - this.state.start) / 1000;
         let rockComponents = this.state.rocks.map((rock, indx) => {
-            let Z = rock.zi + rock.vz * t;
-            let X = (rock.xi + rock.vx * t)/(1 - Z);
-            let Y = (rock.yi + rock.vy * t)/(1 - Z);
-            return <Rock
-                key={indx}
-                X={X}
-                Y={Y}
-                Z={Z}
-                color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
-            />
+            let Z = rock.zi + rock.vz * t + 0.5;
+            let X = Math.round(this.nx * ((rock.xi + rock.vx * t)/(1 - Z) + 0.5));
+            let Y = Math.round(this.ny * ((rock.yi + rock.vy * t)/(1 - Z) + 0.5));
+            let size = Math.round(10 / (1 - Z));
+            if (this.isVisible(X, Y, size)) {
+                return <Rock
+                    key={indx}
+                    X={X}
+                    Y={Y}
+                    Z={Z}
+                    color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
+                />
+            } else {
+                let nextRocks = JSON.parse(JSON.stringify(this.state.rocks));
+                nextRocks[indx] = this.newRock(0);
+                this.setState({rocks: nextRocks});
+            }
         })
         return (
             <>
