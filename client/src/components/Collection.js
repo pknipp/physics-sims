@@ -24,13 +24,13 @@ class Collection extends React.Component {
             KE: 0,
             E: 0,
             Ei: 0,
-            logdt: 1.5,
-            T: 0.5,
+            logdt: 2.4,
+            T: 0.4,
             bondThickness: 0.5,
             velocityLength: 0.5,
             accelerationLength: 0.5,
             calcEi: false,
-            springConstant: 1,
+            springConstant: 2,
         }
     }
 
