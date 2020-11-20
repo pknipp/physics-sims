@@ -9,7 +9,7 @@ import Container2 from './Container2';
 import { store } from './index';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  // console.log("rest = ", rest);
+  console.log("rest = ", rest);
   // console.log("props = ", props);
   debugger
   return (
@@ -21,8 +21,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     // <Route path={path} exact={exact} render={props => currentUserId ? <Redirect to="/" /> : <Component />} />
 
 class App extends React.Component {
-  componentDidMount() {this.unsubscribe = store.subscribe(() => this.forceUpdate())};
-  componentWillUnmount() {if (this.unsubscribe) this.unsubscribe()};
+  // componentDidMount() {this.unsubscribe = store.subscribe(() => this.forceUpdate())};
+  // componentWillUnmount() {if (this.unsubscribe) this.unsubscribe()};
 
   render() {
 
