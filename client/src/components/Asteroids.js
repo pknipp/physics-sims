@@ -50,12 +50,12 @@ class Asteroids extends React.Component {
 
     propagate = _ => {
         let rocks = JSON.parse(JSON.stringify(this.state.rocks));
-        for (let i = 0; i < this.state.n_rocks; i++) {
+        rocks.forEach((rock, i, rocks) => {
             rocks[i].x += rocks[i].vx * this.state.dt;
             rocks[i].y += rocks[i].vy * this.state.dt;
             rocks[i].z += rocks[i].vz * this.state.dt;
             rocks[i] = (this.isVisible(rocks[i])) ? rocks[i] : this.newRock(0);
-        }
+        })
         this.setState({ rocks });
     }
 
