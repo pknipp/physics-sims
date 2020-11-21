@@ -5,39 +5,39 @@ class Asteroids extends React.Component {
         super();
         this.state = {
             time: 0,
-            // now: 0,
             running: false,
-            // start: 0,
-            n_rocks: 1,
+            dt: 10,
+            n_rocks: 100,
             rocks: [],
         }
         this.nx = 1380;
         this.ny = 630;
-        this.width = 10;
+        this.width = 30;
     }
 
     componentDidMount() {this.setRocks()}
 
     newRock = z => {
+        let maxPix = Math.max(this.nx, this.ny);
         let rock = {};
-        rock.xi = 0//Math.random() - 0.5;
-        rock.yi = 0//Math.random() - 0.5;
-        rock.zi = (z === undefined) ? Math.random() : z;
-        rock.vx = 0//0.01 * (Math.random() - 0.5)
-        rock.vy = 0//0.005 * (Math.random() - 0.5);
-        rock.vz = 0.2 * (1 + 0.2 * (Math.random() - 0.5));
+        rock.x = Math.random() - 0.5;
+        rock.y = Math.random() - 0.5;
+        rock.z = (z === undefined) ? Math.random() : z;
+        rock.vx = (Math.random() - 0.5)/maxPix;
+        rock.vy = (Math.random() - 0.5)/maxPix;
+        rock.vz = Math.random()/maxPix;
         rock.R = Math.floor(255 * Math.random());
         rock.G = Math.floor(255 * Math.random());
         rock.B = Math.floor(255 * Math.random());
         return rock;
     }
 
-    isVisible = (X, Y, size) => (size < 0 || Math.abs(X) > 0.5 || Math.abs(Y) > 0.5);
+    isVisible = rock => (rock.z < 1 &&  Math.abs(2 * rock.x) < 1 - rock.z && Math.abs(2 * rock.y) < 1 - rock.z);
 
-    setRocks = z => {
+    setRocks = _ => {
         const rocks = [];
         for (let i = 0; i < this.state.n_rocks; i++) {
-            rocks.push(this.newRock(z));
+            rocks.push(this.newRock());
         }
         this.setState({rocks});
     }
@@ -45,13 +45,24 @@ class Asteroids extends React.Component {
     // tick = () => this.setState({ now: new Date().valueOf() });
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
-        this.setState({time: nextT}, () => this.nextRs())
+        this.setState({time: nextT}, () => this.propagate())
+    }
+
+    propagate = _ => {
+        let rocks = JSON.parse(JSON.stringify(this.state.rocks));
+        for (let i = 0; i < this.state.n_rocks; i++) {
+            rocks[i].x += rocks[i].vx * this.state.dt;
+            rocks[i].y += rocks[i].vy * this.state.dt;
+            rocks[i].z += rocks[i].vz * this.state.dt;
+            rocks[i] = (this.isVisible(rocks[i])) ? rocks[i] : this.newRock(0);
+        }
+        this.setState({ rocks });
     }
 
     toggle = () => {
         const running = !this.state.running;
         if (running) {
-          this.interval = setInterval(() => this.tick(), 100);
+          this.interval = setInterval(() => this.tick(), this.state.dt);
           this.setState({start: new Date().valueOf()});
         } else {
           clearInterval(this.interval);
@@ -64,25 +75,20 @@ class Asteroids extends React.Component {
     // componentWillUnmount() {clearInterval(this.interval)}
 
     render() {
-        let t = (this.state.now - this.state.start) / 1000;
         let rockComponents = this.state.rocks.map((rock, indx) => {
-            let Z = rock.zi + rock.vz * t;
-            let size = this.width/(1 - Z);
-            let X = Math.round(this.nx * ((rock.xi + rock.vx * t)/(1 - Z) + 0.5) - size / 2);
-            let Y = Math.round(this.ny * ((rock.yi + rock.vy * t)/(1 - Z) + 0.5) - size / 2);
-            if (this.isVisible(X, Y, size)) {
-                return <Rock
-                    key={indx}
-                    X={X}
-                    Y={Y}
-                    Z={Z}
-                    color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
-                />
-            } else {
-                let nextRocks = JSON.parse(JSON.stringify(this.state.rocks));
-                nextRocks[indx] = this.newRock(0);
-                // this.setState({rocks: nextRocks});
-            }
+            let z = rock.z;
+            // The 2nd term in the expression below is unphysical but seems to succeed, psychovisually
+            let size = this.width * (1 / (1 - z) - 1 / (1 + z));
+            let xpx = Math.round(this.nx * (rock.x/(1 - rock.z) + 0.5) - size / 2);
+            let ypx = Math.round(this.ny * (rock.y/(1 - rock.z) + 0.5) - size / 2);
+            return <Rock
+                key={indx}
+                x={xpx}
+                y={ypx}
+                z={z}
+                color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
+                size={size}
+            />
         })
         let { time } = this.state;
         return (
@@ -93,7 +99,7 @@ class Asteroids extends React.Component {
                                 {this.state.running ? "Pause" : "Run"}
                         </button>
                     </span>
-                    <span>time: {time} s</span>
+                    <span>time: {Math.round(1000*time)/1000} s</span>
                 </div>
                 <div className="rockContainer">
                 {rockComponents}

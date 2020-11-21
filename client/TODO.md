@@ -3,7 +3,7 @@ GENERAL:
 * auth?
 
 DRUMHEAD:
-* revise script for final presentation
+* make each particle an instance of an Particle class
 * insert instructions (w/checkbox for whether or not to display?)
 * break down some components?
 * readjust scaling for energies?
