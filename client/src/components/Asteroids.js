@@ -7,8 +7,9 @@ class Asteroids extends React.Component {
             time: 0,
             running: false,
             dt: 10,
-            n_rocks: 100,
+            n_rocks: "",
             rocks: [],
+            logSpeed: 0.2,
         }
         this.nx = 1380;
         this.ny = 630;
@@ -17,26 +18,35 @@ class Asteroids extends React.Component {
 
     componentDidMount() {this.setRocks()}
 
+    handleInput = e => {
+        let n_rocks = e.target.value;
+        this.setRocks(n_rocks);
+        this.setState({n_rocks: Number(e.target.value)});
+    }
+
+    handleSpeed = e => this.setState({logSpeed: e.target.value});
+
     newRock = z => {
+        let speed = 10 ** (2 * this.state.logSpeed - 1)
         let maxPix = Math.max(this.nx, this.ny);
         let rock = {};
         rock.x = Math.random() - 0.5;
         rock.y = Math.random() - 0.5;
         rock.z = (z === undefined) ? Math.random() : z;
-        rock.vx = (Math.random() - 0.5)/maxPix;
-        rock.vy = (Math.random() - 0.5)/maxPix;
-        rock.vz = Math.random()/maxPix;
+        rock.vx = speed * (Math.random() - 0.5)/maxPix;
+        rock.vy = speed * (Math.random() - 0.5)/maxPix;
+        rock.vz = (speed + Math.random())/maxPix;
         rock.R = Math.floor(255 * Math.random());
         rock.G = Math.floor(255 * Math.random());
         rock.B = Math.floor(255 * Math.random());
         return rock;
     }
 
-    isVisible = rock => (rock.z < 1 &&  Math.abs(2 * rock.x) < 1 - rock.z && Math.abs(2 * rock.y) < 1 - rock.z);
+    isVisible = rock => (rock.z < 1 &&  Math.abs(1.6 * rock.x) < 1 - rock.z && Math.abs(1.6 * rock.y) < 1 - rock.z);
 
-    setRocks = _ => {
+    setRocks = (n_rocks=this.state.n_rocks) => {
         const rocks = [];
-        for (let i = 0; i < this.state.n_rocks; i++) {
+        for (let i = 0; i < n_rocks; i++) {
             rocks.push(this.newRock());
         }
         this.setState({rocks});
@@ -86,13 +96,39 @@ class Asteroids extends React.Component {
                 x={xpx}
                 y={ypx}
                 z={z}
-                color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 0.5)`}
+                color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 1)`}
                 size={size}
             />
         })
         let { time } = this.state;
         return (
             <>
+                <div>
+                    Let's experience a trip through an asteroid field!
+                </div>
+                <div>
+                    How many asteroids do you want?
+                    <input min="0" type="number" onChange={this.handleInput} value={this.state.n_rocks} />
+                </div>
+                <div>
+                    How fast do you want to travel through the field?
+                </div>
+                <span>
+                    slowly
+                </span>
+                <span>
+                    <input
+                        type="range"
+                        onChange={this.handleSpeed}
+                        min="0"
+                        max="0.6"
+                        step="0.1"
+                        value={this.state.logSpeed}
+                    />
+                </span>
+                <span>
+                    fast
+                </span>
                 <div>
                     <span className="button-container">
                         <button onClick={this.toggle} style={{zIndex:1000}}>
