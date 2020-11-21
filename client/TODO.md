@@ -8,7 +8,6 @@ DRUMHEAD:
 * break down some components?
 * readjust scaling for energies?
 * ensure that user can only enter unique (i,j) combos for IC
-* insert asteroids component to page reached after login
 * insert CU for user (signup and edit details)
 * change nested for-loops to nested list-comprehensions?
 * use checkboxes (rather than sliders) for a- & v-arrows, along w/bond width?
@@ -19,6 +18,7 @@ DRUMHEAD:
 * adjust IC by click-and-drag instead of form filling?
 
 ASTEROIDS:
+* allow user to specify # of asteroids and speeds
 * Allow two objects that "collide" (ie come within a certain distance of each other) to merge into a single object in a manner which conserves both mass (e.g., size) and momentum (= mass times velocity), and allow for the possibility that single objects may spontaneously split into two objects, again in a manner which conserved mass and momentum.
 
 PLANETARY MOTION:
