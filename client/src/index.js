@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import './index.css';
 //import Root from './Root';
 import App from './App';
+// import DrawArea from './components/DrawArea';
 import configureStore from './store/configureStore';
 require("dotenv").config();
 
@@ -19,3 +20,4 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+// ReactDOM.render(<DrawArea />, document.getElementById("container"));
