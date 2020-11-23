@@ -1,5 +1,6 @@
 import React from "react";
 import Immutable from "immutable";
+import Pixel from "./Pixels";
 
 class DrawArea extends React.Component {
   constructor() {
@@ -50,6 +51,12 @@ class DrawArea extends React.Component {
   }
 
   render() {
+    let Pixels = [];
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        Pixels.push(<Pixel key={8*i+j} i={i} j={j} />);
+      }
+    }
     return (
       <div
         className="drawArea"
@@ -58,6 +65,7 @@ class DrawArea extends React.Component {
         onMouseMove={this.handleMouseMove}
       >
         <Drawing lines={this.state.lines} isDrawing={this.state.isDrawing} />
+        {/* {Pixels} */}
       </div>
     );
   }
@@ -111,6 +119,7 @@ function DrawingLine({ line, isDrawing }) {
   let psNew = JSON.parse(JSON.stringify(ps)).filter((p, i) => (i >= iStart && i <= iEnd));
   if (psNew.length) psNew.push(JSON.parse(JSON.stringify(psNew))[0]);
   const newPathData = "M " + psNew.map(p => `${p.x} ${p.y}`).join(" L ");
+  console.log(psNew);
   return <path className="path" d={(isDrawing) ? pathData : newPathData} />
 }
 
