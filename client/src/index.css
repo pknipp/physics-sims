@@ -102,6 +102,10 @@ td {
   background-color: lightgrey;
 }
 
+.bars {
+  background-color: lightgrey;
+}
+
 .dot {
   box-sizing: border-box;
   border-width: 1px;
@@ -164,4 +168,12 @@ td {
   position: absolute;
   height: 50px;
   width: 50px;
+}
+
+.heat-bar {
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border: 1px;
 }

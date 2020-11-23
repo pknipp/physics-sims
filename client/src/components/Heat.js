@@ -5,7 +5,7 @@ class Heat extends React.Component {
         this.state = {
             running: false,
             time: 0,
-            n: 5,
+            n: 20,
             Ts: [],
             leftIns: true,
             rightIns: true,
@@ -32,13 +32,14 @@ class Heat extends React.Component {
     }
 
     nextTs = _ => {
-        let { Ts, alpha, n, leftIns, rightIns, leftT, rightT } = this.state
+        let { Ts, alpha, n, leftIns, rightIns, leftT, rightT, dt } = this.state;
+        let alpha0 = alpha*dt/n/n;
         let nextTs = [];
-        nextTs.push(Ts[1]/alpha + Ts[0] * (1 - 2/alpha) + ((leftIns) ? Ts[0] : leftT)/alpha);
+        nextTs.push(Ts[1]/alpha0 + Ts[0] * (1 - 2/alpha0) + ((leftIns) ? Ts[0] : leftT)/alpha0);
         for (let i = 1; i < n - 1; i++) {
-            nextTs.push((Ts[i + 1] + Ts[i - 1])/alpha + Ts[i] * (1 - 2/alpha));
+            nextTs.push((Ts[i + 1] + Ts[i - 1])/alpha0 + Ts[i] * (1 - 2/alpha0));
         }
-        nextTs.push(Ts[n - 2]/alpha + Ts[n - 1] * (1 - 2/alpha) + ((rightIns) ? Ts[n - 1] : rightT)/alpha);
+        nextTs.push(Ts[n - 2]/alpha0 + Ts[n - 1] * (1 - 2/alpha0) + ((rightIns) ? Ts[n - 1] : rightT)/alpha0);
         this.setState({ Ts: nextTs });
     }
 
@@ -55,7 +56,14 @@ class Heat extends React.Component {
     };
 
     render() {
-        let rows = this.state.Ts.map(T => <li>{T}</li>);
+        let bars = this.state.Ts.map(T => (
+            <div className="bar"
+                style={{
+                height:`${Math.round(600*T)}px`,
+                width:`${Math.round(1000/this.state.n)}px`,
+                }}>
+            </div>
+        ))
         return (
             <>
             <span className="button-container">
@@ -66,9 +74,9 @@ class Heat extends React.Component {
             <span>
             time: {Math.round(100 * this.state.time)/100} s
             </span>
-            <ul>
-                {rows}
-            </ul>
+            <div className="bar-container">
+                {bars}
+            </div>
             </>
         )
     }
