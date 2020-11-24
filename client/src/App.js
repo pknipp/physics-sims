@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Navbar from './components/Navbar';
 import Container from "./Container";
-import Container2 from './Container2';
+// import Container2 from './Container2';
 import { store } from './index';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -34,7 +34,9 @@ class App extends React.Component {
           {/* <Route path="/login" component={Login} /> */}
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          <PrivateRoute path="/" exact={true} needLogin={this.props.needLogin} component={Container} />
+          <PrivateRoute path="/"
+          // exact={true}
+          needLogin={this.props.needLogin} component={Container} />
           {/* <PrivateRoute path="/" exact={true} needLogin={this.props.needLogin} render={() => <Container />} /> */}
         </Switch>
       </BrowserRouter>
