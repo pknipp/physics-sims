@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from '../store/authentication';
+import { signup } from '../store/authentication';
 import { Input, Button } from '@material-ui/core';
 
-class Login extends Component {
+class Signup extends Component {
   constructor(props) { super(props);
     this.state = { email: "demo@aol.com", password: "password" };
     this.updateEmail = this.updateValue("email");
@@ -13,7 +13,7 @@ class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.login(this.state.email, this.state.password);
+    this.props.signup(this.state.email, this.state.password);
   }
 
   updateValue = name => e => this.setState({ [name]: e.target.value });
@@ -21,11 +21,11 @@ class Login extends Component {
   render() {
     return (this.props.currentUserId) ? <Redirect to="/" /> : (
       <main className="centered middled">
-         <span><NavLink className="nav" to="/signup"      activeClassName="active">Signup</NavLink></span>
+        <span><NavLink className="nav" to="/login"      activeClassName="active">Login</NavLink></span>
         <form onSubmit={this.handleSubmit}>
           <Input type="text" placeholder="Email" value={this.state.email} onChange={this.updateEmail} />
           <Input type="password" placeholder="Password" value={this.state.password} onChange={this.updatePassword} />
-          <Button color="primary" variant="outlined" type="submit">Login</Button>
+          <Button color="primary" variant="outlined" type="submit">Signup</Button>
         </form>
       </main>
     );
@@ -33,5 +33,5 @@ class Login extends Component {
 }
 
 const msp = state => ({ currentUserId: state.authentication.id });
-const mdp = dispatch => ({ login: (email, password) => dispatch(login(email, password))})
-export default connect(msp, mdp)(Login);
+const mdp = dispatch => ({ signup: (email, password) => dispatch(signup(email, password))})
+export default connect(msp, mdp)(Signup);

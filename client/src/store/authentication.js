@@ -5,7 +5,7 @@ const SET_USER = "physics_sims/authentication/SET_USER";
 const REMOVE_USER = "physics_sims/authentication/REMOVE_USER";
 const NEW_USER = "physics_sims/authentication/NEW_USER";
 
-export const setUser    = user => ({ type: SET_USER, user })
+export const setUser    = user => ({ type: SET_USER, user });
 export const removeUser = _    => ({ type: REMOVE_USER    })
 export const newUser    = user => ({ type: NEW_USER, user })
 
@@ -15,8 +15,16 @@ export const login = (email, password) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    console.log("after fetch call");
-    console.log("response.ok = ", response.ok);
+    if (response.ok) dispatch(setUser((await response.json()).user))
+  };
+};
+
+export const signup = (email, password) => {
+  return async dispatch => {
+    const response = await fetch(`/api/users`, { method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
     if (response.ok) dispatch(setUser((await response.json()).user))
   };
 };

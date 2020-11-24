@@ -8,9 +8,12 @@ import Asteroids from "./components/Asteroids";
 import Heat from "./components/Heat";
 import DrawArea from "./components/DrawArea";
 import Account from "./components/Account";
+import { store } from "./index";
 
 class Container extends React.Component {
-  // componentDidMount() {this.props.fetchClasses()}
+  componentDidMount() {this.unsubscribe = store.subscribe(() => this.forceUpdate())};
+  componentWillUnmount() {if (this.unsubscribe) this.unsubscribe()};
+
   render() {
     return (
       <BrowserRouter>
@@ -39,6 +42,6 @@ class Container extends React.Component {
   }
 }
 
-const msp = state => ({ email: state.authentication.email });
+const msp = state => ({ email: state.authentication.email, currentUserId: state.authentication.id, needLogin: !state.authentication.id});
 // const mdp = dispatch=>({ fetchClasses: () => dispatch(fetchClasses())})
 export default connect(msp)(Container);

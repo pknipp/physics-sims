@@ -166,8 +166,8 @@ td {
 
 .pixel {
   position: absolute;
-  height: 50px;
-  width: 50px;
+  height: 10px;
+  width: 10px;
 }
 
 .heat-bar {

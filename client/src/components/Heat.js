@@ -8,9 +8,9 @@ class Heat extends React.Component {
             Ts: [],
             leftIns: false,
             rightIns: false,
-            leftT: 1.0,
+            leftT: 1.,
             rightT: 0.0,
-            alpha: 0.1,
+            alpha: 0.02,
             logN: 1,
             n: 1,
             dt: 100,
@@ -40,10 +40,10 @@ class Heat extends React.Component {
             Ts.push(1);
             // Ts.push(Math.random());
             // Ts.push(Math.sin(Math.PI*i/this.state.n));
-            let T = 0;
-            for (let m = 1; m < 10; m++) {
-                T += coef[m] * Math.sin(Math.PI * m * i/this.state.n);
-            }
+            // let T = 0;
+            // for (let m = 1; m < 10; m++) {
+            //     T += coef[m] * Math.sin(Math.PI * m * i/this.state.n);
+            // }
             // Ts.push(Math.min(0,T));
         }
         this.setState({ Ts });
