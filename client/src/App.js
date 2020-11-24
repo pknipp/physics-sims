@@ -32,7 +32,8 @@ class App extends React.Component {
         {/* <Navbar currentUserId={this.props.currentUserId} /> */}
         <Switch>
           {/* <Route path="/login" component={Login} /> */}
-          <Route path="/login" component={Container2} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
           <PrivateRoute path="/" exact={true} needLogin={this.props.needLogin} component={Container} />
           {/* <PrivateRoute path="/" exact={true} needLogin={this.props.needLogin} render={() => <Container />} /> */}
         </Switch>
