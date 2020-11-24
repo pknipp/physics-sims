@@ -2,9 +2,10 @@ import React from "react";
 
 const Pixel = ({ i, j }) => {
     return (
-        <Pixel className="pixel" style={{left: `${i * 50}px`, top: `${j * 50}px`,
-        // backgroundColor: `rgb(${i*32}, ${j*32}, 0)`,
-    }} />
+        <div className="pixel" style={{left: `${i * 10}px`, top: `${j * 10}px`,
+        backgroundColor: `rgb(${i*6}, ${j*6}, 0)`, zIndex: -1,
+    }}>
+        </div>
     )
 }
 
