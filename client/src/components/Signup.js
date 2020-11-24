@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signup } from '../store/authentication';
 import { Input, Button } from '@material-ui/core';
@@ -21,10 +21,11 @@ class Signup extends Component {
   render() {
     return (this.props.currentUserId) ? <Redirect to="/" /> : (
       <main className="centered middled">
+        <span><NavLink className="nav" to="/login"      activeClassName="active">Login</NavLink></span>
         <form onSubmit={this.handleSubmit}>
           <Input type="text" placeholder="Email" value={this.state.email} onChange={this.updateEmail} />
           <Input type="password" placeholder="Password" value={this.state.password} onChange={this.updatePassword} />
-          <Button color="primary" variant="outlined" type="submit">Submit</Button>
+          <Button color="primary" variant="outlined" type="submit">Signup</Button>
         </form>
       </main>
     );
