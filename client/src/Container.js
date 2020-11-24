@@ -13,7 +13,7 @@ import { store } from "./index";
 class Container extends React.Component {
   componentDidMount() {this.unsubscribe = store.subscribe(() => this.forceUpdate())};
   componentWillUnmount() {if (this.unsubscribe) this.unsubscribe()};
-  
+
   render() {
     return (
       <BrowserRouter>
