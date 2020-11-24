@@ -8,7 +8,7 @@ class Heat extends React.Component {
             Ts: [],
             leftIns: false,
             rightIns: false,
-            leftT: 0.0,
+            leftT: 1.0,
             rightT: 0.0,
             alpha: 0.1,
             logN: 1,
@@ -53,12 +53,19 @@ class Heat extends React.Component {
         let { n, Ts, leftIns, leftT, rightIns, rightT } = this.state;
         debugger
         let alpha0 = this.state.alpha * this.state.dt * (n + 1) * (n + 1) / 1000;
+        debugger
         let a = new Array(n).fill(-alpha0/2);
+        debugger
         let b = new Array(n).fill(1 + alpha0);
+        debugger
         let c = new Array(n).fill(-alpha0/2);
+        debugger
         let r = new Array(n);
+        debugger
         let u = new Array(n);
+        debugger
         let g = new Array(n);
+        debugger
         if (this.state.leftIns ) b[0]     -= alpha0/2;
         if (this.state.rightIns) b[n - 1] -= alpha0/2;
         // r[0]  = (1 - alpha0) * Ts[0]  + (Ts[1] + (leftIns ? Ts[0] : leftT)) * alpha0 / 2;
@@ -69,10 +76,13 @@ class Heat extends React.Component {
         u[0] = r[0]/bet;
         debugger
         for (let i = 1; i < n; i++) {
+            debugger
             g[i] = c[i - 1] / bet;
             bet = b[i] - a[i] * g[i];
             if (i < n - 1) r[i] = Ts[i] + ((Ts[i - 1] - Ts[i]) - (Ts[i] - Ts[i + 1])) * alpha0 / 2;
+            debugger
             u[i] = (r[i] - a[i] * u[i - 1]) / bet;
+            debugger
         }
         g[n - 1] = c[n - 2]/bet;
         u[n - 1] = (r[n - 1] - a[n - 1] * u[n - 2])/bet;
