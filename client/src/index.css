@@ -51,6 +51,10 @@ td {
   border: 2px solid black;
 }
 
+.rockContainer {
+  position: relative;
+}
+
 .bar-container {
   display: flex;
   justify-content: center;
