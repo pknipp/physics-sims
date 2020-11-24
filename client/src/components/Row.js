@@ -18,8 +18,8 @@ const Row = ({ optionsI, optionsJ, rvs, i, j, iIC, handleIndex, handleIC}) => {
     }
     return (
         <tr>
-            <ChooseIndex options={optionsJ} name={`j${iIC}`} iorj={j[iIC]} handleIndex={handleIndex} />
-            <ChooseIndex options={optionsI} name={`i${iIC}`} iorj={i[iIC]} handleIndex={handleIndex} />
+            <ChooseIndex key={"selectJ"} options={optionsJ} name={`j${iIC}`} iorj={j[iIC]} handleIndex={handleIndex} />
+            <ChooseIndex key={"selectI"} options={optionsI} name={`i${iIC}`} iorj={i[iIC]} handleIndex={handleIndex} />
             {(!i || !i[iIC] || !j || !j[iIC]) ? <td colSpan="4"></td> : row}
         </tr>
     )
