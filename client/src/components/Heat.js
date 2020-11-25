@@ -6,11 +6,11 @@ class Heat extends React.Component {
             running: false,
             time: 0,
             Ts: [],
-            leftIns: false,
-            rightIns: false,
-            leftT: 0.6,
-            rightT: 0.2,
-            alpha: 1.,
+            leftIns: true,
+            rightIns: true,
+            leftT: 0.0,
+            rightT: 0.0,
+            alpha: 1,
             logN: 1,
             n: 10,
             dt: 100,
@@ -18,7 +18,6 @@ class Heat extends React.Component {
     }
 
     componentDidMount() {this.makeDist(this.state.n)}
-    // componentDidUpdate() {this.tridiag()}
 
     handlerLogN = e => {
         let logN = Number(e.target.value);
@@ -28,10 +27,7 @@ class Heat extends React.Component {
     tick = _ => {
         debugger
         let nextT = this.state.time + this.state.dt/1000;
-        // this.setState({time: nextT}, () => this.nextTs())
-        this.setState({ time: nextT},
-            () => this.tridiag()
-            );
+        this.setState({ time: nextT}, () => this.tridiag());
     }
 
     makeDist = _ => {
@@ -55,73 +51,50 @@ class Heat extends React.Component {
 
     tridiag = _ => {
         let { n, Ts, leftIns, leftT, rightIns, rightT } = this.state;
-        let n2 = this.state.n;
-        debugger
         let alpha0 = this.state.alpha * this.state.dt * (n + 1) * (n + 1) / 1000;
-        debugger
         let a = new Array(n).fill(-alpha0/2);
-        debugger
         let b = new Array(n).fill(1 + alpha0);
-        debugger
         let c = new Array(n).fill(-alpha0/2);
-        debugger
         let r = new Array(n);
-        debugger
         let u = new Array(n);
-        debugger
         let g = new Array(n);
-        debugger
         if (this.state.leftIns ) b[0]     -= alpha0/2;
         if (this.state.rightIns) b[n - 1] -= alpha0/2;
-        // r[0]  = (1 - alpha0) * Ts[0]  + (Ts[1] + (leftIns ? Ts[0] : leftT)) * alpha0 / 2;
-        // r[0]  = Ts[0]  + ((Ts[1] - Ts[0]) + ((leftIns ? Ts[0] : leftT) - Ts[0])) * alpha0 / 2;
-        // The following is hard-wired to there being zero BC on right and nonzero on left
-        r[0] = Ts[0] + (2 * (leftT - Ts[0]) + Ts[1]) * alpha0 / 2;
-        // r[n-1]= (1 - alpha0) * Ts[n-1]+ (Ts[n-2]+(rightIns? Ts[n-1]: rightT))*alpha0/2;
-        // r[n-1]= Ts[n-1]+((Ts[n-2]-Ts[n-1])+((rightIns ? Ts[n-1]:rightT)-Ts[n-1]))*alpha0 / 2;
-        r[n-1] = Ts[n-1] + (2 * (rightT - Ts[n-1]) + Ts[n-2]) * alpha0 / 2;
+        r[0] = Ts[0] + (Ts[1] - 2 * Ts[0] + (leftIns ? Ts[0] : 2 * leftT)) * alpha0 / 2;
+        r[n-1] = Ts[n-1]+(Ts[n-2]-2*Ts[n-1]+(rightIns ? Ts[n-1]:2*rightT)) * alpha0 / 2;
         let bet = b[0];
         u[0] = r[0]/bet;
-        debugger
         for (let i = 1; i < n; i++) {
-            // debugger
             g[i] = c[i - 1] / bet;
             bet = b[i] - a[i] * g[i];
             if (i < n - 1) r[i] = Ts[i] + ((Ts[i - 1] - Ts[i]) - (Ts[i] - Ts[i + 1])) * alpha0 / 2;
-            // debugger
             u[i] = (r[i] - a[i] * u[i - 1]) / bet;
-            // debugger
         }
-        g[n - 1] = c[n - 2]/bet;
-        u[n - 1] = (r[n - 1] - a[n - 1] * u[n - 2])/bet;
-        u[n - 1] = (u[n - 1] + Ts[n - 1]) / 2;
-        debugger
         for (let i = n - 2; i >= 0; i--) {
             u[i] -= g[i + 1] * u[i + 1];
-            // I thought that the following may make things more stable, to no avail
-            // u[i] = Math.min(0, u[i]);
+        }
+        for (let i = 0; i < n; i++) {
             u[i] = (u[i] + Ts[i]) / 2;
         }
-        debugger
         this.setState({Ts: u});
     }
 
-    nextTs = _ => {
-        debugger
-        let { Ts, alpha, n, leftIns, rightIns, leftT, rightT, dt } = this.state;
-        let alpha0 = alpha*dt*n*n/1000;
-        let nextTs = JSON.parse(JSON.stringify(Ts));
-        nextTs[0] += alpha0 * ((Ts[1] - Ts[0]) + (-Ts[0] + ((leftIns) ? Ts[0] : leftT)));
-        // nextTs.push(Ts[1]*alpha0 + Ts[0] * (1 - 2*alpha0) + ((leftIns) ? Ts[0] : leftT)*alpha0);
-        for (let i = 1; i < n - 1; i++) {
-            nextTs[i] += alpha0 * ((Ts[i + 1] - Ts[i]) + (Ts[i - 1] - Ts[i]));
-            // nextTs.push((Ts[i + 1] + Ts[i - 1])*alpha0 + Ts[i] * (1 - 2*alpha0));
-        }
-        nextTs[n-1] += alpha0 * ((Ts[n-2] - Ts[n-1]) + (-Ts[n-1] + ((rightIns) ? Ts[n-1] : rightT)));
-        // nextTs.push(Ts[n - 2]*alpha0 + Ts[n - 1] * (1 - 2*alpha0) + ((rightIns) ? Ts[n - 1] : rightT)*alpha0);
-        debugger
-        this.setState({ Ts: nextTs });
-    }
+    // nextTs = _ => {
+    //     debugger
+    //     let { Ts, alpha, n, leftIns, rightIns, leftT, rightT, dt } = this.state;
+    //     let alpha0 = alpha*dt*n*n/1000;
+    //     let nextTs = JSON.parse(JSON.stringify(Ts));
+    //     nextTs[0] += alpha0 * ((Ts[1] - Ts[0]) + (-Ts[0] + ((leftIns) ? Ts[0] : leftT)));
+    //     // nextTs.push(Ts[1]*alpha0 + Ts[0] * (1 - 2*alpha0) + ((leftIns) ? Ts[0] : leftT)*alpha0);
+    //     for (let i = 1; i < n - 1; i++) {
+    //         nextTs[i] += alpha0 * ((Ts[i + 1] - Ts[i]) + (Ts[i - 1] - Ts[i]));
+    //         // nextTs.push((Ts[i + 1] + Ts[i - 1])*alpha0 + Ts[i] * (1 - 2*alpha0));
+    //     }
+    //     nextTs[n-1] += alpha0 * ((Ts[n-2] - Ts[n-1]) + (-Ts[n-1] + ((rightIns) ? Ts[n-1] : rightT)));
+    //     // nextTs.push(Ts[n - 2]*alpha0 + Ts[n - 1] * (1 - 2*alpha0) + ((rightIns) ? Ts[n - 1] : rightT)*alpha0);
+    //     debugger
+    //     this.setState({ Ts: nextTs });
+    // }
 
     toggle = () => {
         const running = !this.state.running;
