@@ -8,11 +8,11 @@ class Heat extends React.Component {
             Ts: [],
             leftIns: false,
             rightIns: false,
-            leftT: 1.,
-            rightT: 0.0,
-            alpha: 0.02,
+            leftT: 0.,
+            rightT: 1.0,
+            alpha: 1.,
             logN: 1,
-            n: 1,
+            n: 10,
             dt: 100,
         }
     }
@@ -25,6 +25,7 @@ class Heat extends React.Component {
     }
 
     tick = _ => {
+        debugger
         let nextT = this.state.time + this.state.dt/1000;
         // this.setState({time: nextT}, () => this.nextTs())
         this.setState({ time: nextT}, () => this.tridiag());
@@ -51,6 +52,7 @@ class Heat extends React.Component {
 
     tridiag = _ => {
         let { n, Ts, leftIns, leftT, rightIns, rightT } = this.state;
+        let n2 = this.state.n;
         debugger
         let alpha0 = this.state.alpha * this.state.dt * (n + 1) * (n + 1) / 1000;
         debugger
@@ -69,9 +71,12 @@ class Heat extends React.Component {
         if (this.state.leftIns ) b[0]     -= alpha0/2;
         if (this.state.rightIns) b[n - 1] -= alpha0/2;
         // r[0]  = (1 - alpha0) * Ts[0]  + (Ts[1] + (leftIns ? Ts[0] : leftT)) * alpha0 / 2;
-        r[0]  = Ts[0]  + ((Ts[1] - Ts[0]) + ((leftIns ? Ts[0] : leftT) - Ts[0])) * alpha0 / 2;
+        // r[0]  = Ts[0]  + ((Ts[1] - Ts[0]) + ((leftIns ? Ts[0] : leftT) - Ts[0])) * alpha0 / 2;
+        // The following is hard-wired to there being zero BC on right and nonzero on left
+        r[0] = Ts[0] + (2 * (leftT - Ts[0]) + Ts[1]) * alpha0 / 2;
         // r[n-1]= (1 - alpha0) * Ts[n-1]+ (Ts[n-2]+(rightIns? Ts[n-1]: rightT))*alpha0/2;
-        r[n-1]= Ts[n-1]+((Ts[n-2]-Ts[n-1])+((rightIns ? Ts[n-1]:rightT)-Ts[n-1]))*alpha0 / 2;
+        // r[n-1]= Ts[n-1]+((Ts[n-2]-Ts[n-1])+((rightIns ? Ts[n-1]:rightT)-Ts[n-1]))*alpha0 / 2;
+        r[n-1] = Ts[n-1] + (2 * (rightT - Ts[n-1]) + Ts[n-2]) * alpha0 / 2;
         let bet = b[0];
         u[0] = r[0]/bet;
         debugger
@@ -142,7 +147,7 @@ class Heat extends React.Component {
                     type="range"
                     onChange={this.handlerLogN}
                     name="logN"
-                    min="1"
+                    min="0"
                     max="3"
                     step="0.2"
                     value={this.state.logN}
