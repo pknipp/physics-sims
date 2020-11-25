@@ -8,8 +8,8 @@ class Heat extends React.Component {
             Ts: [],
             leftIns: false,
             rightIns: false,
-            leftT: 0.,
-            rightT: 1.0,
+            leftT: 0.6,
+            rightT: 0.2,
             alpha: 1.,
             logN: 1,
             n: 10,
@@ -18,6 +18,7 @@ class Heat extends React.Component {
     }
 
     componentDidMount() {this.makeDist(this.state.n)}
+    // componentDidUpdate() {this.tridiag()}
 
     handlerLogN = e => {
         let logN = Number(e.target.value);
@@ -28,7 +29,9 @@ class Heat extends React.Component {
         debugger
         let nextT = this.state.time + this.state.dt/1000;
         // this.setState({time: nextT}, () => this.nextTs())
-        this.setState({ time: nextT}, () => this.tridiag());
+        this.setState({ time: nextT},
+            () => this.tridiag()
+            );
     }
 
     makeDist = _ => {
@@ -38,8 +41,8 @@ class Heat extends React.Component {
             coef.push(Math.random());
         }
         for (let i = 0; i < this.state.n; i++) {
-            Ts.push(1);
-            // Ts.push(Math.random());
+            // Ts.push(1);
+            Ts.push(Math.random());
             // Ts.push(Math.sin(Math.PI*i/this.state.n));
             // let T = 0;
             // for (let m = 1; m < 10; m++) {
@@ -81,21 +84,23 @@ class Heat extends React.Component {
         u[0] = r[0]/bet;
         debugger
         for (let i = 1; i < n; i++) {
-            debugger
+            // debugger
             g[i] = c[i - 1] / bet;
             bet = b[i] - a[i] * g[i];
             if (i < n - 1) r[i] = Ts[i] + ((Ts[i - 1] - Ts[i]) - (Ts[i] - Ts[i + 1])) * alpha0 / 2;
-            debugger
+            // debugger
             u[i] = (r[i] - a[i] * u[i - 1]) / bet;
-            debugger
+            // debugger
         }
         g[n - 1] = c[n - 2]/bet;
         u[n - 1] = (r[n - 1] - a[n - 1] * u[n - 2])/bet;
+        u[n - 1] = (u[n - 1] + Ts[n - 1]) / 2;
         debugger
         for (let i = n - 2; i >= 0; i--) {
             u[i] -= g[i + 1] * u[i + 1];
             // I thought that the following may make things more stable, to no avail
             // u[i] = Math.min(0, u[i]);
+            u[i] = (u[i] + Ts[i]) / 2;
         }
         debugger
         this.setState({Ts: u});
