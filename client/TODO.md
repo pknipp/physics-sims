@@ -1,6 +1,6 @@
 GENERAL:
-* Make splash page which contains links to the various sims (asteroids, drumhead, planets)
-* auth?
+* Style "splash" page
+* Style page which contains links to the various sims (asteroids, drumhead, planets)
 
 DRUMHEAD:
 * make each particle an instance of an Particle class
@@ -17,8 +17,14 @@ DRUMHEAD:
 * figure out why I should not decrease dt below 5 ms
 * adjust IC by click-and-drag instead of form filling?
 
+HEAT EQUATION:
+* allow user to toggle between BC on either end
+* allow user to move vertical slider on either side, to represent temperature condition
+* insert slider to control timestep and transport coefficient (log scales?)
+* determine if a factor of 2 is needed, because of 2-step average that is taken
+* IC choices: const-T, ramp, random x-domain, random k-domain, mouseover?
+
 ASTEROIDS:
-* allow user to specify # of asteroids and speeds
 * Allow two objects that "collide" (ie come within a certain distance of each other) to merge into a single object in a manner which conserves both mass (e.g., size) and momentum (= mass times velocity), and allow for the possibility that single objects may spontaneously split into two objects, again in a manner which conserved mass and momentum.
 
 PLANETARY MOTION:
