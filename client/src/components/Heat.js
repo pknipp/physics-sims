@@ -8,7 +8,7 @@ class Heat extends React.Component {
             Ts: [],
             leftIns: false,
             rightIns: false,
-            leftT: 0.0,
+            leftT: 0.5,
             rightT: 1,
             alpha: 0.001,
             logN: 1,
@@ -22,6 +22,13 @@ class Heat extends React.Component {
     handlerLogN = e => {
         let logN = Number(e.target.value);
         this.setState({ logN, n: Math.round(10 ** logN) }, () => this.makeDist());
+    }
+
+    handleInput = e => {
+        let newState = {}
+        newState[e.target.name] = Number(e.target.value);
+        debugger
+        this.setState(newState);
     }
 
     tick = _ => {
@@ -79,23 +86,6 @@ class Heat extends React.Component {
         this.setState({Ts: u});
     }
 
-    // nextTs = _ => {
-    //     debugger
-    //     let { Ts, alpha, n, leftIns, rightIns, leftT, rightT, dt } = this.state;
-    //     let alpha0 = alpha*dt*n*n/1000;
-    //     let nextTs = JSON.parse(JSON.stringify(Ts));
-    //     nextTs[0] += alpha0 * ((Ts[1] - Ts[0]) + (-Ts[0] + ((leftIns) ? Ts[0] : leftT)));
-    //     // nextTs.push(Ts[1]*alpha0 + Ts[0] * (1 - 2*alpha0) + ((leftIns) ? Ts[0] : leftT)*alpha0);
-    //     for (let i = 1; i < n - 1; i++) {
-    //         nextTs[i] += alpha0 * ((Ts[i + 1] - Ts[i]) + (Ts[i - 1] - Ts[i]));
-    //         // nextTs.push((Ts[i + 1] + Ts[i - 1])*alpha0 + Ts[i] * (1 - 2*alpha0));
-    //     }
-    //     nextTs[n-1] += alpha0 * ((Ts[n-2] - Ts[n-1]) + (-Ts[n-1] + ((rightIns) ? Ts[n-1] : rightT)));
-    //     // nextTs.push(Ts[n - 2]*alpha0 + Ts[n - 1] * (1 - 2*alpha0) + ((rightIns) ? Ts[n - 1] : rightT)*alpha0);
-    //     debugger
-    //     this.setState({ Ts: nextTs });
-    // }
-
     toggle = () => {
         const running = !this.state.running;
         if (running) {
@@ -109,6 +99,7 @@ class Heat extends React.Component {
     };
 
     render() {
+        debugger
         let bars = this.state.Ts.map((T, idx) => (
             <div key={`${idx}`}
                 className="bar"
@@ -118,7 +109,6 @@ class Heat extends React.Component {
                 }}>
             </div>
         ))
-        debugger;
         return (
             <>
                 <input
@@ -129,6 +119,15 @@ class Heat extends React.Component {
                     max="3"
                     step="0.2"
                     value={this.state.logN}
+                />
+                <input
+                    type="range"
+                    onChange={this.handleInput}
+                    name="leftT"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={this.state.leftT}
                 />
                 <span className="button-container">
                     <button onClick={this.toggle}>
