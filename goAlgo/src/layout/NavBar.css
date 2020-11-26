@@ -1,0 +1,22 @@
+#navbar {
+  width: 100;
+  display: flex;
+  justify-self: flex-start;
+  justify-items: flex-start;
+  align-items: center;
+  border-radius: 5px;
+  background-color: rgb(45, 125, 196);
+}
+
+#navbar > a {
+  margin: 15px;
+  font-size: 25px;
+  color: whitesmoke;
+  text-decoration: none;
+  font-weight: 200;
+  margin-left: 20px;
+}
+
+#logo:hover {
+  cursor: pointer;
+}
