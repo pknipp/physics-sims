@@ -13,7 +13,7 @@ class Asteroids extends React.Component {
         }
         this.nx = 1380;
         this.ny = 630;
-        this.width = 30;
+        this.width = 1;
     }
 
     componentDidMount() {this.setRocks()}
