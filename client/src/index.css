@@ -102,9 +102,9 @@ td {
   background-color: lightgrey;
 }
 
-.bars {
+/* .bars {
   background-color: lightgrey;
-}
+} */
 
 .dot {
   box-sizing: border-box;
@@ -170,10 +170,16 @@ td {
   width: 10px;
 }
 
-.heat-bar {
+.bars {
   height: 600px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   border: 1px;
+}
+
+.bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }

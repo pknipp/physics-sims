@@ -99,7 +99,32 @@ class Heat extends React.Component {
     };
 
     render() {
-        debugger
+        let leftT = (
+            <div className="BC">
+                <input
+                    type="range"
+                    onChange={this.handleInput}
+                    name="leftT"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={this.state.leftT}
+                />
+            </div>
+        )
+        let rightT = (
+            <div className="BC">
+                <input
+                    type="range"
+                    onChange={this.handleInput}
+                    name="rightT"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={this.state.rightT}
+                />
+            </div>
+        )
         let bars = this.state.Ts.map((T, idx) => (
             <div key={`${idx}`}
                 className="bar"
@@ -120,24 +145,6 @@ class Heat extends React.Component {
                     step="0.2"
                     value={this.state.logN}
                 />
-                <input
-                    type="range"
-                    onChange={this.handleInput}
-                    name="leftT"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={this.state.leftT}
-                />
-                <input
-                    type="range"
-                    onChange={this.handleInput}
-                    name="rightT"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={this.state.rightT}
-                />
                 <span className="button-container">
                     <button onClick={this.toggle}>
                         {this.state.running ? "Pause" : "Run"}
@@ -146,8 +153,12 @@ class Heat extends React.Component {
                 <span>
                 time: {Math.round(100 * this.state.time)/100} s
                 </span>
-                <div className="heat-bar">
+                <div className="bar-container">
+                {leftT}
+                <div className="bars">
                     {bars}
+                </div>
+                {rightT}
                 </div>
             </>
         )
