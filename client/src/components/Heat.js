@@ -24,15 +24,10 @@ class Heat extends React.Component {
         this.setState({ logN, n: Math.round(10 ** logN) }, () => this.makeDist());
     }
 
-    handleInput = e => {
-        let newState = {}
-        newState[e.target.name] = Number(e.target.value);
-        debugger
-        this.setState(newState);
-    }
+    handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
+    handleCheckbox = e => this.setState({[e.target.name]: e.target.checked});
 
     tick = _ => {
-        debugger
         let nextT = this.state.time + this.state.dt/1000;
         this.setState({ time: nextT}, () => this.tridiag());
     }
@@ -136,6 +131,7 @@ class Heat extends React.Component {
         ))
         return (
             <>
+                <span>Resolution</span>
                 <input
                     type="range"
                     onChange={this.handlerLogN}
@@ -153,6 +149,23 @@ class Heat extends React.Component {
                 <span>
                 time: {Math.round(100 * this.state.time)/100} s
                 </span>
+                <div>
+                    Boundary conditions:
+                    <div>
+                        Is insulated on left?
+                        <input
+                            name="leftIns"
+                            type="checkbox"
+                            checked={this.state.leftIns}
+                            onChange={this.handleCheckbox} />
+                        Is insulated on right?
+                        <input
+                            name="rightIns"
+                            type="checkbox"
+                            checked={this.state.rightIns}
+                            onChange={this.handleCheckbox} />
+                            </div>
+                </div>
                 <div className="bar-container">
                 {this.state.leftIns ? null : leftT}
                 <div className="bars">
