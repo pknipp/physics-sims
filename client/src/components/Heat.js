@@ -6,7 +6,7 @@ class Heat extends React.Component {
             running: false,
             time: 0,
             Ts: [],
-            leftIns: false,
+            leftIns: true,
             rightIns: false,
             leftT: 0.5,
             rightT: 1,
@@ -154,11 +154,11 @@ class Heat extends React.Component {
                 time: {Math.round(100 * this.state.time)/100} s
                 </span>
                 <div className="bar-container">
-                {leftT}
+                {this.state.leftIns ? null : leftT}
                 <div className="bars">
                     {bars}
                 </div>
-                {rightT}
+                {this.state.rightIns ? null : rightT}
                 </div>
             </>
         )
