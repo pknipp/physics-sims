@@ -136,7 +136,7 @@ class Heat extends React.Component {
                     min="0"
                     max="1"
                     step="0.1"
-                    value={this.state.leftT}
+                    value={this.state.rightT}
                 />
                 <span className="button-container">
                     <button onClick={this.toggle}>
