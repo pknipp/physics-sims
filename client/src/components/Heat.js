@@ -10,7 +10,7 @@ class Heat extends React.Component {
             rightIns: false,
             leftT: 0.5,
             rightT: 1,
-            alpha: 0.001,
+            alpha: 0.1,
             logN: 1,
             n: 10,
             dt: 100,
@@ -124,6 +124,15 @@ class Heat extends React.Component {
                     type="range"
                     onChange={this.handleInput}
                     name="leftT"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={this.state.leftT}
+                />
+                <input
+                    type="range"
+                    onChange={this.handleInput}
+                    name="rightT"
                     min="0"
                     max="1"
                     step="0.1"
