@@ -19,7 +19,7 @@ class Heat extends React.Component {
         }
     }
 
-    componentDidMount() {this.makeDist(this.state.n)}
+    componentDidMount() {this.makeDist()}
 
     handleLogN = e => {
         let logN = Number(e.target.value);
@@ -53,10 +53,10 @@ class Heat extends React.Component {
         for (let i = 0; i < this.state.n; i++) {
             // Ts.push(1);
             Ts.push(Math.random());
-            // Ts.push(Math.sin(Math.PI*i/this.state.n));
+            // Ts.push(Math.sin(Math.PI*i/n));
             // let T = 0;
             // for (let m = 1; m < 10; m++) {
-            //     T += coef[m] * Math.sin(Math.PI * m * i/this.state.n);
+            //     T += coef[m] * Math.sin(Math.PI * m * i/n);
             // }
             // Ts.push(Math.min(0,T));
         }
