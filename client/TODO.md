@@ -8,9 +8,9 @@ DRUMHEAD:
 * break down some components?
 * readjust scaling for energies?
 * ensure that user can only enter unique (i,j) combos for IC
-* insert CU for user (signup and edit details)
+* insert U for user (edit details)
 * change nested for-loops to nested list-comprehensions?
-* use checkboxes (rather than sliders) for a- & v-arrows, along w/bond width?
+* use checkboxes (rather than sliders) for bond width
 * make it easier for user to enable negative inputs for ICs
 * insert a "reset" button
 * enable "speed" to be changed without first pausing sim?
