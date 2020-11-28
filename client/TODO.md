@@ -18,7 +18,6 @@ DRUMHEAD:
 * adjust IC by click-and-drag instead of form filling?
 
 HEAT EQUATION:
-* insert slider to control timestep and transport coefficient (log scales?)
 * determine if a factor of 2 is needed, because of 2-step average that is taken
 * IC choices: const-T, ramp, random x-domain, random k-domain, mouseover?
 
