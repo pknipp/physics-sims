@@ -12,12 +12,15 @@ class Heat extends React.Component {
             rightT: 1,
             alpha: 0.1,
             logN: 1,
-            n: 10,
+            // n: 10,
             dt: 100,
         }
     }
 
-    componentDidMount() {this.makeDist(this.state.n)}
+    componentDidMount() {
+        let n = Math.round(10 ** this.state.logN);
+        this.setState({n} , () => this.makeDist());
+    }
 
     handlerLogN = e => {
         let logN = Number(e.target.value);
