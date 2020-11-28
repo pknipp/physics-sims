@@ -201,8 +201,10 @@ class Heat extends React.Component {
                 </div>
                 <div className="bar-container">
                 {this.state.leftIns ? null : leftT}
+                <div className="bars-container">
                 <div className="bars">
                     {bars}
+                </div>
                 </div>
                 {this.state.rightIns ? null : rightT}
                 </div>
