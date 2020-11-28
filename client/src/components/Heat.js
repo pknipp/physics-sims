@@ -10,18 +10,29 @@ class Heat extends React.Component {
             rightIns: false,
             leftT: 0.5,
             rightT: 1,
-            alpha: 0.1,
+            LogAlpha: -8    ,
+            alpha: 0.01,
             logN: 1,
-            n: 10,
+            n: 16,
+            logDt: 8,
             dt: 100,
         }
     }
 
     componentDidMount() {this.makeDist(this.state.n)}
 
-    handlerLogN = e => {
+    handleLogN = e => {
         let logN = Number(e.target.value);
         this.setState({ logN, n: Math.round(10 ** logN) }, () => this.makeDist());
+    }
+    handleLogDt = e => {
+        let logDt = Number(e.target.value);
+        debugger
+        this.setState({ logDt, dt: Math.round(10 ** logDt)}, () => this.makeDist() );
+    }
+    handleLogAlpha = e => {
+        let logAlpha = Number(e.target.value);
+        this.setState({ logAlpha, alpha: Math.round(10 ** logAlpha) });
     }
 
     handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
@@ -29,6 +40,7 @@ class Heat extends React.Component {
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
+        debugger
         this.setState({ time: nextT}, () => this.tridiag());
     }
 
@@ -94,6 +106,7 @@ class Heat extends React.Component {
     };
 
     render() {
+        debugger
         let leftT = (
             <div className="BC">
                 <input
@@ -134,12 +147,32 @@ class Heat extends React.Component {
                 <span>Resolution</span>
                 <input
                     type="range"
-                    onChange={this.handlerLogN}
+                    onChange={this.handleLogN}
                     name="logN"
                     min="0"
                     max="3"
                     step="0.2"
                     value={this.state.logN}
+                />
+                <span>Timestep</span>
+                <input
+                    type="range"
+                    onChange={this.handleLogDt}
+                    name="logDt"
+                    min="0"
+                    max="3"
+                    step="0.2"
+                    value={this.state.logDt}
+                />
+                <span>Heat transport coefficient</span>
+                <input
+                    type="range"
+                    onChange={this.handleLogAlpha}
+                    name="logAlpha"
+                    min="-3"
+                    max="0"
+                    step="0.2"
+                    value={this.state.logAlpha}
                 />
                 <span className="button-container">
                     <button onClick={this.toggle}>
