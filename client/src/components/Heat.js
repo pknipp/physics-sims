@@ -10,29 +10,31 @@ class Heat extends React.Component {
             rightIns: false,
             leftT: 0.5,
             rightT: 1,
-            LogAlpha: -8    ,
-            alpha: 0.01,
+            logAlpha: -2,
             logN: 1,
-            n: 16,
-            logDt: 8,
-            dt: 100,
+            logDt: 2,
         }
     }
 
-    componentDidMount() {this.makeDist()}
+    componentDidMount() {
+        let n = Math.round(10 ** this.state.logN);
+        let alpha = 10 ** this.state.logAlpha;
+        let dt = 10 ** this.state.logDt;
+        this.setState({ n, alpha, dt }, () => this.makeDist());
+    }
 
     handleLogN = e => {
         let logN = Number(e.target.value);
-        this.setState({ logN, n: Math.round(10 ** logN) }, () => this.makeDist());
+        let n = Math.round(10 ** logN);
+        this.setState({ logN, n, time: 0 }, () => this.makeDist());
     }
     handleLogDt = e => {
         let logDt = Number(e.target.value);
-        debugger
-        this.setState({ logDt, dt: Math.round(10 ** logDt)}, () => this.makeDist() );
+        this.setState({ logDt, dt: Math.round(10 ** logDt)});
     }
     handleLogAlpha = e => {
         let logAlpha = Number(e.target.value);
-        this.setState({ logAlpha, alpha: Math.round(10 ** logAlpha) });
+        this.setState({ logAlpha, alpha: 10 ** logAlpha });
     }
 
     handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
@@ -40,7 +42,6 @@ class Heat extends React.Component {
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
-        debugger
         this.setState({ time: nextT}, () => this.tridiag());
     }
 
@@ -97,7 +98,7 @@ class Heat extends React.Component {
         const running = !this.state.running;
         if (running) {
           this.interval = setInterval(this.tick, this.state.dt);
-          this.setState({time: 0});
+          this.setState({ time: this.state.time });
         } else {
           clearInterval(this.interval);
           this.interval = null;
@@ -106,7 +107,6 @@ class Heat extends React.Component {
     };
 
     render() {
-        debugger
         let leftT = (
             <div className="BC">
                 <input
