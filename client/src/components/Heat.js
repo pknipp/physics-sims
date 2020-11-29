@@ -52,6 +52,18 @@ class Heat extends React.Component {
     handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
     handleCheckbox = e => this.setState({[e.target.name]: e.target.checked});
 
+    handleMouseDown = (row, col) => {
+        let Ts = new Array(this.state.n);
+        Ts[col] = row * this.state.dy / this.state.height;
+        // const targetNode = grid[row][col];
+        // mousePressed = true;
+        // targetNode.isIC = !targetNode.isIC;
+        // const targetDomNode = document.getElementById(`${row}-${col}`);
+        // targetNode.isWall ? targetDomNode.classList.add('node-is-ic') : targetDomNode.classList.remove('node-is-ic');
+        debugger
+        this.setState({ Ts });
+      }
+
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
         this.setState({ time: nextT}, () => this.tridiag());
@@ -155,18 +167,24 @@ class Heat extends React.Component {
             </div>
         ))
         let squares = [];
-        for (let i = 0; i < this.state.n; i++) {
-            for (let j = 0; j < this.state.ny; j++) {
+        for (let i = 0; i < this.state.ny; i++) {
+            for (let j = 0; j < this.state.n; j++) {
                 squares.push(
                     <div key={`${i}-${j}`}
+                        id={`${i}-${j}`}
                         className="square"
-                        height={`${this.state.dy}px`}
-                        width={`${this.state.dx}px`}
-                    >
+                        onMouseEnter={() => this.handleMouseDown(i, j)}
+                        style={{
+                        height:`${this.state.dy}px`,
+                        bottom: `${i * this.state.dy}px`,
+                        left: `${j * this.state.dx}px`,
+                        width:`${this.state.dx}px`
+                    }}>
                     </div>
                 )
             }
         }
+        debugger
         return (
             <>
                 <span>Resolution</span>
@@ -227,8 +245,8 @@ class Heat extends React.Component {
                 <div className="bar-container">
                 {this.state.leftIns ? null : leftT}
                 <div className="bars">
-                    {bars}
                     {squares}
+                    {bars}
                 </div>
                 {this.state.rightIns ? null : rightT}
                 </div>
