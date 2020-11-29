@@ -13,20 +13,32 @@ class Heat extends React.Component {
             logAlpha: -2,
             logN: 1,
             logDt: 2,
+            height: 600,
+            width: 1000,
         }
     }
 
     componentDidMount() {
         let n = Math.round(10 ** this.state.logN);
+        let dx = Math.round(this.state.width / n);
+        let width = n * dx;
+        let ny = Math.round(this.state.height/dx);
+        let dy = Math.round(this.state.height/ny);
+        let height = ny * dy;
         let alpha = 10 ** this.state.logAlpha;
         let dt = 10 ** this.state.logDt;
-        this.setState({ n, alpha, dt }, () => this.makeDist());
+        this.setState({ n, ny, dx, dy, height, width, alpha, dt }, () => this.makeDist());
     }
 
     handleLogN = e => {
         let logN = Number(e.target.value);
         let n = Math.round(10 ** logN);
-        this.setState({ logN, n, time: 0 }, () => this.makeDist());
+        let dx = Math.round(this.state.width / n);
+        let width = n * dx;
+        let ny = Math.round(this.state.height/dx);
+        let dy = Math.round(this.state.height/ny);
+        let height = ny * dy;
+        this.setState({ logN, n, ny, dx, dy, width, height, time: 0 }, () => this.makeDist());
     }
     handleLogDt = e => {
         let logDt = Number(e.target.value);
@@ -137,11 +149,24 @@ class Heat extends React.Component {
             <div key={`${idx}`}
                 className="bar"
                 style={{
-                height:`${Math.round(600*T)}px`,
-                width:`${Math.round(1000/this.state.n)}px`,
+                height:`${Math.round(this.state.height*T)}px`,
+                width:`${Math.round(this.state.width/this.state.n)}px`,
                 }}>
             </div>
         ))
+        let squares = [];
+        for (let i = 0; i < this.state.n; i++) {
+            for (let j = 0; j < this.state.ny; j++) {
+                squares.push(
+                    <div key={`${i}-${j}`}
+                        className="square"
+                        height={`${this.state.dy}px`}
+                        width={`${this.state.dx}px`}
+                    >
+                    </div>
+                )
+            }
+        }
         return (
             <>
                 <span>Resolution</span>
@@ -203,6 +228,7 @@ class Heat extends React.Component {
                 {this.state.leftIns ? null : leftT}
                 <div className="bars">
                     {bars}
+                    {squares}
                 </div>
                 {this.state.rightIns ? null : rightT}
                 </div>
