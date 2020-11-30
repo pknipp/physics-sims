@@ -15,6 +15,7 @@ class Heat extends React.Component {
             logDt: 2,
             height: 600,
             width: 1000,
+            mousePressed: false,
         }
     }
 
@@ -52,8 +53,23 @@ class Heat extends React.Component {
     handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
     handleCheckbox = e => this.setState({[e.target.name]: e.target.checked});
 
-    handleMouseDown = (row, col) => {
-        let Ts = new Array(this.state.n);
+    handleMouseDown = _ => this.setState({ mousePressed: true });
+    handleMouseUp   = _ => this.setState({ mousePressed: false});
+    // handleMouseDown = (row, col) => {
+    //     let Ts = [...this.state.Ts];
+    //     Ts[col] = row * this.state.dy / this.state.height;
+    //     // const targetNode = grid[row][col];
+    //     // mousePressed = true;
+    //     // targetNode.isIC = !targetNode.isIC;
+    //     // const targetDomNode = document.getElementById(`${row}-${col}`);
+    //     // targetNode.isWall ? targetDomNode.classList.add('node-is-ic') : targetDomNode.classList.remove('node-is-ic');
+    //     debugger
+    //     this.setState({ Ts, mousePressed: true });
+    // }
+
+    handleMouseEnter = (row, col) => {
+        if (!this.state.mousePressed) return;
+        let Ts = [...this.state.Ts];
         Ts[col] = row * this.state.dy / this.state.height;
         // const targetNode = grid[row][col];
         // mousePressed = true;
@@ -62,7 +78,7 @@ class Heat extends React.Component {
         // targetNode.isWall ? targetDomNode.classList.add('node-is-ic') : targetDomNode.classList.remove('node-is-ic');
         debugger
         this.setState({ Ts });
-      }
+    }
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
@@ -173,7 +189,7 @@ class Heat extends React.Component {
                     <div key={`${i}-${j}`}
                         id={`${i}-${j}`}
                         className="square"
-                        onMouseEnter={() => this.handleMouseDown(i, j)}
+                        onMouseEnter={() => this.handleMouseEnter(i, j)}
                         style={{
                         height:`${this.state.dy}px`,
                         bottom: `${i * this.state.dy}px`,
@@ -184,9 +200,8 @@ class Heat extends React.Component {
                 )
             }
         }
-        debugger
         return (
-            <>
+            <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
                 <span>Resolution</span>
                 <input
                     type="range"
@@ -245,12 +260,12 @@ class Heat extends React.Component {
                 <div className="bar-container">
                 {this.state.leftIns ? null : leftT}
                 <div className="bars">
-                    {squares}
+                    {this.state.running ? null : squares}
                     {bars}
                 </div>
                 {this.state.rightIns ? null : rightT}
                 </div>
-            </>
+            </div>
         )
     }
 }
