@@ -19,7 +19,8 @@ DRUMHEAD:
 
 HEAT EQUATION:
 * determine if a factor of 2 is needed, because of 2-step average that is taken
-* IC choices: const-T, ramp, random x-domain, random k-domain, mouseover?
+* insert outgoing BC (for which green's function should be used, or modified BC)?
+* add any heat sources?
 
 ASTEROIDS:
 * Allow two objects that "collide" (ie come within a certain distance of each other) to merge into a single object in a manner which conserves both mass (e.g., size) and momentum (= mass times velocity), and allow for the possibility that single objects may spontaneously split into two objects, again in a manner which conserved mass and momentum.

@@ -11,12 +11,12 @@ class Heat extends React.Component {
             leftT: 0.2,
             rightT: 0.6,
             logAlpha: -2,
-            logN: 1,
+            logN: 1.5,
             logDt: 2,
             width: 1000,
             mousePressed: false,
         }
-        this.height = 600;
+        this.height = 500;
     }
 
     componentDidMount() {
@@ -52,15 +52,13 @@ class Heat extends React.Component {
 
     handleMouseDown = _ => this.setState({ mousePressed: true });
     handleMouseUp   = _ => this.setState({ mousePressed: false});
-    handleMouseEnter = e => {
+    handleMouseLeave = e => {
         if (!this.state.mousePressed) return;
-        debugger
         let Ts = [...this.state.Ts];
         let col = Number(e.target.id);
         Ts[col] = (1 - e.nativeEvent.offsetY / this.height);
         // For all but 1st column, take avg of two heights
         if (col > 0) Ts[col] = (Ts[col] + Ts[col - 1]) / 2;
-        debugger
         this.setState({ Ts, time: 0 });
     }
 
@@ -128,9 +126,8 @@ class Heat extends React.Component {
     };
 
     render() {
-        debugger
         let leftT = (
-            <div className="BC">
+            <div className="BC" style={{height: `${this.height}px`}}>
                 <input
                     type="range"
                     onChange={this.handleInput}
@@ -139,11 +136,15 @@ class Heat extends React.Component {
                     max="1"
                     step="0.1"
                     value={this.state.leftT}
+                    style={{
+                        width: `${this.height}px`,
+                        transformOrigin: `${this.height/2}px ${this.height/2}px`
+                    }}
                 />
             </div>
         )
         let rightT = (
-            <div className="BC">
+            <div className="BC" style={{height: `${this.height}px`}}>
                 <input
                     type="range"
                     onChange={this.handleInput}
@@ -152,6 +153,10 @@ class Heat extends React.Component {
                     max="1"
                     step="0.1"
                     value={this.state.rightT}
+                    style={{
+                        width: `${this.height}px`,
+                        transformOrigin: `${this.height/2}px ${this.height/2}px`
+                    }}
                 />
             </div>
         )
@@ -173,7 +178,7 @@ class Heat extends React.Component {
                     id={`${j}`}
                     className="stripe"
                     name={`${j}`}
-                    onMouseLeave={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}
                     style={{
                     height:`${this.height}px`,
                     left: `${j * this.state.dx}px`,
@@ -264,7 +269,7 @@ class Heat extends React.Component {
                                             onChange={this.handleCheckbox}
                                         />
                                     </td>
-                                    <td>{this.state.leftIns ? null : "Adjust temperature on this end with vertical slider."}</td>
+                                    <td rowspan="2">{(this.state.leftIns && this.state.rightIns) ? null : 'Adjust temperature at end ("BC") with vertical slider.'}</td>
                                 </tr>
                                 <tr>
                                     <td> right end? </td>
@@ -276,12 +281,11 @@ class Heat extends React.Component {
                                             onChange={this.handleCheckbox}
                                         />
                                     </td>
-                                    <td>{this.state.rightIns ? null : "Adjust temperature on this end with vertical slider."}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    The gray bars graphed below indicate the system's "temperature profile".  The default value of the system's "initial conditions" have been set to equal the system's "steady state" profile.  Hence the temperature profile will not change when you run the simulation unless you first change the initial conditions as follows:
+                    The heights of the gray bars graphed below indicate the system's "temperature profile".  The default value of the system's "initial conditions" have been set to equal the system's "steady state" profile.  This means that the temperature profile will not change when you run the simulation unless you first change the initial conditions as follows:
                     <ul>
                         <li>Ensure that the simulation is not running.</li>
                         <li>Click (and hold) in the margin to the left of the graph.</li>
@@ -290,7 +294,8 @@ class Heat extends React.Component {
                     </ul>
                     <div className="bar-container">
                             {this.state.leftIns ? null : leftT}
-                            <div className="bars">
+                            <div className="bars"
+                                style={{height:`${this.height}px`}}>
                                 {this.state.running ? null : stripes}
                                 {bars}
                             </div>
