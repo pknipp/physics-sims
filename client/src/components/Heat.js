@@ -184,7 +184,13 @@ class Heat extends React.Component {
         }
         return (
             <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-                <h2>Simulation parameters:</h2>
+                <h2 align="center">Simulation parameters:</h2>
+                <div className="button-container">
+                    <button onClick={this.toggle}>
+                        {this.state.running ? "Pause" : "Run"}
+                    </button>
+                    <div>time: {Math.round(100 * this.state.time)/100} s</div>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -242,31 +248,36 @@ class Heat extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-                <span className="button-container">
-                    <button onClick={this.toggle}>
-                        {this.state.running ? "Pause" : "Run"}
-                    </button>
-                </span>
-                <span>
-                time: {Math.round(100 * this.state.time)/100} s
-                </span>
-                <div>
-                    Boundary conditions:
-                    <div>
-                        Is insulated on left?
-                        <input
-                            name="leftIns"
-                            type="checkbox"
-                            checked={this.state.leftIns}
-                            onChange={this.handleCheckbox} />
-                        Is insulated on right?
-                        <input
-                            name="rightIns"
-                            type="checkbox"
-                            checked={this.state.rightIns}
-                            onChange={this.handleCheckbox} />
-                            </div>
-                </div>
+                <table>
+                    <thead><tr><th colspan="4">Boundary conditions:</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2">Is insulated on the ...</td>
+                            <td> left? </td>
+                            <td>
+                                <input
+                                    name="leftIns"
+                                    type="checkbox"
+                                    checked={this.state.leftIns}
+                                    onChange={this.handleCheckbox}
+                                />
+                            </td>
+                            <td>{this.state.leftIns ? null : "Adjust temperature on this end with vertical slider."}</td>
+                        </tr>
+                        <tr>
+                            <td> right? </td>
+                            <td>
+                                <input
+                                    name="rightIns"
+                                    type="checkbox"
+                                    checked={this.state.rightIns}
+                                    onChange={this.handleCheckbox}
+                                />
+                            </td>
+                            <td>{this.state.rightIns ? null : "Adjust temperature on this end with vertical slider."}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div className="bar-container">
                 {this.state.leftIns ? null : leftT}
                 <div className="bars">
