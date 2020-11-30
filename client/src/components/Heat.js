@@ -61,7 +61,7 @@ class Heat extends React.Component {
         // For all but 1st column, take avg of two heights
         if (col > 0) Ts[col] = (Ts[col] + Ts[col - 1]) / 2;
         debugger
-        this.setState({ Ts });
+        this.setState({ Ts, time: 0 });
     }
 
     tick = _ => {
@@ -254,8 +254,8 @@ class Heat extends React.Component {
                             <thead><tr><th colspan="4">Boundary conditions:</th></tr></thead>
                             <tbody>
                                 <tr>
-                                    <td rowspan="2">Is insulated on the ...</td>
-                                    <td> left? </td>
+                                    <td rowspan="2">Is this system insulated at its ...</td>
+                                    <td> left end? </td>
                                     <td>
                                         <input
                                             name="leftIns"
@@ -267,7 +267,7 @@ class Heat extends React.Component {
                                     <td>{this.state.leftIns ? null : "Adjust temperature on this end with vertical slider."}</td>
                                 </tr>
                                 <tr>
-                                    <td> right? </td>
+                                    <td> right end? </td>
                                     <td>
                                         <input
                                             name="rightIns"
@@ -281,6 +281,13 @@ class Heat extends React.Component {
                             </tbody>
                         </table>
                     </div>
+                    The gray bars graphed below indicate the system's "temperature profile".  The default value of the system's "initial conditions" have been set to equal the system's "steady state" profile.  Hence the temperature profile will not change when you run the simulation unless you first change the initial conditions as follows:
+                    <ul>
+                        <li>Ensure that the simulation is not running.</li>
+                        <li>Click (and hold) in the margin to the left of the graph.</li>
+                        <li>Drag the mouse slowly across the graph.</li>
+                        <li>Release the mouse button after you've reached the right side of the graph.</li>
+                    </ul>
                     <div className="bar-container">
                             {this.state.leftIns ? null : leftT}
                             <div className="bars">
