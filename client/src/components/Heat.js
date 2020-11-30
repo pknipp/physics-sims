@@ -24,7 +24,7 @@ class Heat extends React.Component {
         let dx = Math.round(this.state.width / n);
         let width = n * dx;
         let ny = Math.round(this.state.height/dx);
-        let dy = Math.round(this.state.height/ny);
+        let dy = Math.floor(this.state.height/ny);
         let height = ny * dy;
         let alpha = 10 ** this.state.logAlpha;
         let dt = 10 ** this.state.logDt;
@@ -55,27 +55,13 @@ class Heat extends React.Component {
 
     handleMouseDown = _ => this.setState({ mousePressed: true });
     handleMouseUp   = _ => this.setState({ mousePressed: false});
-    // handleMouseDown = (row, col) => {
-    //     let Ts = [...this.state.Ts];
-    //     Ts[col] = row * this.state.dy / this.state.height;
-    //     // const targetNode = grid[row][col];
-    //     // mousePressed = true;
-    //     // targetNode.isIC = !targetNode.isIC;
-    //     // const targetDomNode = document.getElementById(`${row}-${col}`);
-    //     // targetNode.isWall ? targetDomNode.classList.add('node-is-ic') : targetDomNode.classList.remove('node-is-ic');
-    //     debugger
-    //     this.setState({ Ts, mousePressed: true });
-    // }
-
-    handleMouseEnter = (row, col) => {
+    handleMouseEnter = e => {
         if (!this.state.mousePressed) return;
         let Ts = [...this.state.Ts];
+        let coords = e.target.id.split("-");
+        let row = Number(coords[0]);
+        let col = Number(coords[1]);
         Ts[col] = row * this.state.dy / this.state.height;
-        // const targetNode = grid[row][col];
-        // mousePressed = true;
-        // targetNode.isIC = !targetNode.isIC;
-        // const targetDomNode = document.getElementById(`${row}-${col}`);
-        // targetNode.isWall ? targetDomNode.classList.add('node-is-ic') : targetDomNode.classList.remove('node-is-ic');
         debugger
         this.setState({ Ts });
     }
@@ -173,7 +159,9 @@ class Heat extends React.Component {
                 />
             </div>
         )
-        let bars = this.state.Ts.map((T, idx) => (
+        let bars = this.state.Ts.map((T, idx) => {
+            debugger
+            return (
             <div key={`${idx}`}
                 className="bar"
                 style={{
@@ -181,7 +169,7 @@ class Heat extends React.Component {
                 width:`${Math.round(this.state.width/this.state.n)}px`,
                 }}>
             </div>
-        ))
+        )})
         let squares = [];
         for (let i = 0; i < this.state.ny; i++) {
             for (let j = 0; j < this.state.n; j++) {
@@ -189,7 +177,8 @@ class Heat extends React.Component {
                     <div key={`${i}-${j}`}
                         id={`${i}-${j}`}
                         className="square"
-                        onMouseEnter={() => this.handleMouseEnter(i, j)}
+                        name={`${i}-${j}`}
+                        onMouseEnter={this.handleMouseEnter}
                         style={{
                         height:`${this.state.dy}px`,
                         bottom: `${i * this.state.dy}px`,
@@ -208,7 +197,7 @@ class Heat extends React.Component {
                     onChange={this.handleLogN}
                     name="logN"
                     min="0"
-                    max="3"
+                    max="2.5"
                     step="0.2"
                     value={this.state.logN}
                 />
