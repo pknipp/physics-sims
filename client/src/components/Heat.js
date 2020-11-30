@@ -6,10 +6,10 @@ class Heat extends React.Component {
             running: false,
             time: 0,
             Ts: [],
-            leftIns: true,
+            leftIns: false,
             rightIns: false,
-            leftT: 0.5,
-            rightT: 1,
+            leftT: 0.4,
+            rightT: 0.8,
             logAlpha: -2,
             logN: 1,
             logDt: 2,
@@ -56,12 +56,15 @@ class Heat extends React.Component {
     handleMouseDown = _ => this.setState({ mousePressed: true });
     handleMouseUp   = _ => this.setState({ mousePressed: false});
     handleMouseEnter = e => {
+        // debugger
         if (!this.state.mousePressed) return;
         let Ts = [...this.state.Ts];
         let coords = e.target.id.split("-");
         let row = Number(coords[0]);
         let col = Number(coords[1]);
         Ts[col] = row * this.state.dy / this.state.height;
+        // let col = Number(e.target.id);
+        // Ts[col] = e.offsetY / this.state.height;
         debugger
         this.setState({ Ts });
     }
@@ -160,7 +163,7 @@ class Heat extends React.Component {
             </div>
         )
         let bars = this.state.Ts.map((T, idx) => {
-            debugger
+            // debugger
             return (
             <div key={`${idx}`}
                 className="bar"
@@ -189,6 +192,21 @@ class Heat extends React.Component {
                 )
             }
         }
+        // let stripes = [];
+        // for (let j = 0; j < this.state.n; j++) {
+        //     stripes.push(
+        //         <div key={`${i}-${j}`}
+        //             id={`${j}`}
+        //             className="stripe"
+        //             name={`${j}`}
+        //             onMouseEnter={this.handleMouseEnter}
+        //             style={{
+        //             left: `${j * this.state.dx}px`,
+        //             width:`${this.state.dx}px`
+        //         }}>
+        //         </div>
+        //     )
+        // }
         return (
             <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
                 <span>Resolution</span>
@@ -250,6 +268,7 @@ class Heat extends React.Component {
                 {this.state.leftIns ? null : leftT}
                 <div className="bars">
                     {this.state.running ? null : squares}
+                    {/* {this.state.running ? null : stripes} */}
                     {bars}
                 </div>
                 {this.state.rightIns ? null : rightT}
