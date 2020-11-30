@@ -8,27 +8,24 @@ class Heat extends React.Component {
             Ts: [],
             leftIns: false,
             rightIns: false,
-            leftT: 0.4,
-            rightT: 0.8,
+            leftT: 0.2,
+            rightT: 0.6,
             logAlpha: -2,
-            logN: 1,
+            logN: 1.5,
             logDt: 2,
-            height: 600,
             width: 1000,
             mousePressed: false,
         }
+        this.height = 500;
     }
 
     componentDidMount() {
         let n = Math.round(10 ** this.state.logN);
         let dx = Math.round(this.state.width / n);
         let width = n * dx;
-        let ny = Math.round(this.state.height/dx);
-        let dy = Math.floor(this.state.height/ny);
-        let height = ny * dy;
         let alpha = 10 ** this.state.logAlpha;
         let dt = 10 ** this.state.logDt;
-        this.setState({ n, ny, dx, dy, height, width, alpha, dt }, () => this.makeDist());
+        this.setState({ n, dx, width, alpha, dt }, () => this.makeDist());
     }
 
     handleLogN = e => {
@@ -50,23 +47,19 @@ class Heat extends React.Component {
         this.setState({ logAlpha, alpha: 10 ** logAlpha });
     }
 
-    handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
-    handleCheckbox = e => this.setState({[e.target.name]: e.target.checked});
+    handleInput = e => this.setState({[e.target.name]: Number(e.target.value)},()=>this.makeDist());
+    handleCheckbox = e => this.setState({[e.target.name]: e.target.checked}, () => this.makeDist());
 
     handleMouseDown = _ => this.setState({ mousePressed: true });
     handleMouseUp   = _ => this.setState({ mousePressed: false});
-    handleMouseEnter = e => {
-        // debugger
+    handleMouseLeave = e => {
         if (!this.state.mousePressed) return;
         let Ts = [...this.state.Ts];
-        let coords = e.target.id.split("-");
-        let row = Number(coords[0]);
-        let col = Number(coords[1]);
-        Ts[col] = row * this.state.dy / this.state.height;
-        // let col = Number(e.target.id);
-        // Ts[col] = e.offsetY / this.state.height;
-        debugger
-        this.setState({ Ts });
+        let col = Number(e.target.id);
+        Ts[col] = (1 - e.nativeEvent.offsetY / this.height);
+        // For all but 1st column, take avg of two heights
+        if (col > 0) Ts[col] = (Ts[col] + Ts[col - 1]) / 2;
+        this.setState({ Ts, time: 0 });
     }
 
     tick = _ => {
@@ -75,20 +68,17 @@ class Heat extends React.Component {
     }
 
     makeDist = _ => {
+        let {n, leftIns, rightIns, leftT, rightT} = this.state;
         let Ts = [];
-        let coef = [];
-        for (let m = 1; m < 10; m++) {
-            coef.push(Math.random());
-        }
-        for (let i = 0; i < this.state.n; i++) {
-            // Ts.push(1);
-            Ts.push(Math.random());
-            // Ts.push(Math.sin(Math.PI*i/n));
-            // let T = 0;
-            // for (let m = 1; m < 10; m++) {
-            //     T += coef[m] * Math.sin(Math.PI * m * i/n);
-            // }
-            // Ts.push(Math.min(0,T));
+        if (leftIns && rightIns) {
+            Ts = new Array(n).fill(0.5);
+        } else {
+            let slope = (leftIns || rightIns) ? 0 : (rightT - leftT) / n;
+            let T = leftIns ? rightT : leftT;
+            Ts[0] = T;
+            for (let i = 1; i < n; i++) {
+                Ts.push(T += slope);
+            }
         }
         this.setState({ Ts });
     }
@@ -137,7 +127,7 @@ class Heat extends React.Component {
 
     render() {
         let leftT = (
-            <div className="BC">
+            <div className="BC" style={{height: `${this.height}px`}}>
                 <input
                     type="range"
                     onChange={this.handleInput}
@@ -146,11 +136,15 @@ class Heat extends React.Component {
                     max="1"
                     step="0.1"
                     value={this.state.leftT}
+                    style={{
+                        width: `${this.height}px`,
+                        transformOrigin: `${this.height/2}px ${this.height/2}px`
+                    }}
                 />
             </div>
         )
         let rightT = (
-            <div className="BC">
+            <div className="BC" style={{height: `${this.height}px`}}>
                 <input
                     type="range"
                     onChange={this.handleInput}
@@ -159,122 +153,155 @@ class Heat extends React.Component {
                     max="1"
                     step="0.1"
                     value={this.state.rightT}
+                    style={{
+                        width: `${this.height}px`,
+                        transformOrigin: `${this.height/2}px ${this.height/2}px`
+                    }}
                 />
             </div>
         )
         let bars = this.state.Ts.map((T, idx) => {
-            // debugger
             return (
             <div key={`${idx}`}
                 className="bar"
                 style={{
-                height:`${Math.round(this.state.height*T)}px`,
+                height:`${Math.round(this.height*T)}px`,
                 width:`${Math.round(this.state.width/this.state.n)}px`,
                 }}>
             </div>
         )})
-        let squares = [];
-        for (let i = 0; i < this.state.ny; i++) {
-            for (let j = 0; j < this.state.n; j++) {
-                squares.push(
-                    <div key={`${i}-${j}`}
-                        id={`${i}-${j}`}
-                        className="square"
-                        name={`${i}-${j}`}
-                        onMouseEnter={this.handleMouseEnter}
-                        style={{
-                        height:`${this.state.dy}px`,
-                        bottom: `${i * this.state.dy}px`,
-                        left: `${j * this.state.dx}px`,
-                        width:`${this.state.dx}px`
-                    }}>
-                    </div>
-                )
-            }
+
+        let stripes = [];
+        for (let j = 0; j < this.state.n; j++) {
+            stripes.push(
+                <div key={`${j}`}
+                    id={`${j}`}
+                    className="stripe"
+                    name={`${j}`}
+                    onMouseLeave={this.handleMouseLeave}
+                    style={{
+                    height:`${this.height}px`,
+                    left: `${j * this.state.dx}px`,
+                    width:`${this.state.dx}px`
+                }}>
+                </div>
+            )
         }
-        // let stripes = [];
-        // for (let j = 0; j < this.state.n; j++) {
-        //     stripes.push(
-        //         <div key={`${i}-${j}`}
-        //             id={`${j}`}
-        //             className="stripe"
-        //             name={`${j}`}
-        //             onMouseEnter={this.handleMouseEnter}
-        //             style={{
-        //             left: `${j * this.state.dx}px`,
-        //             width:`${this.state.dx}px`
-        //         }}>
-        //         </div>
-        //     )
-        // }
         return (
             <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-                <span>Resolution</span>
-                <input
-                    type="range"
-                    onChange={this.handleLogN}
-                    name="logN"
-                    min="0"
-                    max="2.5"
-                    step="0.2"
-                    value={this.state.logN}
-                />
-                <span>Timestep</span>
-                <input
-                    type="range"
-                    onChange={this.handleLogDt}
-                    name="logDt"
-                    min="0"
-                    max="3"
-                    step="0.2"
-                    value={this.state.logDt}
-                />
-                <span>Heat transport coefficient</span>
-                <input
-                    type="range"
-                    onChange={this.handleLogAlpha}
-                    name="logAlpha"
-                    min="-3"
-                    max="0"
-                    step="0.2"
-                    value={this.state.logAlpha}
-                />
-                <span className="button-container">
-                    <button onClick={this.toggle}>
-                        {this.state.running ? "Pause" : "Run"}
-                    </button>
-                </span>
-                <span>
-                time: {Math.round(100 * this.state.time)/100} s
-                </span>
-                <div>
-                    Boundary conditions:
-                    <div>
-                        Is insulated on left?
-                        <input
-                            name="leftIns"
-                            type="checkbox"
-                            checked={this.state.leftIns}
-                            onChange={this.handleCheckbox} />
-                        Is insulated on right?
-                        <input
-                            name="rightIns"
-                            type="checkbox"
-                            checked={this.state.rightIns}
-                            onChange={this.handleCheckbox} />
+                <>
+                    <h2 align="center">Simulation parameters:</h2>
+                    <div className="parameters">
+                        <div className="button-container">
+                            <button onClick={this.toggle}>
+                                {this.state.running ? "Pause" : "Run"}
+                            </button>
+                            <div>time: {Math.round(100 * this.state.time)/100} s</div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th colSpan="4" align="center"> Slider controls</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Spatial resolution: </td>
+                                    <td>coarse</td>
+                                    <td>
+                                        <input
+                                            type="range"
+                                            onChange={this.handleLogN}
+                                            name="logN"
+                                            min="0"
+                                            max="2.5"
+                                            step="0.2"
+                                            value={this.state.logN}
+                                        />
+                                    </td>
+                                    <td>fine</td>
+                                </tr>
+                                <tr>
+                                    <td>Timestep: </td>
+                                    <td align="right">1 ms</td>
+                                    <td>
+                                        <input
+                                            type="range"
+                                            onChange={this.handleLogDt}
+                                            name="logDt"
+                                            min="0"
+                                            max="3"
+                                            step="0.2"
+                                            value={this.state.logDt}
+                                        />
+                                    </td>
+                                    <td>1 s</td>
+                                </tr>
+                                <tr>
+                                    <td>Thermal conductivity: </td>
+                                    <td align="right">low</td>
+                                    <td>
+                                        <input
+                                            type="range"
+                                            onChange={this.handleLogAlpha}
+                                            name="logAlpha"
+                                            min="-3"
+                                            max="0"
+                                            step="0.2"
+                                            value={this.state.logAlpha}
+                                        />
+                                    </td>
+                                    <td>high</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <thead><tr><th colspan="4">Boundary conditions:</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2">Is this system insulated at its ...</td>
+                                    <td> left end? </td>
+                                    <td>
+                                        <input
+                                            name="leftIns"
+                                            type="checkbox"
+                                            checked={this.state.leftIns}
+                                            onChange={this.handleCheckbox}
+                                        />
+                                    </td>
+                                    <td rowspan="2">{(this.state.leftIns && this.state.rightIns) ? null : 'Adjust temperature at end ("BC") with vertical slider.'}</td>
+                                </tr>
+                                <tr>
+                                    <td> right end? </td>
+                                    <td>
+                                        <input
+                                            name="rightIns"
+                                            type="checkbox"
+                                            checked={this.state.rightIns}
+                                            onChange={this.handleCheckbox}
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    The heights of the gray bars graphed below indicate the system's "temperature profile".  The default value of the system's "initial conditions" have been set to equal the system's "steady state" profile.  This means that the temperature profile will not change when you run the simulation unless you first change the initial conditions as follows:
+                    <ul>
+                        <li>Ensure that the simulation is not running.</li>
+                        <li>Click (and hold) in the margin to the left of the graph.</li>
+                        <li>Drag the mouse slowly across the graph.</li>
+                        <li>Release the mouse button after you've reached the right side of the graph.</li>
+                    </ul>
+                    <div className="bar-container">
+                            {this.state.leftIns ? null : leftT}
+                            <div className="bars"
+                                style={{height:`${this.height}px`}}>
+                                {this.state.running ? null : stripes}
+                                {bars}
                             </div>
-                </div>
-                <div className="bar-container">
-                {this.state.leftIns ? null : leftT}
-                <div className="bars-container">
-                <div className="bars">
-                    {this.state.running ? null : squares}
-                    {/* {this.state.running ? null : stripes} */}
-                    {bars}
-                </div>
-                </div>
-                {this.state.rightIns ? null : rightT}
-                </div>
+                            {this.state.rightIns ? null : rightT}
+                    </div>
+                </>
             </div>
         )
     }

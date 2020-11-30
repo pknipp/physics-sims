@@ -102,10 +102,6 @@ td {
   background-color: lightgrey;
 }
 
-/* .bars {
-  background-color: lightgrey;
-} */
-
 .dot {
   box-sizing: border-box;
   border-width: 1px;
@@ -170,14 +166,13 @@ td {
   width: 10px;
 }
 
-.bars {
-  height: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  border: 1px;
-  position: relative;
-}
+  .bars {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    border: 1px;
+    position: relative;
+  }
 
 .bar-container {
   display: flex;
@@ -188,21 +183,28 @@ td {
 div.BC {
   display: inline-block;
   width: 20px;
-  height: 600px;
   padding: 0;
 }
 
 div.bar-container input {
-  width: 600px;
   height: 20px;
   margin: 0;
-  transform-origin: 300px 300px;
   transform: rotate(-90deg);
 }
 
-.square {
-  box-sizing: border-box;
+.stripe {
   position: absolute;
-  border: 0px solid;
   z-index: 1;
+}
+
+.parameters {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.button-container {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 100px;
 }
