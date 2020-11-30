@@ -200,7 +200,7 @@ div.bar-container input {
   transform: rotate(-90deg);
 }
 
-.square {
+.square,.stripe {
   box-sizing: border-box;
   position: absolute;
   border: 0px solid;
