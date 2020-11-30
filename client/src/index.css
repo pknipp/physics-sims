@@ -176,6 +176,7 @@ td {
   justify-content: center;
   align-items: flex-end;
   border: 1px;
+  position: relative;
 }
 
 .bar-container {
@@ -197,4 +198,11 @@ div.bar-container input {
   margin: 0;
   transform-origin: 300px 300px;
   transform: rotate(-90deg);
+}
+
+.square {
+  box-sizing: border-box;
+  position: absolute;
+  border: 0px solid;
+  z-index: 1;
 }

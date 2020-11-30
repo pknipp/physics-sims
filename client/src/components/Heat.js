@@ -13,20 +13,33 @@ class Heat extends React.Component {
             logAlpha: -2,
             logN: 1,
             logDt: 2,
+            height: 600,
+            width: 1000,
+            mousePressed: false,
         }
     }
 
     componentDidMount() {
         let n = Math.round(10 ** this.state.logN);
+        let dx = Math.round(this.state.width / n);
+        let width = n * dx;
+        let ny = Math.round(this.state.height/dx);
+        let dy = Math.round(this.state.height/ny);
+        let height = ny * dy;
         let alpha = 10 ** this.state.logAlpha;
         let dt = 10 ** this.state.logDt;
-        this.setState({ n, alpha, dt }, () => this.makeDist());
+        this.setState({ n, ny, dx, dy, height, width, alpha, dt }, () => this.makeDist());
     }
 
     handleLogN = e => {
         let logN = Number(e.target.value);
         let n = Math.round(10 ** logN);
-        this.setState({ logN, n, time: 0 }, () => this.makeDist());
+        let dx = Math.round(this.state.width / n);
+        let width = n * dx;
+        let ny = Math.round(this.state.height/dx);
+        let dy = Math.round(this.state.height/ny);
+        let height = ny * dy;
+        this.setState({ logN, n, ny, dx, dy, width, height, time: 0 }, () => this.makeDist());
     }
     handleLogDt = e => {
         let logDt = Number(e.target.value);
@@ -39,6 +52,33 @@ class Heat extends React.Component {
 
     handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
     handleCheckbox = e => this.setState({[e.target.name]: e.target.checked});
+
+    handleMouseDown = _ => this.setState({ mousePressed: true });
+    handleMouseUp   = _ => this.setState({ mousePressed: false});
+    // handleMouseDown = (row, col) => {
+    //     let Ts = [...this.state.Ts];
+    //     Ts[col] = row * this.state.dy / this.state.height;
+    //     // const targetNode = grid[row][col];
+    //     // mousePressed = true;
+    //     // targetNode.isIC = !targetNode.isIC;
+    //     // const targetDomNode = document.getElementById(`${row}-${col}`);
+    //     // targetNode.isWall ? targetDomNode.classList.add('node-is-ic') : targetDomNode.classList.remove('node-is-ic');
+    //     debugger
+    //     this.setState({ Ts, mousePressed: true });
+    // }
+
+    handleMouseEnter = (row, col) => {
+        if (!this.state.mousePressed) return;
+        let Ts = [...this.state.Ts];
+        Ts[col] = row * this.state.dy / this.state.height;
+        // const targetNode = grid[row][col];
+        // mousePressed = true;
+        // targetNode.isIC = !targetNode.isIC;
+        // const targetDomNode = document.getElementById(`${row}-${col}`);
+        // targetNode.isWall ? targetDomNode.classList.add('node-is-ic') : targetDomNode.classList.remove('node-is-ic');
+        debugger
+        this.setState({ Ts });
+    }
 
     tick = _ => {
         let nextT = this.state.time + this.state.dt/1000;
@@ -137,13 +177,31 @@ class Heat extends React.Component {
             <div key={`${idx}`}
                 className="bar"
                 style={{
-                height:`${Math.round(600*T)}px`,
-                width:`${Math.round(1000/this.state.n)}px`,
+                height:`${Math.round(this.state.height*T)}px`,
+                width:`${Math.round(this.state.width/this.state.n)}px`,
                 }}>
             </div>
         ))
+        let squares = [];
+        for (let i = 0; i < this.state.ny; i++) {
+            for (let j = 0; j < this.state.n; j++) {
+                squares.push(
+                    <div key={`${i}-${j}`}
+                        id={`${i}-${j}`}
+                        className="square"
+                        onMouseEnter={() => this.handleMouseEnter(i, j)}
+                        style={{
+                        height:`${this.state.dy}px`,
+                        bottom: `${i * this.state.dy}px`,
+                        left: `${j * this.state.dx}px`,
+                        width:`${this.state.dx}px`
+                    }}>
+                    </div>
+                )
+            }
+        }
         return (
-            <>
+            <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
                 <span>Resolution</span>
                 <input
                     type="range"
@@ -203,12 +261,13 @@ class Heat extends React.Component {
                 {this.state.leftIns ? null : leftT}
                 <div className="bars-container">
                 <div className="bars">
+                    {this.state.running ? null : squares}
                     {bars}
                 </div>
                 </div>
                 {this.state.rightIns ? null : rightT}
                 </div>
-            </>
+            </div>
         )
     }
 }
