@@ -8,27 +8,24 @@ class Heat extends React.Component {
             Ts: [],
             leftIns: false,
             rightIns: false,
-            leftT: 0.4,
-            rightT: 0.8,
+            leftT: 0.2,
+            rightT: 0.6,
             logAlpha: -2,
             logN: 1,
             logDt: 2,
-            height: 600,
             width: 1000,
             mousePressed: false,
         }
+        this.height = 600;
     }
 
     componentDidMount() {
         let n = Math.round(10 ** this.state.logN);
         let dx = Math.round(this.state.width / n);
         let width = n * dx;
-        let ny = Math.round(this.state.height/dx);
-        let dy = Math.floor(this.state.height/ny);
-        let height = ny * dy;
         let alpha = 10 ** this.state.logAlpha;
         let dt = 10 ** this.state.logDt;
-        this.setState({ n, ny, dx, dy, height, width, alpha, dt }, () => this.makeDist());
+        this.setState({ n, dx, width, alpha, dt }, () => this.makeDist());
     }
 
     handleLogN = e => {
@@ -50,17 +47,20 @@ class Heat extends React.Component {
         this.setState({ logAlpha, alpha: 10 ** logAlpha });
     }
 
-    handleInput = e => this.setState({[e.target.name]: Number(e.target.value)});
-    handleCheckbox = e => this.setState({[e.target.name]: e.target.checked});
+    handleInput = e => this.setState({[e.target.name]: Number(e.target.value)},()=>this.makeDist());
+    handleCheckbox = e => this.setState({[e.target.name]: e.target.checked}, () => this.makeDist());
 
     handleMouseDown = _ => this.setState({ mousePressed: true });
     handleMouseUp   = _ => this.setState({ mousePressed: false});
     handleMouseEnter = e => {
         if (!this.state.mousePressed) return;
+        debugger
         let Ts = [...this.state.Ts];
         let col = Number(e.target.id);
-        Ts[col] = (1 - e.nativeEvent.offsetY / this.state.height);
-        // if (col === 1) Ts[0] = Ts[1];
+        Ts[col] = (1 - e.nativeEvent.offsetY / this.height);
+        // For all but 1st column, take avg of two heights
+        if (col > 0) Ts[col] = (Ts[col] + Ts[col - 1]) / 2;
+        debugger
         this.setState({ Ts });
     }
 
@@ -70,20 +70,17 @@ class Heat extends React.Component {
     }
 
     makeDist = _ => {
+        let {n, leftIns, rightIns, leftT, rightT} = this.state;
         let Ts = [];
-        let coef = [];
-        for (let m = 1; m < 10; m++) {
-            coef.push(Math.random());
-        }
-        for (let i = 0; i < this.state.n; i++) {
-            // Ts.push(1);
-            Ts.push(Math.random());
-            // Ts.push(Math.sin(Math.PI*i/n));
-            // let T = 0;
-            // for (let m = 1; m < 10; m++) {
-            //     T += coef[m] * Math.sin(Math.PI * m * i/n);
-            // }
-            // Ts.push(Math.min(0,T));
+        if (leftIns && rightIns) {
+            Ts = new Array(n).fill(0.5);
+        } else {
+            let slope = (leftIns || rightIns) ? 0 : (rightT - leftT) / n;
+            let T = leftIns ? rightT : leftT;
+            Ts[0] = T;
+            for (let i = 1; i < n; i++) {
+                Ts.push(T += slope);
+            }
         }
         this.setState({ Ts });
     }
@@ -131,6 +128,7 @@ class Heat extends React.Component {
     };
 
     render() {
+        debugger
         let leftT = (
             <div className="BC">
                 <input
@@ -158,12 +156,11 @@ class Heat extends React.Component {
             </div>
         )
         let bars = this.state.Ts.map((T, idx) => {
-            // debugger
             return (
             <div key={`${idx}`}
                 className="bar"
                 style={{
-                height:`${Math.round(this.state.height*T)}px`,
+                height:`${Math.round(this.height*T)}px`,
                 width:`${Math.round(this.state.width/this.state.n)}px`,
                 }}>
             </div>
@@ -178,7 +175,7 @@ class Heat extends React.Component {
                     name={`${j}`}
                     onMouseLeave={this.handleMouseEnter}
                     style={{
-                    height:`${this.state.height}px`,
+                    height:`${this.height}px`,
                     left: `${j * this.state.dx}px`,
                     width:`${this.state.dx}px`
                 }}>
@@ -187,36 +184,64 @@ class Heat extends React.Component {
         }
         return (
             <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-                <span>Resolution</span>
-                <input
-                    type="range"
-                    onChange={this.handleLogN}
-                    name="logN"
-                    min="0"
-                    max="2.5"
-                    step="0.2"
-                    value={this.state.logN}
-                />
-                <span>Timestep</span>
-                <input
-                    type="range"
-                    onChange={this.handleLogDt}
-                    name="logDt"
-                    min="0"
-                    max="3"
-                    step="0.2"
-                    value={this.state.logDt}
-                />
-                <span>Heat transport coefficient</span>
-                <input
-                    type="range"
-                    onChange={this.handleLogAlpha}
-                    name="logAlpha"
-                    min="-3"
-                    max="0"
-                    step="0.2"
-                    value={this.state.logAlpha}
-                />
+                <h2>Simulation parameters:</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colSpan="4" align="center"> Slider controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Spatial resolution: </td>
+                            <td>coarse</td>
+                            <td>
+                                <input
+                                    type="range"
+                                    onChange={this.handleLogN}
+                                    name="logN"
+                                    min="0"
+                                    max="2.5"
+                                    step="0.2"
+                                    value={this.state.logN}
+                                />
+                            </td>
+                            <td>fine</td>
+                        </tr>
+                        <tr>
+                            <td>Timestep: </td>
+                            <td align="right">1 ms</td>
+                            <td>
+                                <input
+                                    type="range"
+                                    onChange={this.handleLogDt}
+                                    name="logDt"
+                                    min="0"
+                                    max="3"
+                                    step="0.2"
+                                    value={this.state.logDt}
+                                />
+                            </td>
+                            <td>1 s</td>
+                        </tr>
+                        <tr>
+                            <td>Thermal conductivity: </td>
+                            <td align="right">low</td>
+                            <td>
+                                <input
+                                    type="range"
+                                    onChange={this.handleLogAlpha}
+                                    name="logAlpha"
+                                    min="-3"
+                                    max="0"
+                                    step="0.2"
+                                    value={this.state.logAlpha}
+                                />
+                            </td>
+                            <td>high</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <span className="button-container">
                     <button onClick={this.toggle}>
                         {this.state.running ? "Pause" : "Run"}
@@ -245,7 +270,6 @@ class Heat extends React.Component {
                 <div className="bar-container">
                 {this.state.leftIns ? null : leftT}
                 <div className="bars">
-                    {/* {this.state.running ? null : squares} */}
                     {this.state.running ? null : stripes}
                     {bars}
                 </div>
