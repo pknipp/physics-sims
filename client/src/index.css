@@ -204,3 +204,9 @@ div.bar-container input {
   position: absolute;
   z-index: 1;
 }
+
+.parameters {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}

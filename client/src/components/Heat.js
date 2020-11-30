@@ -184,108 +184,112 @@ class Heat extends React.Component {
         }
         return (
             <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-                <h2 align="center">Simulation parameters:</h2>
-                <div className="button-container">
-                    <button onClick={this.toggle}>
-                        {this.state.running ? "Pause" : "Run"}
-                    </button>
-                    <div>time: {Math.round(100 * this.state.time)/100} s</div>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th colSpan="4" align="center"> Slider controls</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Spatial resolution: </td>
-                            <td>coarse</td>
-                            <td>
-                                <input
-                                    type="range"
-                                    onChange={this.handleLogN}
-                                    name="logN"
-                                    min="0"
-                                    max="2.5"
-                                    step="0.2"
-                                    value={this.state.logN}
-                                />
-                            </td>
-                            <td>fine</td>
-                        </tr>
-                        <tr>
-                            <td>Timestep: </td>
-                            <td align="right">1 ms</td>
-                            <td>
-                                <input
-                                    type="range"
-                                    onChange={this.handleLogDt}
-                                    name="logDt"
-                                    min="0"
-                                    max="3"
-                                    step="0.2"
-                                    value={this.state.logDt}
-                                />
-                            </td>
-                            <td>1 s</td>
-                        </tr>
-                        <tr>
-                            <td>Thermal conductivity: </td>
-                            <td align="right">low</td>
-                            <td>
-                                <input
-                                    type="range"
-                                    onChange={this.handleLogAlpha}
-                                    name="logAlpha"
-                                    min="-3"
-                                    max="0"
-                                    step="0.2"
-                                    value={this.state.logAlpha}
-                                />
-                            </td>
-                            <td>high</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <thead><tr><th colspan="4">Boundary conditions:</th></tr></thead>
-                    <tbody>
-                        <tr>
-                            <td rowspan="2">Is insulated on the ...</td>
-                            <td> left? </td>
-                            <td>
-                                <input
-                                    name="leftIns"
-                                    type="checkbox"
-                                    checked={this.state.leftIns}
-                                    onChange={this.handleCheckbox}
-                                />
-                            </td>
-                            <td>{this.state.leftIns ? null : "Adjust temperature on this end with vertical slider."}</td>
-                        </tr>
-                        <tr>
-                            <td> right? </td>
-                            <td>
-                                <input
-                                    name="rightIns"
-                                    type="checkbox"
-                                    checked={this.state.rightIns}
-                                    onChange={this.handleCheckbox}
-                                />
-                            </td>
-                            <td>{this.state.rightIns ? null : "Adjust temperature on this end with vertical slider."}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div className="bar-container">
-                {this.state.leftIns ? null : leftT}
-                <div className="bars">
-                    {this.state.running ? null : stripes}
-                    {bars}
-                </div>
-                {this.state.rightIns ? null : rightT}
-                </div>
+                <>
+                    <h2 align="center">Simulation parameters:</h2>
+                    <div className="parameters">
+                        <div className="button-container">
+                            <button onClick={this.toggle}>
+                                {this.state.running ? "Pause" : "Run"}
+                            </button>
+                            <div>time: {Math.round(100 * this.state.time)/100} s</div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th colSpan="4" align="center"> Slider controls</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Spatial resolution: </td>
+                                    <td>coarse</td>
+                                    <td>
+                                        <input
+                                            type="range"
+                                            onChange={this.handleLogN}
+                                            name="logN"
+                                            min="0"
+                                            max="2.5"
+                                            step="0.2"
+                                            value={this.state.logN}
+                                        />
+                                    </td>
+                                    <td>fine</td>
+                                </tr>
+                                <tr>
+                                    <td>Timestep: </td>
+                                    <td align="right">1 ms</td>
+                                    <td>
+                                        <input
+                                            type="range"
+                                            onChange={this.handleLogDt}
+                                            name="logDt"
+                                            min="0"
+                                            max="3"
+                                            step="0.2"
+                                            value={this.state.logDt}
+                                        />
+                                    </td>
+                                    <td>1 s</td>
+                                </tr>
+                                <tr>
+                                    <td>Thermal conductivity: </td>
+                                    <td align="right">low</td>
+                                    <td>
+                                        <input
+                                            type="range"
+                                            onChange={this.handleLogAlpha}
+                                            name="logAlpha"
+                                            min="-3"
+                                            max="0"
+                                            step="0.2"
+                                            value={this.state.logAlpha}
+                                        />
+                                    </td>
+                                    <td>high</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <thead><tr><th colspan="4">Boundary conditions:</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2">Is insulated on the ...</td>
+                                    <td> left? </td>
+                                    <td>
+                                        <input
+                                            name="leftIns"
+                                            type="checkbox"
+                                            checked={this.state.leftIns}
+                                            onChange={this.handleCheckbox}
+                                        />
+                                    </td>
+                                    <td>{this.state.leftIns ? null : "Adjust temperature on this end with vertical slider."}</td>
+                                </tr>
+                                <tr>
+                                    <td> right? </td>
+                                    <td>
+                                        <input
+                                            name="rightIns"
+                                            type="checkbox"
+                                            checked={this.state.rightIns}
+                                            onChange={this.handleCheckbox}
+                                        />
+                                    </td>
+                                    <td>{this.state.rightIns ? null : "Adjust temperature on this end with vertical slider."}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="bar-container">
+                            {this.state.leftIns ? null : leftT}
+                            <div className="bars">
+                                {this.state.running ? null : stripes}
+                                {bars}
+                            </div>
+                            {this.state.rightIns ? null : rightT}
+                    </div>
+                </>
             </div>
         )
     }
