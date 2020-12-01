@@ -1,6 +1,6 @@
 import React from "react";
 
-const Bond = ({x, y, z, x1, y1, width, size, bondThickness, dt}) => {
+const Bond = ({x, y, z, x1, y1, width, size, dt}) => {
     if (x1 === null || y1 === null) return null;
     const dx = x1 - x;
     const dy = y1 - y;
@@ -11,7 +11,7 @@ const Bond = ({x, y, z, x1, y1, width, size, bondThickness, dt}) => {
             width:`${r}px`,
             left: `${x - r / 2}px`,
             top: `${y}px`,
-            borderWidth: `${bondThickness}px`,
+            // borderWidth: `${bondThickness}px`,
             transform: `rotate(${angle}deg) translateX(${r / 2}px)`,
             transitionDuration: `${dt / 1000}s`,
         }}/>

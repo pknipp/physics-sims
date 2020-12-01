@@ -26,7 +26,8 @@ class Collection extends React.Component {
             Ei: 0,
             logdt: 2.4,
             T: 0.4,
-            bondThickness: 0.5,
+            // bondThickness: 0.5,
+            showBond: true,
             velocityLength: 0.5,
             accelerationLength: 0.5,
             calcEi: false,
@@ -70,6 +71,12 @@ class Collection extends React.Component {
     handleInput = e => {
         const newState = {};
         newState[e.target.name] = e.target.value;
+        this.setState(newState);
+    }
+
+    handleCheckbox = e => {
+        const newState = {};
+        newState[e.target.name] = e.target.checked;
         this.setState(newState);
     }
 
@@ -200,7 +207,9 @@ class Collection extends React.Component {
 
     render() {
         let numPx = 540;
-        let { n, rvs, velocityLength, accelerationLength, bondThickness } = this.state;
+        let { n, rvs, velocityLength, accelerationLength,
+            // bondThickness,
+            showBond } = this.state;
         let Rows = [];
         for (let iIC = 0; iIC < this.state.nIC; iIC++) {
             Rows.push(
@@ -259,7 +268,8 @@ class Collection extends React.Component {
                                     width={this.state.width}
                                     velocityLength={velocityLength}
                                     accelerationLength={accelerationLength}
-                                    bondThickness={bondThickness}
+                                    // bondThickness={bondThickness}
+                                    showBond={showBond}
                                     dt={this.state.dt}
                                 />
                             }
@@ -275,8 +285,10 @@ class Collection extends React.Component {
                         T={this.state.T}
                         velocityLength={this.state.velocityLength}
                         accelerationLength={this.state.accelerationLength}
-                        bondThickness={this.state.bondThickness}
+                        // bondThickness={this.state.bondThickness}
+                        showBond={this.state.showBond}
                         handleInput={this.handleInput}
+                        handleCheckbox={this.handleCheckbox}
                         handleLogdt={this.handleLogdt}
                     />
                     <IC

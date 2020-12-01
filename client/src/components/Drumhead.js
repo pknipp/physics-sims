@@ -1,7 +1,7 @@
 import React from "react";
 import Object from "./Object";
 
-const Drumhead = ({n, xs, ys, rvs, Fs, velocityLength, accelerationLength, bondThickness, width, dt}) => {
+const Drumhead = ({n, xs, ys, rvs, Fs, velocityLength, accelerationLength, showBond, width, dt}) => {
     let numPx = 540;
     let rComponents = (
         xs.map((x, i) => {
@@ -53,7 +53,8 @@ const Drumhead = ({n, xs, ys, rvs, Fs, velocityLength, accelerationLength, bondT
                             Vy={Vy}
                             Ax={Ax}
                             Ay={Ay}
-                            bondThickness={bondThickness}
+                            showBond={showBond}
+                            // bondThickness={bondThickness}
                             velocityLength={velocityLength}
                             accelerationLength={accelerationLength}
                             width={numPx * width}

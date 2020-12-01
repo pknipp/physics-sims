@@ -7,7 +7,7 @@ const Slider = ({label, secondLine, minText, maxText, name,
                 <td>
                     {label}:
                 </td>
-                <td>
+                <td align="right">
                     {minText}
                 </td>
                 <td>
