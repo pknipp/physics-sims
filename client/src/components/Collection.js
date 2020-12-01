@@ -260,6 +260,7 @@ class Collection extends React.Component {
                                     velocityLength={velocityLength}
                                     accelerationLength={accelerationLength}
                                     bondThickness={bondThickness}
+                                    dt={this.state.dt}
                                 />
                             }
                         </>

@@ -6,14 +6,14 @@ class Asteroids extends React.Component {
         this.state = {
             time: 0,
             running: false,
-            dt: 10,
+            dt: 100,
             n_rocks: "",
             rocks: [],
             logSpeed: 0.2,
         }
         this.nx = 1380;
         this.ny = 630;
-        this.width = 10;
+        this.width = 5;
     }
 
     componentDidMount() {this.setRocks()}
@@ -39,6 +39,7 @@ class Asteroids extends React.Component {
         rock.R = Math.floor(255 * Math.random());
         rock.G = Math.floor(255 * Math.random());
         rock.B = Math.floor(255 * Math.random());
+        rock.hidden = true;
         return rock;
     }
 
@@ -64,6 +65,7 @@ class Asteroids extends React.Component {
             rocks[i].x += rocks[i].vx * this.state.dt;
             rocks[i].y += rocks[i].vy * this.state.dt;
             rocks[i].z += rocks[i].vz * this.state.dt;
+            rocks[i].hidden = rocks[i].hidden && !rocks[i].hidden;
             rocks[i] = (this.isVisible(rocks[i])) ? rocks[i] : this.newRock(0);
         })
         this.setState({ rocks });
@@ -89,15 +91,16 @@ class Asteroids extends React.Component {
             let z = rock.z;
             // The 2nd term in the expression below is unphysical but seems to succeed, psychovisually
             let size = this.width * (1 / (1 - z) - 1 / (1 + z));
-            let xpx = Math.round(this.nx * (rock.x/(1 - rock.z) + 0.5) - size / 2);
-            let ypx = Math.round(this.ny * (rock.y/(1 - rock.z) + 0.5) - size / 2);
-            return <Rock
+            let xpx = Math.round(this.nx * (rock.x/(1 - z) + 0.5) - size / 2);
+            let ypx = Math.round(this.ny * (rock.y/(1 - z) + 0.5) - size / 2);
+            return rock.hidden ? null : <Rock
                 key={indx}
                 x={xpx}
                 y={ypx}
                 z={z}
                 color={`rgba(${rock.R}, ${rock.G}, ${rock.B}, 1)`}
                 size={size}
+                dt={this.state.dt}
             />
         })
         let { time } = this.state;
