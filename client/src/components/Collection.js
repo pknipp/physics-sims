@@ -26,7 +26,6 @@ class Collection extends React.Component {
             Ei: 0,
             logdt: 2.4,
             T: 0.4,
-            // bondThickness: 0.5,
             showBond: true,
             velocityLength: 0.5,
             accelerationLength: 0.5,
@@ -207,9 +206,7 @@ class Collection extends React.Component {
 
     render() {
         let numPx = 540;
-        let { n, rvs, velocityLength, accelerationLength,
-            // bondThickness,
-            showBond } = this.state;
+        let { n, rvs, velocityLength, accelerationLength, showBond } = this.state;
         let Rows = [];
         for (let iIC = 0; iIC < this.state.nIC; iIC++) {
             Rows.push(
@@ -268,7 +265,6 @@ class Collection extends React.Component {
                                     width={this.state.width}
                                     velocityLength={velocityLength}
                                     accelerationLength={accelerationLength}
-                                    // bondThickness={bondThickness}
                                     showBond={showBond}
                                     dt={this.state.dt}
                                 />
@@ -285,7 +281,6 @@ class Collection extends React.Component {
                         T={this.state.T}
                         velocityLength={this.state.velocityLength}
                         accelerationLength={this.state.accelerationLength}
-                        // bondThickness={this.state.bondThickness}
                         showBond={this.state.showBond}
                         handleInput={this.handleInput}
                         handleCheckbox={this.handleCheckbox}

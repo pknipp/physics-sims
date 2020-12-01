@@ -1,9 +1,7 @@
 import React from "react";
 import Slider from "./Slider";
 const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
-    accelerationLength,
-    // bondThickness,
-    showBond, handleInput, handleLogdt, handleCheckbox }) => (
+    accelerationLength, showBond, handleInput, handleLogdt, handleCheckbox }) => (
     <div className="slider">
         <h2>Simulation parameters:</h2>
         <table>
@@ -97,18 +95,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     stepSize="0.1"
                     quantity={accelerationLength}
                 />
-                {/* <Slider
-                    key="bondThickness"
-                    label='Width of "bond" lines (black)'
-                    secondLine=""
-                    minText="none"
-                    maxText="max"
-                    handler={handleInput}
-                    name="bondThickness"
-                    maxVal="2"
-                    stepSize="1"
-                    quantity={bondThickness}
-                /> */}
+                {/* <Slider key="bondThickness" label='Width of "bond" lines (black)' secondLine=""
+                    minText="none" maxText="max" handler={handleInput} name="bondThickness"
+                    maxVal="2" stepSize="1" quantity={bondThickness}/> */}
                 <tr>
                     <td colSpan="2">Show "bond" between particles?</td>
                     <td>
