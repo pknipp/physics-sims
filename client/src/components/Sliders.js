@@ -111,10 +111,6 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                 </tr>
             </tbody>
         </table>
-        {/* <div>
-            <input type="checkbox" id="velocity" checked={this.state.showVelname="showVel"      onChange={this.handleVector}/>
-            <label htmlFor="velocity">Do you want to see each particle's velocitvector?</     label>
-        </div> */}
     </div>
 )
 export default Sliders;

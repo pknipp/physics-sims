@@ -8,7 +8,7 @@ const Vector = ({ type, x, y, vec, fac, dt }) => {
                 left: `${x - mag/2}px`,
                 top: `${y}px`,
                 transform: `rotate(${angle}deg) translateX(${mag/2}px)`,
-                transitionDuration: `${dt / 1000}s`,
+                // transitionDuration: `${dt / 1000}s`,
         }}/>
     )
 }

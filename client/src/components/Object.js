@@ -16,7 +16,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y
                 left: `${xpx}px`,
                 top: `${ypx}px`,
                 zIndex: `${Math.round(1000 * Z)}`,
-                transitionDuration: `${dt / 1000}s`,
+                // transitionDuration: `${dt / 1000}s`,
             }}/>
 
             <div className="dot stationary" style={{
