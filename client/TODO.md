@@ -4,17 +4,16 @@ GENERAL:
 
 DRUMHEAD:
 * make each particle an instance of an Particle class
+* figure out how to use transitions on properties which utilize atan
 * insert instructions (w/checkbox for whether or not to display?)
 * break down some components?
 * readjust scaling for energies?
 * ensure that user can only enter unique (i,j) combos for IC
 * insert U for user (edit details)
-* change nested for-loops to nested list-comprehensions?
 * use checkboxes (rather than sliders) for bond width
 * make it easier for user to enable negative inputs for ICs
 * insert a "reset" button
 * enable "speed" to be changed without first pausing sim?
-* figure out why I should not decrease dt below 5 ms
 * adjust IC by click-and-drag instead of form filling?
 
 HEAT EQUATION:
