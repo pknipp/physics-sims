@@ -167,6 +167,7 @@ class Heat extends React.Component {
                 style={{
                 height:`${Math.round(this.height*T)}px`,
                 width:`${Math.round(this.state.width/this.state.n)}px`,
+                transitionDuration: `${this.state.dt / 1000}s`
                 }}>
             </div>
         )})
@@ -213,7 +214,7 @@ class Heat extends React.Component {
                                             type="range"
                                             onChange={this.handleLogN}
                                             name="logN"
-                                            min="0"
+                                            min="0.2"
                                             max="2.5"
                                             step="0.2"
                                             value={this.state.logN}
@@ -256,10 +257,10 @@ class Heat extends React.Component {
                             </tbody>
                         </table>
                         <table>
-                            <thead><tr><th colspan="4">Boundary conditions:</th></tr></thead>
+                            <thead><tr><th colSpan="4">Boundary conditions:</th></tr></thead>
                             <tbody>
                                 <tr>
-                                    <td rowspan="2">Is this system insulated at its ...</td>
+                                    <td rowSpan="2">Is this system insulated at its ...</td>
                                     <td> left end? </td>
                                     <td>
                                         <input
@@ -269,7 +270,7 @@ class Heat extends React.Component {
                                             onChange={this.handleCheckbox}
                                         />
                                     </td>
-                                    <td rowspan="2">{(this.state.leftIns && this.state.rightIns) ? null : 'Adjust temperature at end ("BC") with vertical slider.'}</td>
+                                    <td rowSpan="2">{(this.state.leftIns && this.state.rightIns) ? null : 'Adjust temperature at end ("BC") with vertical slider.'}</td>
                                 </tr>
                                 <tr>
                                     <td> right end? </td>
