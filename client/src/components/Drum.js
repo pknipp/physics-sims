@@ -225,6 +225,7 @@ class Collection extends React.Component {
         }
 
         return (
+            <>
             <div className="container">
                 <div className="side">
                     <form>
@@ -300,6 +301,7 @@ class Collection extends React.Component {
                     />
                 </div>
             </div>
+            </>
         )
     }
 }
