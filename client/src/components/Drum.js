@@ -104,28 +104,43 @@ class Collection extends React.Component {
         this.setState(newState)
     }
 
-    // Calculate (generalized) force, KE, PE, and E for a particular point in phase space
+    // Calculate (generalized) force, KE, PE, and E for a particular point in phase space.
+    // "rvs" is the triply nested array which contains the 3-dimensional positions ("r")
+    // and velocities ("v") for all of the particles.
     Fs = rvs => {
         const { damping, n, T, springConstant } = this.state;
         let kConst = 1 - T;
+        // This combo of a pair of JSON methods is a straightforward way to make
+        // a deep clone of a nested object.
         let Fs = JSON.parse(JSON.stringify(this.state.zero6));
+        // Initiallize two components of the potential energy: spring ("k") and stress ("T").
         let PEk = 0;
         let PET = 0;
+        // Initialize the kinetic energy, which is summed for every particle in the system.
         let KE = 0;
+        // Loop over rows in the drumhead.
         for (let i = 0; i < n; i++) {
             PEk += rvs[0][i][0] ** 2 + rvs[i][0][1] ** 2;
             PET +=
                 rvs[0][i][1] ** 2 + rvs[0][i][2] ** 2 +
                 rvs[i][0][0] ** 2 + rvs[i][0][2] ** 2;
+            // loop over columns of array.
             for (let j = 0; j < n; j++) {
                 for (let k = 0; k < 3; k++) {
+                    // time-derivative of position coordinate is simply the velocity
                     Fs[i][j][k] = rvs[i][j][k + 3];
+                    // increment total kinetic energy by the square of the velocity components
                     KE += rvs[i][j][k + 3] * rvs[i][j][k + 3];
                 }
+                // Determine the position of each particle's 4 neighbors
+                // (some of which may be points on the wall).
                 const rL = (i === 0)     ? [0, 0, 0] : rvs[i - 1][j];
                 const rR = (i === n - 1)? [0, 0, 0] : rvs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
                 const rD = (j === n - 1)? [0, 0, 0] : rvs[i][j + 1];
+                // Time-derivative of velocity coordinate for each particle is the force.
+                // Force on each particle comes from its own velocity (if there is damping)
+                // and from the positions of its neighbors.
                 Fs[i][j][3] = - damping * rvs[i][j][3] + springConstant * (
                         kConst * (-2 * rvs[i][j][0] + rL[0] + rR[0])
                         + T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
@@ -142,6 +157,7 @@ class Collection extends React.Component {
                     (rvs[i][j][1] - rR[1]) ** 2 + (rvs[i][j][2] - rR[2]) ** 2;
             }
         }
+        // Now include pre-factors (0.5 and/or spring constant) needed for energies.
         KE /= 2;
         PEk *= springConstant * kConst / 2;
         PET *= springConstant * T / 2;
@@ -151,7 +167,7 @@ class Collection extends React.Component {
     }
         // With the present phase-space coordinate ...
         // 1) ... finds the present generalized force,
-        // 2) ... propagates through phase-space for a particular amount of time (= dt/2),
+        // 2) ... propagates through phase-space for a particular amount of time (= dt/m),
         // 3) ... and then returns the final value of the generalized force.
         nextFs = (Fs, m) => {
             let rvs = JSON.parse(JSON.stringify(this.state.rvs));

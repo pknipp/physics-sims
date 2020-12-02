@@ -86,27 +86,36 @@ class Heat extends React.Component {
     tridiag = _ => {
         let { n, Ts, leftIns, leftT, rightIns, rightT } = this.state;
         let alpha0 = this.state.alpha * this.state.dt * (n + 1) * (n + 1) / 1000;
-        let a = new Array(n).fill(-alpha0/2);
+        // diagonal element of matrix to be inverted
         let b = new Array(n).fill(1 + alpha0);
+        // off-diagonal elements of matrix to be inverted
+        let a = new Array(n).fill(-alpha0/2);
         let c = new Array(n).fill(-alpha0/2);
+        // inhomogeneous part of matrix equation
         let r = new Array(n);
+        // solution of matrix equation
         let u = new Array(n);
+        // working vector for solution algorithm
         let g = new Array(n);
+        // adjustments for the which type of BC is used
         if (this.state.leftIns ) b[0]     -= alpha0/2;
         if (this.state.rightIns) b[n - 1] -= alpha0/2;
         r[0] = Ts[0] + (Ts[1] - 2 * Ts[0] + (leftIns ? Ts[0] : 2 * leftT)) * alpha0 / 2;
         r[n-1] = Ts[n-1]+(Ts[n-2]-2*Ts[n-1]+(rightIns ? Ts[n-1]:2*rightT)) * alpha0 / 2;
         let bet = b[0];
         u[0] = r[0]/bet;
+        // decomposition and forward substitution
         for (let i = 1; i < n; i++) {
             g[i] = c[i - 1] / bet;
             bet = b[i] - a[i] * g[i];
             if (i < n - 1) r[i] = Ts[i] + ((Ts[i - 1] - Ts[i]) - (Ts[i] - Ts[i + 1])) * alpha0 / 2;
             u[i] = (r[i] - a[i] * u[i - 1]) / bet;
         }
+        // backsubstitution
         for (let i = n - 2; i >= 0; i--) {
             u[i] -= g[i + 1] * u[i + 1];
         }
+        // 2-timestep averaging in order to smooth out Gibbs-phenomenon oscillations
         for (let i = 0; i < n; i++) {
             u[i] = (u[i] + Ts[i]) / 2;
         }
