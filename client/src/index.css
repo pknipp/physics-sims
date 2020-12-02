@@ -1,6 +1,6 @@
 * {
   font-family: "Ubuntu", sans-serif !important;
-  z-index: 0;
+  z-index: 1000;
 }
 
 .nav {

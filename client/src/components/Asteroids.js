@@ -8,7 +8,7 @@ class Asteroids extends React.Component {
             running: false,
             logDt: 2,
             width: 10,
-            nRocks: "",
+            nRocks: 100,
             rocks: [],
             logSpeed: 0.2,
         }
@@ -16,9 +16,10 @@ class Asteroids extends React.Component {
         this.ny = 630;
     }
 
-    componentDidMount() {this.setState({dt: Math.round(10 ** this.state.logDt)})
-        //this.setRocks(this.state.nRocks)
-    }
+    componentDidMount() {this.setState(
+        {dt: Math.round(10 ** this.state.logDt)},
+        () => this.setRocks()
+    )}
 
     handleInput = e => {
         let newState = {};
@@ -57,7 +58,7 @@ class Asteroids extends React.Component {
         return rock;
     }
 
-    isVisible = rock => (rock.z < 1 &&  Math.abs(2 * rock.x) < 1 - rock.z && Math.abs(2 * rock.y) < 1 - rock.z);
+    isVisible = rock => (rock.z < 1 &&  Math.abs(2 * rock.x) < 1 - rock.z && Math.abs(0.9 * rock.y) < 1 - rock.z);
 
     setRocks = _ => {
         const rocks = [];
