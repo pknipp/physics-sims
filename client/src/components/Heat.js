@@ -202,7 +202,7 @@ class Heat extends React.Component {
                         <table>
                             <thead>
                                 <tr>
-                                    <th colSpan="4" align="center"> Slider controls</th>
+                                    <th colSpan="4" align="center"> (logarithmic) slider controls</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -257,7 +257,7 @@ class Heat extends React.Component {
                             </tbody>
                         </table>
                         <table>
-                            <thead><tr><th colSpan="4">Boundary conditions:</th></tr></thead>
+                            <thead><tr><th colSpan="4">boundary conditions:</th></tr></thead>
                             <tbody>
                                 <tr>
                                     <td rowSpan="2">Is this system insulated at its ...</td>
