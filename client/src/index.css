@@ -110,13 +110,11 @@ td {
   border-width: 1px;
   position: absolute;
   border-radius: 50%;
-
-
 }
 
 .dot.moving {
-  /* transition-timing-function: linear;
-  transition-property: all; */
+  transition-timing-function: linear;
+  transition-property: all;
 }
 
 .stationary {
@@ -134,9 +132,9 @@ td {
   position: absolute;
   height: 0px;
   z-index: 1000;
-  /* transition-timing-function: linear; */
-  /* transition-property: width, left, top; */
-  /* transition-property: all; */
+  transition-timing-function: linear;
+  transition-property: width, left, top;
+  transition-property: all;
 }
 
 .bond {
