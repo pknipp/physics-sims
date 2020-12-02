@@ -177,7 +177,8 @@ class Asteroids extends React.Component {
                     </span>
                     <span>time: {Math.round(1000*time)/1000} s</span>
                 </div>
-                <div className="rockContainer">
+                <div className="rockContainer"
+                    style={{height:`${this.ny}px`, width:`${this.nx}px`}}>
                 {rockComponents}
                 </div>
             </>
