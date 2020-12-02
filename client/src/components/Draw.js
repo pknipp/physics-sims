@@ -1,6 +1,6 @@
 import React from "react";
 import Immutable from "immutable";
-import Pixel from "./Pixel";
+import Pixel from "./draw/Pixel";
 
 class DrawArea extends React.Component {
   constructor() {

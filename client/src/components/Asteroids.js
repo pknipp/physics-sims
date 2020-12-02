@@ -1,5 +1,5 @@
 import React from "react";
-import Rock from "./Rock";
+import Rock from "./asteroids/Rock";
 class Asteroids extends React.Component {
     constructor() {
         super();

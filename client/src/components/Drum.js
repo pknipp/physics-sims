@@ -1,10 +1,10 @@
 import React from "react";
 // import Object from "./Object";
-import Row from "./Row";
-import Graph from "./Graph";
-import Sliders from "./Sliders";
-import Drumhead from "./Drumhead";
-import IC from "./IC";
+import Row from "./drum/Row";
+import Graph from "./drum/Graph";
+import Sliders from "./drum/Sliders";
+import Drumhead from "./drum/Drumhead";
+import IC from "./drum/IC";
 class Collection extends React.Component {
     constructor(props) {
         super(props);
