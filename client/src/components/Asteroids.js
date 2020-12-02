@@ -57,7 +57,7 @@ class Asteroids extends React.Component {
         return rock;
     }
 
-    isVisible = rock => (rock.z < 1 &&  Math.abs(1.6 * rock.x) < 1 - rock.z && Math.abs(1.6 * rock.y) < 1 - rock.z);
+    isVisible = rock => (rock.z < 1 &&  Math.abs(2 * rock.x) < 1 - rock.z && Math.abs(2 * rock.y) < 1 - rock.z);
 
     setRocks = _ => {
         const rocks = [];
@@ -119,53 +119,53 @@ class Asteroids extends React.Component {
         })
         let { time } = this.state;
         return (
-            <>
+            <div className="asteroids-container">
                 <table>
                     <thead>
-                        <tr><th colSpan="4">Let's fly through an asteroid field!</th></tr>
+                        <tr><th colSpan="4"><h3>Let's fly through an asteroid field!</h3></th></tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colSpan="2" align="right">How many asteroids do you want?</td>
-                            <td colSpan="2">
+                            <td align="right">How many asteroids do you want?</td><td></td>
+                            <td align="center">
                                 <input
                                     min="0" type="number" name="nRocks"
                                     onChange={this.handleInput} value={this.state.nRocks}
                                 />
-                            </td>
+                            </td><td></td>
                         </tr>
                         <tr>
-                            <td>How fast do you want to travel through the field?</td>
-                            <td>slowly</td>
-                            <td>
+                            <td align="right">How fast do you want to travel through the field?</td>
+                            <td align="right">slowly</td>
+                            <td align="center">
                                 <input
                                     type="range" onChange={this.handleSpeed}
                                     min="0" max="0.6" step="0.1" value={this.state.logSpeed}
                                />
                             </td>
-                            <td>fast</td>
+                            <td align="left">fast</td>
                         </tr>
                         <tr>
                             <td align="right"   >Timestep:</td>
-                            <td>1 ms</td>
-                            <td>
+                            <td align="right">1 ms</td>
+                            <td align="center">
                                 <input
                                     type="range" onChange={this.handleLogDt}
                                     min="0" max="3" step="0.2" value={this.state.logDt}
                                />
                             </td>
-                            <td>1 s</td>
+                            <td align="left">1 s</td>
                         </tr>
                         <tr>
                             <td align="right">Asteroid size (when distant):</td>
-                            <td>1 px</td>
-                            <td>
+                            <td align="right">1 px</td>
+                            <td align="center">
                                 <input
                                     type="range" onChange={this.handleInput2} name="width"
                                     min="1" max="10" step="0.1" value={this.state.width}
                                />
                             </td>
-                            <td>10 px</td>
+                            <td align="left">10 px</td>
                         </tr>
                     </tbody>
                 </table>
@@ -175,13 +175,15 @@ class Asteroids extends React.Component {
                                 {this.state.running ? "Pause" : "Run"}
                         </button>
                     </span>
-                    <span>time: {Math.round(1000*time)/1000} s</span>
+                    <span>time: {time.toFixed(3)} s</span>
                 </div>
-                <div className="rockContainer"
-                    style={{height:`${this.ny}px`, width:`${this.nx}px`}}>
-                {rockComponents}
+                <div
+                    className="rockContainer"
+                    style={{height:`${this.ny}px`, width:`${this.nx}px`}}
+                >
+                    {rockComponents}
                 </div>
-            </>
+            </div>
         )
     }
 }

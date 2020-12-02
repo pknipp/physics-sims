@@ -42,7 +42,7 @@ tr {
 
 td {
   box-sizing: border-box;
-  margin: 20px;
+  margin: 0px;
 }
 
 .drumContainer {
@@ -230,3 +230,14 @@ nav {
   display: flex;
   flex-direction: column;
 } */
+
+.asteroids-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.simple {
+  display: flex;
+  justify-content: center;
+}
