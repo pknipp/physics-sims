@@ -1,5 +1,6 @@
 import React from "react";
-const Rock = ({ x, y, z, size, color, dt }) => (
+const Rock = ({ x, y, z, size, color, dt }) => {
+    return (
     <div className="dot moving" style={{
         height:`${Math.round(size)}px`,
         width:`${Math.round(size)}px`,
@@ -10,5 +11,5 @@ const Rock = ({ x, y, z, size, color, dt }) => (
         transitionDuration: `${dt / 1000}s`,
         }}>
     </div>
-)
+)}
 export default Rock;
