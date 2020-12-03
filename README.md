@@ -1,4 +1,4 @@
-This project consists of several [physics simulations](shttps://en.wikipedia.org/wiki/Physics_engine), each described below.  Although the project includes authentication
+This project consists of several [physics simulations](https://en.wikipedia.org/wiki/Physics_engine), each described below.  Although the project includes authentication
  with Redux, Express, and PostgreSQL, most of the activity occurs in the front end with JavaScript and React.  For each simulation the "parent" component is a class which utilizes state, life-cycle methods, and a clock built from the setInterval function, whereas the child components are all functional. The first and last simulations involve [solving differential equations numerically](https://en.wikipedia.org/wiki/Numerical_methods_for_ordinary_differential_equations).
  The most basic user-control for each of these simulations is the value of the requisite "time-step" (&Delta;*t*), for which the following pair of considerations must always be balanced:
  * Too large will lead to inaccurate calculations and choppy animations.
