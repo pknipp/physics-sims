@@ -1,6 +1,6 @@
 GENERAL:
 * Style "splash" page
-* Style page which contains links to the various sims (asteroids, drumhead, planets)
+* Style page which contains links to the various sims (asteroids, drumhead, heat equation)
 
 DRUMHEAD:
 * make each particle an instance of an Particle class

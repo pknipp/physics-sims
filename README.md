@@ -1,5 +1,9 @@
-This project consists of several unrelated physics simulations, each described below.  Although the project includes authentication
- with Redux, Express, and PostgreSQL, most of the activity occurs in the front end with JavaScript and React.  For each simulation the "parent" component is a class which utilizes state, life-cycle methods, and a clock built from the setInterval function, whereas the child components are all functional.  The most basic user-control for each of these simulations is the value of the requisite "time-step" (&Delta;*t*).  The following pair of considerations must be balanced whenever adjusting the size of &Delta;*t*:  too large will lead to inaccurate calculations and choppy animations, whereas too small will lead to a backup of the event queue which'll manifest itself by the clock's running slowly.
+This project consists of several [physics simulation](shttps://en.wikipedia.org/wiki/Physics_engine), each described below.  Although the project includes authentication
+ with Redux, Express, and PostgreSQL, most of the activity occurs in the front end with JavaScript and React.  For each simulation the "parent" component is a class which utilizes state, life-cycle methods, and a clock built from the setInterval function, whereas the child components are all functional. The first and last simulations involve [solving differential equations numerically](https://en.wikipedia.org/wiki/Numerical_methods_for_ordinary_differential_equations).
+ The most basic user-control for each of these simulations is the value of the requisite "time-step" (&Delta;*t*), for which the following pair of considerations must always be balanced:
+ * Too large will lead to inaccurate calculations and choppy animations.
+ * Too small will lead to a backup of the [message queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) which'll manifest itself by the clock's running slowly.
+
  Each of the first two simulations involves a collection of many objects, the position and angle for each of which are controlled dynamically by the css properties "top", "left", "z-index", and "transform".
 
 ```
@@ -25,15 +29,15 @@ const Bond = ({x, y, z, x1, y1, width, size, dt}) => {
 export default Bond;
 ```
 
-1. **Drumhead** simulates the three-dimensional motion of an *N* x *N* array of particles, which may be regarded as a model for the vibrating head of a drum.  This component of the project was inspired by PhET's "Normal Modes" simulation, now largely defunct because of its reliance upon Flash.
+1. **Drumhead** simulates the three-dimensional motion of an *N* x *N* system of particles, which may be regarded as a model for the vibrating head of a drum.  This component of the project was inspired by PhET's [Normal Modes simulation](https://phet.colorado.edu/en/simulation/legacy/normal-modes), now largely defunct because of its reliance upon [Adobe Flash Player](https://en.wikipedia.org/wiki/Adobe_Flash_Player).
 
 ![Drumhead](assets/drumhead.png)
 
-* Each particle is connected ("bonded") to its four neighbors or - if it resides along the edge - to the adjacent wall.  The equilibrium position for each particle is represented by a dashed circle.
+* Each particle is connected ("bonded") to its four neighbors or - if it resides along the edge - to the adjacent wall.  The [equilibrium](https://en.wikipedia.org/wiki/Mechanical_equilibrium) position for each particle is represented by a (stationary) dashed circle.
 * Each particle's displacement is measured relative to its equilibrium position.  The positive directions are to the right (for *x*), down the screen (for *y*), or out of the screen (for *z*).
-* The user may "tune" both the overall strength of the restoring forces and whether the restoring force is that of Hooke's-law springs or simply a mesh under tension.  Newtonian damping is also available to represent more realistic behavior.
-* In addition to specifying the number of particles in the system, the user must specify the system's "initial conditions", ie the extent to which any particle(s) is/are *not* in its/their equilibrium state(s) (ie, motionless at the equilbrium position).  The user may shift arbitrarily many particles away from their equilibrium positions before running the simulation.
-* The collection of *N*<sup>2</sup> particles satisfies Newton's 2nd law, which leads to a system of 6*N*<sup>2</sup> coupled first-order ordinary differential equations.  The factor of 6 comes from 3 (the dimensionality of space) times 2 (the order of the derivative in Newton's 2nd law).
+* The user may "tune" both the overall strength of the restoring forces and whether the restoring force is that of Hooke's-law springs or simply a mesh under tension.  [Viscous damping](https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator) is also available to represent more realistic behavior.
+* In addition to specifying the number of particles in the system, the user must specify the system's [initial conditions](https://en.wikipedia.org/wiki/Initial_condition), ie the extent to which any particle(s) is/are *not* in its/their equilibrium state(s) (motionless at the equilbrium position).  The user may shift arbitrarily many particles away from their equilibrium positions before running the simulation.
+* The collection of *N*<sup>2</sup> particles satisfies [Newton's 2nd law](https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion#:~:text=of%20Newtonian%20relativity.-,Newton's%20second%20law,direction%20of%20the%20applied%20force.&text=Thus%2C%20the%20net%20force%20applied,body%20produces%20a%20proportional%20acceleration.), which leads to a system of 6*N*<sup>2</sup> coupled first-order [ordinary differential equations](https://en.wikipedia.org/wiki/Ordinary_differential_equation).  The factor of 6 comes from 3 (the dimensionality of space) times 2 (the order of the derivative in Newton's 2nd law).
 
 ```
 // Calculate (generalized) force, KE, PE, and E for a particular point in phase space.
@@ -99,7 +103,7 @@ Fs = rvs => {
 }
 ```
 
-* The system of differential equations is solved numerically via a Runge-Kutta approach.  Because this is a 4th-order approach, the time-complexity is *O*(1/&epsilon;<sup>1/4</sup>), where &epsilon; is the desired accurary.
+* The system of differential equations is solved numerically via a [Runge-Kutta](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods) approach.  Because this is a 4th-order algorithm, the time-complexity is *O*(1/&epsilon;<sup>1/4</sup>), where &epsilon; is the desired accurary.
 
 ```
 // With the present phase-space coordinate ...
@@ -142,8 +146,8 @@ nextRvs = _ => {
 }
 ```
 
-* Bar graphs represent the system's kinetic energy (associated with the particles' speeds), potential energy(associated with the bonds' distortion), and total energy.  In the absence of damping and aforementionned errors associated with the nonzero size of the time-step &Delta;*t*, the total energy *E* should be constant. Hence monitoring the constancy of *E* is probably the best way to determine if &Delta;*t* is sufficiently small.
-* Arrows represent the velocity- and acceleration-vectors for each particle.  Each arrow's direction is parallel to that of the relevant vector, and each arrow's length is proportional to the magnitude of the particular vector.
+* Bar graphs represent the system's [kinetic energy](https://en.wikipedia.org/wiki/Kinetic_energy) (associated with the particles' speeds), [potential energy](https://en.wikipedia.org/wiki/Potential_energy) (associated with the bonds' distortions), and [total energy](https://en.wikipedia.org/wiki/Energy).  In the absence of damping and aforementionned errors associated with the nonzero size of the time-step &Delta;*t*, the total energy *E* should be constant. Hence monitoring the [constancy of *E*](https://en.wikipedia.org/wiki/Conservation_law) is probably the best way to determine if &Delta;*t* is sufficiently small.
+* Arrows represent the velocity- and acceleration-[vectors](https://en.wikipedia.org/wiki/Vector_(mathematics_and_physics)) for each particle.  Each arrow's direction is parallel to that of the relevant vector, and each arrow's length is proportional to the magnitude of the particular vector.
 
 ```
 import React from "react";
@@ -166,7 +170,7 @@ export default Vector;
 
 ![Asteroids](assets/asteroids.png)
 
-* The perspective is as if the user is viewing the asteroids through a narrow cone, in which case the user'ssolid-angle view is well approximated by a 2-dimensional plane. Each asteroid's apparent lateral position (*X* or*Y* expressed relative to the viewer's "fixation point" at the center of the screen) is proportional to the asteroid's actual lateral position (*x* or *y*) divided by 1 - *z*, in which *z* is the actual position of the asteroid relative to the user. Expressed differently: "Closer objects appear larger."  (Note that *z* = 1 corresponds to the asteroid striking the user, whereas *z* = 0 represents the asteroid's being far away.)
+* The [perspective](https://en.wikipedia.org/wiki/Perspective_(geometry)) is as if the user is viewing the asteroids through a narrow cone, in which case the user's [solid-angle](https://en.wikipedia.org/wiki/Solid_angle) view is well approximated by a 2-dimensional plane. Each asteroid's apparent lateral position (*X* or*Y* expressed relative to the viewer's "fixation point" at the center of the screen) is proportional to the asteroid's actual lateral position (*x* or *y*) divided by 1 - *z*, in which *z* is the actual position of the asteroid relative to the user. Expressed differently: ["Closer objects appear larger."](https://en.wikipedia.org/wiki/Forced_perspective#:~:text=Forced%20perspective%20is%20a%20technique,of%20the%20spectator%20or%20camera.) Note that *z* = 1 corresponds to the asteroid striking the user, whereas *z* = 0 represents the asteroid's being far away.
 
 * Each asteroid's (ReactJS) zIndex property is proportional to its *z*-coordinate, thereby ensuring that asteroids closer to the viewer will conceal any which are behind it.
 
@@ -191,7 +195,7 @@ const Rock = ({ x, y, z, size, color, dt }) => {
 export default Rock;
 ```
 
-* Mindlessly using the geometric 1/*z* factor specified in the previous part leads to some unrealistic results, namely that the entire viewing area is covered with distant asteroids.  This is often called "Olber's dark night sky paradox" when considered for the case of viewing stars from an Earth-bound vantage point.  Accordingly I replace 1/(1 - *z*) with    1/(1 - *z*) - 1/(1 + *z*), which leads to all asteroids' invisibility beyond the "distant" plane *z*= 0 (from which asteroids appear gradually/continuously, as if from a fog).
+* Mindlessly using the geometric 1/*z* factor specified in the previous part leads to some unrealistic results, namely that the entire viewing area is covered with distant asteroids.  This is often called [Olber's dark night sky paradox](https://en.wikipedia.org/wiki/Olbers%27_paradox) when considered for the case of viewing stars from an Earth-bound vantage point.  Accordingly I replace 1/(1 - *z*) with    1/(1 - *z*) - 1/(1 + *z*), which leads to all asteroids' invisibility beyond the "distant" plane *z*= 0 (from which asteroids appear gradually/continuously, as if from a fog).
 
 ```
 let size = this.state.width * (1 / (1 - z) - 1 / (1 + z));
@@ -199,29 +203,29 @@ let xpx = Math.round(this.nx * (rock.x/(1 - z) + 0.5) - size / 2);
 let ypx = Math.round(this.ny * (rock.y/(1 - z) + 0.5) - size / 2);
 ```
 
-* When an asteroid leaves the user's field of view, it is replaced by another asteroid at *z* = 1, with arbitrary velocity components and lateral coordinates (*x* and *y*).
+* When an asteroid leaves the user's field of view, it is replaced by another asteroid at *z* = 0, with arbitrary velocity components and lateral coordinates (*x* and *y*).
 ```
 rocks[i] = (this.isVisible(rocks[i])) ? rocks[i] : this.newRock(0);
 ```
-* Each asteroid moves with a constant velocity, and css transitions (with "timing-function: linear") are used to interpolate their positions between successive timesteps in order to allow for large values of &Delta;*t*.
+* Each asteroid moves with a constant velocity, so css transitions (with [timing-function: linear](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function)) are used to interpolate its positions between successive timesteps in order to allow for large values of &Delta;*t* without sacrificing animation smoothness.
 ```
 .dot.moving {
   transition-property: all;
   transition-timing-function: linear;
 }
 ```
-3. **Heat equation** simulates the time-dependence of the temperature profile of a one-dimensional system that is subject to particular boundary conditions and initial conditions.
+3. [**Heat equation**](https://en.wikipedia.org/wiki/Heat_equation) simulates the time-dependence of the temperature profile of a one-dimensional system that is subject to user-controlled [boundary conditions](https://en.wikipedia.org/wiki/Boundary_value_problem#:~:text=A%20boundary%20value%20problem%20has,%2C%20thus%20the%20term%20%22initial%22) and [initial conditions](https://en.wikipedia.org/wiki/Initial_condition#Continuous_time).
 
 ![Heat](assets/heat.png)
 
-* The heat equation is a partial differential equation that is first-order in time *t* and second-order in position *x*.  In addition to discretizing the time variable, I also do so with the position variable in order to obtain a difference equation.  The sizes of both the time-step (&Delta;*t*) and the position increment (&Delta;*x*) are controlled by logarithmic sliders.
+* The heat equation is a [partial differential equation](https://en.wikipedia.org/wiki/Partial_differential_equation) that is first-order in time *t* and second-order in position *x*.  In addition to discretizing the time variable, I also do so with the position variable in order to obtain a [difference equation](https://en.wikipedia.org/wiki/Linear_difference_equation), which I solve through straightforward linear algebraic techniques.  The sizes of both the time-step (&Delta;*t*) and the position increment (&Delta;*x*) are controlled by [logarithmic](https://en.wikipedia.org/wiki/Logarithmic_scale) sliders.
 ```
 handleLogDt = e => {
     let logDt = Number(e.target.value);
     this.setState({ logDt, dt: Math.round(10 ** logDt)});
 }
 ```
-* At either end of the system, the user may specify that the boundary condition be either insulating (ie no heat may pass through the boundary) or at a particular temperature.
+* At either end of the system, the user may specify that the boundary condition be either [insulating](https://en.wikipedia.org/wiki/Neumann_boundary_condition) (ie no heat may pass through the boundary) or at a [specified temperature](https://en.wikipedia.org/wiki/Dirichlet_boundary_condition).
 * The user creates an initial condition (ie, temperature profile) for this system by click-and-dragging from left to right across the bar graph, where tall skinny rectangular divs create a horizontal array of targets for the mouse events. Vertical mouse-positions may be extracted from the offsetY property of e.nativeEvent.
 
 ```
@@ -252,7 +256,7 @@ handleMouseLeave = e => {
     this.setState({ Ts, time: 0 });
 }
 ```
-* I solve this difference equation via the Crank-Nicolson method, which requires solving a tridiagonal set of linear equations.  The accuracy of this "implicit" method is 2nd order in time, so the time-complexity is *O*(1/&epsilon;<sup>1/2</sup>), where &epsilon; is the desired accuracy.  In order to eliminate unphysical Gibbs-phenomenon behavior at the boundaries, I use a two-timestep average to smooth out the oscillations.
+* I solve the difference equation via the [Crank-Nicolson method](https://en.wikipedia.org/wiki/Crank%E2%80%93Nicolson_method), which requires solving a [tridiagonal](https://en.wikipedia.org/wiki/Tridiagonal_matrix) set of linear equations.  The accuracy of this [implicit](https://en.wikipedia.org/wiki/Explicit_and_implicit_methods) method is 2nd order in time, so the time-complexity is *O*(1/&epsilon;<sup>1/2</sup>), where &epsilon; is the desired accuracy.  In order to eliminate unphysical [Gibbs-phenomenon](https://en.wikipedia.org/wiki/Gibbs_phenomenon) behavior at the boundaries, I use a two-timestep average to smooth out the oscillations.
 
 ```
 tridiag = _ => {
@@ -294,3 +298,4 @@ tridiag = _ => {
     this.setState({Ts: u});
 }
 ```
+I hope that you enjoy learning about our universe!

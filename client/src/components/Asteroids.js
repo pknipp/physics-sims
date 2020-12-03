@@ -58,7 +58,7 @@ class Asteroids extends React.Component {
         return rock;
     }
 
-    isVisible = rock => (rock.z < 1 &&  Math.abs(2 * rock.x) < 1 - rock.z && Math.abs(0.9 * rock.y) < 1 - rock.z);
+    isVisible = rock => (rock.z < 1 &&  Math.abs(1.6 * rock.x) < 1 - rock.z && Math.abs(0.9 * rock.y) < 1 - rock.z);
 
     setRocks = _ => {
         const rocks = [];

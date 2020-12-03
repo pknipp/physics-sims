@@ -54,7 +54,6 @@ const Drumhead = ({n, xs, ys, rvs, Fs, velocityLength, accelerationLength, showB
                             Ax={Ax}
                             Ay={Ay}
                             showBond={showBond}
-                            // bondThickness={bondThickness}
                             velocityLength={velocityLength}
                             accelerationLength={accelerationLength}
                             width={numPx * width}

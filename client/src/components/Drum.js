@@ -32,6 +32,7 @@ class Collection extends React.Component {
             calcEi: false,
             springConstant: 2,
         }
+        this.numPx = 540;
     }
 
     componentDidMount() {this.makeLattice(this.state.n)}
@@ -118,13 +119,13 @@ class Collection extends React.Component {
         let PET = 0;
         // Initialize the kinetic energy, which is summed for every particle in the system.
         let KE = 0;
-        // Loop over rows in the drumhead.
+        // Loop over rows of the drumhead.
         for (let i = 0; i < n; i++) {
             PEk += rvs[0][i][0] ** 2 + rvs[i][0][1] ** 2;
             PET +=
                 rvs[0][i][1] ** 2 + rvs[0][i][2] ** 2 +
                 rvs[i][0][0] ** 2 + rvs[i][0][2] ** 2;
-            // loop over columns of array.
+            // loop over columns of the drumhead.
             for (let j = 0; j < n; j++) {
                 for (let k = 0; k < 3; k++) {
                     // time-derivative of position coordinate is simply the velocity
@@ -140,7 +141,7 @@ class Collection extends React.Component {
                 const rD = (j === n - 1)? [0, 0, 0] : rvs[i][j + 1];
                 // Time-derivative of velocity coordinate for each particle is the force.
                 // Force on each particle comes from its own velocity (if there is damping)
-                // and from the positions of its neighbors.
+                // and from applying Hooke's law to the positions of its neighbors.
                 Fs[i][j][3] = - damping * rvs[i][j][3] + springConstant * (
                         kConst * (-2 * rvs[i][j][0] + rL[0] + rR[0])
                         + T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
@@ -151,6 +152,7 @@ class Collection extends React.Component {
                             T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
                 let dxR = rvs[i][j][0] - rR[0];
                 let dyD = rvs[i][j][1] - rD[1];
+                // Increment the two types of potential energy, each of which is harmonic.
                 PEk += dxR * dxR + dyD * dyD;
                 PET +=
                     (rvs[i][j][0] - rD[0]) ** 2 + (rvs[i][j][2] - rD[2]) ** 2 +
@@ -195,6 +197,7 @@ class Collection extends React.Component {
             for (let j = 0; j < this.state.n; j++) {
                 for (let k = 0; k < 6; k++) {
                     nextRvs[i][j][k] += (
+                        // Utilize a weighted average of the generalized forces.
                         Fs1[i][j][k] + Fs4[i][j][k] + 2 * (Fs2[i][j][k] + Fs3[i][j][k])
                         ) * this.state.dt/ 1000 / 6;
                 }
@@ -221,7 +224,6 @@ class Collection extends React.Component {
 
 
     render() {
-        let numPx = 540;
         let { n, rvs, velocityLength, accelerationLength, showBond } = this.state;
         let Rows = [];
         for (let iIC = 0; iIC < this.state.nIC; iIC++) {
@@ -267,8 +269,8 @@ class Collection extends React.Component {
                     <div
                         className="drumContainer"
                         style={{
-                            height: `${numPx}px`,
-                            width: `${numPx}px`
+                            height: `${this.numPx}px`,
+                            width: `${this.numPx}px`
                         }}
                     >
                         <>
