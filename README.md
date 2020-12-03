@@ -174,14 +174,16 @@ export default Vector;
 import React from "react";
 const Rock = ({ x, y, z, size, color, dt }) => {
     return (
-        <div className="dot moving" style={{
-            height:`${Math.round(size)}px`,
-            width:`${Math.round(size)}px`,
-            left: `${Math.round(x)}px`,
-            top: `${Math.round(y)}px`,
-            zIndex: `${Math.round(1000 * z)}`,
-            backgroundColor: `${color}`,
-            transitionDuration: `${dt / 1000}s`,
+        <div
+            className="dot moving"
+            style={{
+                height:`${Math.round(size)}px`,
+                width:`${Math.round(size)}px`,
+                left: `${Math.round(x)}px`,
+                top: `${Math.round(y)}px`,
+                zIndex: `${Math.round(1000 * z)}`,
+                backgroundColor: `${color}`,
+                transitionDuration: `${dt / 1000}s`,
             }}>
         </div>
     )
@@ -212,7 +214,7 @@ rocks[i] = (this.isVisible(rocks[i])) ? rocks[i] : this.newRock(0);
 
 ![Heat](assets/heat.png)
 
-* The heat equation is a partial differential equation that is first-order in time *t* and second-order inposition *x*.  In addition to discretizing the time variable, I also do so with the position variable in order to obtain a difference equation.  The sizes of both the time-step (&Delta;*t*) and the position increment (&Delta;*x*) are controlled by logarithmic sliders.
+* The heat equation is a partial differential equation that is first-order in time *t* and second-order in position *x*.  In addition to discretizing the time variable, I also do so with the position variable in order to obtain a difference equation.  The sizes of both the time-step (&Delta;*t*) and the position increment (&Delta;*x*) are controlled by logarithmic sliders.
 ```
 handleLogDt = e => {
     let logDt = Number(e.target.value);
