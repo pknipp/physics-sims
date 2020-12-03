@@ -21,7 +21,6 @@ HEAT EQUATION:
 * add any heat sources?
 
 ASTEROIDS:
-* insert sliders for time-step and distant-asteroid size
 * Allow two objects that "collide" (ie come within a certain distance of each other) to merge into a single object in a manner which conserves both mass (e.g., size) and momentum (= mass times velocity), and allow for the possibility that single objects may spontaneously split into two objects, again in a manner which conserved mass and momentum.
 
 PLANETARY MOTION:

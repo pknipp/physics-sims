@@ -7,11 +7,13 @@ class Account extends Component {
 
   render() {
     return (!this.props.user) ? <Redirect to="/login" /> : (
+      <div className="simple">
       <ul>
         <li>Email: {this.props.user.email}</li>
         <li>User since {this.props.user.createdAt}</li>
         {/* <li>{this.props.user.wantsEmail ? "Wants" : "Does not want"} to receive email</li> */}
       </ul>
+      </div>
     );
   }
 }

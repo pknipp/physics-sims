@@ -1,27 +1,42 @@
 import React from "react";
-import Rock from "./Rock";
+import Rock from "./asteroids/Rock";
 class Asteroids extends React.Component {
     constructor() {
         super();
         this.state = {
             time: 0,
             running: false,
-            dt: 100,
-            n_rocks: "",
+            logDt: 2,
+            width: 10,
+            nRocks: 100,
             rocks: [],
             logSpeed: 0.2,
         }
         this.nx = 1380;
         this.ny = 630;
-        this.width = 5;
     }
 
-    componentDidMount() {this.setRocks()}
+    componentDidMount() {this.setState(
+        {dt: Math.round(10 ** this.state.logDt)},
+        () => this.setRocks()
+    )}
 
     handleInput = e => {
-        let n_rocks = e.target.value;
-        this.setRocks(n_rocks);
-        this.setState({n_rocks: Number(e.target.value)});
+        let newState = {};
+        let targ = e.target;
+        newState[targ.name] = Number(targ.value);
+        this.setState(newState, () => this.setRocks());
+    }
+
+    handleInput2 = e => {
+        let newState = {};
+        newState[e.target.name] = Number(e.target.value);
+        this.setState(newState);
+    }
+
+    handleLogDt = e => {
+        let logDt = Number(e.target.value);
+        this.setState({ logDt, dt: Math.round(10 ** logDt)});
     }
 
     handleSpeed = e => this.setState({logSpeed: e.target.value});
@@ -43,11 +58,11 @@ class Asteroids extends React.Component {
         return rock;
     }
 
-    isVisible = rock => (rock.z < 1 &&  Math.abs(1.6 * rock.x) < 1 - rock.z && Math.abs(1.6 * rock.y) < 1 - rock.z);
+    isVisible = rock => (rock.z < 1 &&  Math.abs(2 * rock.x) < 1 - rock.z && Math.abs(0.9 * rock.y) < 1 - rock.z);
 
-    setRocks = (n_rocks=this.state.n_rocks) => {
+    setRocks = _ => {
         const rocks = [];
-        for (let i = 0; i < n_rocks; i++) {
+        for (let i = 0; i < this.state.nRocks; i++) {
             rocks.push(this.newRock());
         }
         this.setState({rocks});
@@ -90,7 +105,7 @@ class Asteroids extends React.Component {
         let rockComponents = this.state.rocks.map((rock, indx) => {
             let z = rock.z;
             // The 2nd term in the expression below is unphysical but seems to succeed, psychovisually
-            let size = this.width * (1 / (1 - z) - 1 / (1 + z));
+            let size = this.state.width * (1 / (1 - z) - 1 / (1 + z));
             let xpx = Math.round(this.nx * (rock.x/(1 - z) + 0.5) - size / 2);
             let ypx = Math.round(this.ny * (rock.y/(1 - z) + 0.5) - size / 2);
             return rock.hidden ? null : <Rock
@@ -105,45 +120,71 @@ class Asteroids extends React.Component {
         })
         let { time } = this.state;
         return (
-            <>
-                <div>
-                    Let's experience a trip through an asteroid field!
-                </div>
-                <div>
-                    How many asteroids do you want?
-                    <input min="0" type="number" onChange={this.handleInput} value={this.state.n_rocks} />
-                </div>
-                <div>
-                    How fast do you want to travel through the field?
-                </div>
-                <span>
-                    slowly
-                </span>
-                <span>
-                    <input
-                        type="range"
-                        onChange={this.handleSpeed}
-                        min="0"
-                        max="0.6"
-                        step="0.1"
-                        value={this.state.logSpeed}
-                    />
-                </span>
-                <span>
-                    fast
-                </span>
+            <div className="asteroids-container">
+                <table>
+                    <thead>
+                        <tr><th colSpan="4"><h3>Let's fly through an asteroid field!</h3></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="right">How many asteroids do you want?</td><td></td>
+                            <td align="center">
+                                <input
+                                    min="0" type="number" name="nRocks"
+                                    onChange={this.handleInput} value={this.state.nRocks}
+                                />
+                            </td><td></td>
+                        </tr>
+                        <tr>
+                            <td align="right">How fast do you want to travel through the field?</td>
+                            <td align="right">slowly</td>
+                            <td align="center">
+                                <input
+                                    type="range" onChange={this.handleSpeed}
+                                    min="0" max="0.6" step="0.1" value={this.state.logSpeed}
+                               />
+                            </td>
+                            <td align="left">fast</td>
+                        </tr>
+                        <tr>
+                            <td align="right"   >Timestep:</td>
+                            <td align="right">1 ms</td>
+                            <td align="center">
+                                <input
+                                    type="range" onChange={this.handleLogDt}
+                                    min="0" max="3" step="0.2" value={this.state.logDt}
+                               />
+                            </td>
+                            <td align="left">1 s</td>
+                        </tr>
+                        <tr>
+                            <td align="right">Asteroid size (when distant):</td>
+                            <td align="right">1 px</td>
+                            <td align="center">
+                                <input
+                                    type="range" onChange={this.handleInput2} name="width"
+                                    min="1" max="10" step="0.1" value={this.state.width}
+                               />
+                            </td>
+                            <td align="left">10 px</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div>
                     <span className="button-container">
                         <button onClick={this.toggle} style={{zIndex:1000}}>
                                 {this.state.running ? "Pause" : "Run"}
                         </button>
                     </span>
-                    <span>time: {Math.round(1000*time)/1000} s</span>
+                    <span>time: {time.toFixed(3)} s</span>
                 </div>
-                <div className="rockContainer">
-                {rockComponents}
+                <div
+                    className="rockContainer"
+                    style={{height:`${this.ny}px`, width:`${this.nx}px`}}
+                >
+                    {rockComponents}
                 </div>
-            </>
+            </div>
         )
     }
 }

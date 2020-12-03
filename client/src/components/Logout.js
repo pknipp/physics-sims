@@ -13,11 +13,9 @@ class Logout extends Component {
 
   render() {
     return (!this.props.currentUserId) ? <Redirect to="/login" /> : (
-      <main className="centered middled">
-        <form onSubmit={this.handleSubmit}>
-          <Button color="primary" variant="outlined" type="submit">Logout</Button>
-        </form>
-      </main>
+      <form className="simple" onSubmit={this.handleSubmit}>
+        <Button color="primary" variant="outlined" type="submit">Logout</Button>
+      </form>
     );
   }
 }
