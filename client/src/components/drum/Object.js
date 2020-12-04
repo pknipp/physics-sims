@@ -30,9 +30,9 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y
             {!showBond ? null :
                 <>
                     <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XL} y1={YL} size={size} dt={dt}/>
-                    <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XU} y1={YU} size={size} dt={dt}/>
+                    {/* <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XU} y1={YU} size={size} dt={dt}/>
                     <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XR} y1={YR} size={size} dt={dt}/>
-                    <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XD} y1={YD} size={size} dt={dt}/>
+                    <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XD} y1={YD} size={size} dt={dt}/> */}
                 </>
             }
         </>
