@@ -10,31 +10,18 @@ class Bond extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        debugger
         let { x: xi, y: yi, x1: x1i, y1: y1i } = prevProps;
-        debugger
         let { x, y, x1, y1 } = this.props;
-        debugger
         if (!(xi === x && yi === y && x1i === x1 && y1i === y1) || this.state.angle === null) {
-            const dx = x1 - x;
-            const dy = y1 - y;
-            let rAngle = this.trig(dx, dy);
-            debugger
+            let rAngle = this.trig(x1 - x, y1 - y);
             if (prevProps && rAngle) {
                 this.r = rAngle[0];
                 let angle = rAngle[1];
                 const dxi = x1i - xi;
                 const dyi = y1i - yi;
                 let trigi = this.trig(dxi, dyi);
-                if (trigi) {
-                    debugger
-                    // let anglei = trigi[1];
-                    // if (dx < 0 && dxi < 0 && dy * dyi < 0) {
-                    angle += ((Math.round((trigi[1] - angle) / 2 / Math.PI) * 2 * Math.PI));
-                    debugger
-                    // }
-                }
-                debugger
+                let anglei = this.state.angle || (trigi ? trigi[1] : null);
+                if (anglei) angle += ((Math.round((anglei - angle)/2/Math.PI)*2*Math.PI));
                 this.setState({ angle });
             }
         }
@@ -51,7 +38,6 @@ class Bond extends React.Component {
         let {x, y, dt} = this.props;
         let angle = this.state.angle * 180 / Math.PI;
         let r = this.r;
-        debugger;
         return (!angle) ? null : (
             <div className="line bond" style={{
                 width:`${r}px`,
