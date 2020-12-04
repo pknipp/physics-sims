@@ -137,7 +137,7 @@ class Collection extends React.Component {
                 const rL = (i === 0)     ? [0, 0, 0] : rvs[i - 1][j];
                 const rR = (i === n - 1) ? [0, 0, 0] : rvs[i + 1][j];
                 const rU = (j === 0)     ? [0, 0, 0] : rvs[i][j - 1];
-                const rD = (j === n - 1) ? [0, 0, 0] : rvs[i][j + 1];
+                const rD = (j === n - 1) ? [0, 0, 0] : rvs[i][j + 1]
                 // Time-derivative of velocity coordinate for each particle is the force.
                 // Force on each particle comes from its own velocity (if there is damping)
                 // and from the positions of its neighbors.
