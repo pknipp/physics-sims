@@ -143,12 +143,12 @@ class Collection extends React.Component {
                 // and from the positions of its neighbors.
                 Fs[i][j][3] = - damping * rvs[i][j][3] + springConstant * (
                         kConst * (-2 * rvs[i][j][0] + rL[0] + rR[0])
-                        + T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
+                           + T * (-2 * rvs[i][j][0] + rU[0] + rD[0]));
                 Fs[i][j][4] = - damping * rvs[i][j][4] + springConstant * (
                         kConst * (-2 * rvs[i][j][1] + rU[1] + rD[1])
-                        + T * (-2 * rvs[i][j][1] + rL[1] + rR[1]));
+                           + T * (-2 * rvs[i][j][1] + rL[1] + rR[1]));
                 Fs[i][j][5] = - damping * rvs[i][j][5] + springConstant *
-                            T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
+                                T * (-4 * rvs[i][j][2] + rL[2] + rR[2] + rU[2] + rD[2]);
                 let dxR = rvs[i][j][0] - rR[0];
                 let dyD = rvs[i][j][1] - rD[1];
                 PEk += dxR * dxR + dyD * dyD;
