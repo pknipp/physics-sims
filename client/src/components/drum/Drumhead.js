@@ -33,9 +33,11 @@ const Drumhead = ({n, xs, ys, rvs, Fs, velocityLength, accelerationLength, showB
                     XU = numPx * (x + 0.5 + rvs[i][j - 1][0]);
                     YU = numPx * (ys[j - 1] + 0.5 + rvs[i][j - 1][1]);
                 }
+                let key = n * i + j;
                 return (
-                    <div key={n * i + j}>
+                    <div key={key}>
                         <Object
+                            key={key}
                             X0={X0}
                             Y0={Y0}
                             X={X}

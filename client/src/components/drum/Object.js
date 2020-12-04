@@ -1,7 +1,7 @@
 import React from "react";
 import Bond from "./Bond";
 import Vector from "./Vector";
-const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y0, width, showBond,
+const Object = ({ key, X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y0, width, showBond,
                     velocityLength, accelerationLength, backgroundColor, dt}) => {
     let xpx0 = Math.round(X0 - width/2);
     let ypx0 = Math.round(Y0 - width/2);
@@ -29,10 +29,10 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y
             <Vector type={"acceleration"} x={xpx + size / 2} y={ypx + size / 2} vec={[Ax, Ay]} fac={accelerationLength} dt={dt} />
             {!showBond ? null :
                 <>
-                    <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XL} y1={YL} size={size} dt={dt}/>
-                    {/* <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XU} y1={YU} size={size} dt={dt}/>
-                    <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XR} y1={YR} size={size} dt={dt}/>
-                    <Bond x={xpx + size / 2} y={ypx + size / 2} x1={XD} y1={YD} size={size} dt={dt}/> */}
+                        <Bond key={`L${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XL} y1={YL} size={size} dt={dt}/>
+                        <Bond key={`U${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XU} y1={YU} size={size} dt={dt}/>
+                        <Bond key={`R${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XR} y1={YR} size={size} dt={dt}/>
+                        <Bond key={`D${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XD} y1={YD} size={size} dt={dt}/>
                 </>
             }
         </>
