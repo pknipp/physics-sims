@@ -5,7 +5,7 @@ import Graph from "./drum/Graph";
 import Sliders from "./drum/Sliders";
 import Drumhead from "./drum/Drumhead";
 import IC from "./drum/IC";
-class Collection extends React.Component {
+class Drum extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -324,4 +324,4 @@ class Collection extends React.Component {
     }
 }
 
-export default Collection;
+export default Drum;
