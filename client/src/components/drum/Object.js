@@ -2,7 +2,7 @@ import React from "react";
 import Bond from "./Bond";
 import Vector from "./Vector";
 const Object = ({ key, X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y0, width, showBond,
-                    velocityLength, accelerationLength, backgroundColor, dt}) => {
+                    velocityLength, accelerationLength, backgroundColor, speed, dt}) => {
     let xpx0 = Math.round(X0 - width/2);
     let ypx0 = Math.round(Y0 - width/2);
     let size = Math.round(width * ((Z < 0) ? 1/(1 - Z) : 1 + Z));
@@ -16,7 +16,7 @@ const Object = ({ key, X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, 
                 left: `${xpx}px`,
                 top: `${ypx}px`,
                 zIndex: `${Math.round(1000 * Z)}`,
-                transitionDuration: `${dt / 1000}s`,
+                transitionDuration: `${dt / 1000 / Math.max(0.1, speed)}s`,
             }}/>
 
             <div className="dot stationary" style={{
@@ -29,10 +29,10 @@ const Object = ({ key, X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, 
             <Vector type={"acceleration"} x={xpx + size / 2} y={ypx + size / 2} vec={[Ax, Ay]} fac={accelerationLength} dt={dt} />
             {!showBond ? null :
                 <>
-                        {/* <Bond key={`L${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XL} y1={YL} size={size} dt={dt}/> */}
-                        {/* <Bond key={`U${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XU} y1={YU} size={size} dt={dt}/> */}
-                        {/* <Bond key={`R${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XR} y1={YR} size={size} dt={dt}/> */}
-                            <Bond key={`D${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XD} y1={YD} size={size} dt={dt}/>
+                        <Bond key={`L${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XL} y1={YL} size={size} speed={speed} dt={dt}/>
+                        <Bond key={`U${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XU} y1={YU} size={size} speed={speed} dt={dt}/>
+                        <Bond key={`R${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XR} y1={YR} size={size} speed={speed} dt={dt}/>
+                        <Bond key={`D${key}`} x={xpx + size / 2} y={ypx + size / 2} x1={XD} y1={YD} size={size} speed={speed} dt={dt}/>
                 </>
             }
         </>

@@ -283,6 +283,7 @@ class Collection extends React.Component {
                                     velocityLength={velocityLength}
                                     accelerationLength={accelerationLength}
                                     showBond={showBond}
+                                    speed={this.state.speed}
                                     dt={this.state.dt}
                                 />
                             }
