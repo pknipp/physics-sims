@@ -16,6 +16,7 @@ const Object = ({ X, Y, Z, XL, YL, XU, YU, XD, YD, XR, YR, Vx, Vy, Ax, Ay, X0, Y
                 left: `${xpx}px`,
                 top: `${ypx}px`,
                 zIndex: `${Math.round(1000 * Z)}`,
+                boxShadow:`0px 0px ${Math.round(0 * size/20)}px black`,
                 // transitionDuration: `${dt / 1000}s`,
             }}/>
 
