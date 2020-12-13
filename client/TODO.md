@@ -16,6 +16,7 @@ DRUMHEAD:
 * adjust IC by click-and-drag instead of form filling?
 
 HEAT EQUATION:
+* Provide more instructions and explanation as to how to use the sim.
 * determine if a factor of 2 is needed, because of 2-step average that is taken
 * insert outgoing BC (for which green's function should be used, or modified BC)?
 * add any heat sources?
