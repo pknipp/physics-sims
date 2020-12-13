@@ -133,7 +133,7 @@ td {
   height: 0px;
   z-index: 1000;
   transition-timing-function: linear;
-  transition-property: width, left, top;
+  /* transition-property: width, left, top, transform; */
   transition-property: all;
 }
 
