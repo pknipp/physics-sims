@@ -15,7 +15,7 @@ router.get('/', asyncHandler(async function (req, res, next) {res.json({message:
 router.put('/', [email, password],
   asyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
-  console.log("errors.errors[0].msg are ", errors.errors[0].msg);
+  // console.log("errors.errors[0].msg are ", errors.errors[0].msg);
   if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
   const { email, password } = req.body;
   let user;
