@@ -11,11 +11,12 @@ class Signup extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    if (this.state.password === this.state.password2) {
-      this.props.signup(this.state.email, this.state.password);
-    } else {
-      this.setState( { passwordsDisagree: true })
-    }
+    let { email, password } = this.state;
+    let message = !email ? "Email address is needed." :
+                  !password?"Password is needed." :
+                  password !== this.state.password2 ? "Passwords must match" : "";
+    if (message) return this.setState({ message });
+    this.setState({ message: "" }, () => this.props.signup(email, password));
   }
 
   updateInput = e => this.setState({ [e.target.name]: e.target.value });
@@ -29,13 +30,14 @@ class Signup extends Component {
           <Input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.updateInput} />
           <Input type="password" placeholder="Confirm password" name="password2" value={this.state.password2} onChange={this.updateInput} />
           <Button color="primary" variant="outlined" type="submit">Signup</Button>
-          <span style={{color: "red", paddingLeft:"10px"}}>{ this.state.passwordsDisagree ? "Passwords must match." : null }</span>
+          <span style={{color: "red", paddingLeft:"10px"}}>{ this.state.message }</span>
+          <span style={{color: "red", paddingLeft:"10px"}}>{ this.props.message }</span>
         </form>
       </main>
     );
   }
 }
 
-const msp = state => ({ currentUserId: state.authentication.id });
+const msp = state => ({ currentUserId: state.authentication.id, message: state.authentication.message});
 const mdp = dispatch => ({ signup: (email, password) => dispatch(signup(email, password))})
 export default connect(msp, mdp)(Signup);
