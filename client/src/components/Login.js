@@ -22,7 +22,6 @@ class Login extends Component {
   updateValue = name => e => this.setState({ [name]: e.target.value });
 
   render() {
-    // console.log("Loginform says that message = ", typeof(this.props.message));
     return (this.props.currentUserId) ? <Redirect to="/" /> : (
       <main className="centered middled">
          <span><NavLink className="nav" to="/signup"      activeClassName="active">Signup</NavLink></span>

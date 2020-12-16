@@ -30,8 +30,7 @@ class Signup extends Component {
           <Input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.updateInput} />
           <Input type="password" placeholder="Confirm password" name="password2" value={this.state.password2} onChange={this.updateInput} />
           <Button color="primary" variant="outlined" type="submit">Signup</Button>
-          <span style={{color: "red", paddingLeft:"10px"}}>{ this.state.message }</span>
-          <span style={{color: "red", paddingLeft:"10px"}}>{ this.props.message }</span>
+          <span style={{color: "red", paddingLeft:"10px"}}>{ this.state.message || this.props.message }</span>
         </form>
       </main>
     );
