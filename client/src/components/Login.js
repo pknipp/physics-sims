@@ -19,6 +19,7 @@ class Login extends Component {
   updateValue = name => e => this.setState({ [name]: e.target.value });
 
   render() {
+    console.log("Loginform says that message = ", typeof(this.props.message));
     return (this.props.currentUserId) ? <Redirect to="/" /> : (
       <main className="centered middled">
          <span><NavLink className="nav" to="/signup"      activeClassName="active">Signup</NavLink></span>
@@ -26,12 +27,13 @@ class Login extends Component {
           <Input type="text" placeholder="Email" value={this.state.email} onChange={this.updateEmail} />
           <Input type="password" placeholder="Password" value={this.state.password} onChange={this.updatePassword} />
           <Button color="primary" variant="outlined" type="submit">Login</Button>
+          <span style={{color:"red", paddingLeft:"10px"}}>{this.props.message}</span>
         </form>
       </main>
     );
   }
 }
 
-const msp = state => ({ currentUserId: state.authentication.id });
+const msp = state => ({ currentUserId: state.authentication.id, message: state.authentication.message });
 const mdp = dispatch => ({ login: (email, password) => dispatch(login(email, password))})
 export default connect(msp, mdp)(Login);

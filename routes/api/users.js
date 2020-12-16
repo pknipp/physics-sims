@@ -15,8 +15,9 @@ const password = check('password').not().isEmpty().withMessage('Provide a passwo
 router.post('/', email, password,
 // firstName, lastName,
   asyncHandler(async function (req, res, next) {
-  console.log("Top of signup route handler");
+  // console.log("Top of signup route handler");
   const errors = validationResult(req);
+  console.log(errors);
   if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
   const user = await create(req.body);
   const { jti, token } = generateToken(user);

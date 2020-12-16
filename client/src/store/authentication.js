@@ -2,10 +2,15 @@
 import Cookies from "js-cookie";
 
 const SET_USER = "physics_sims/authentication/SET_USER";
+const SET_MESSAGE="physics_sims/authentication/SET_MESSSAGE";
 const REMOVE_USER = "physics_sims/authentication/REMOVE_USER";
 const NEW_USER = "physics_sims/authentication/NEW_USER";
 
 export const setUser    = user => ({ type: SET_USER, user });
+export const setMessage = message=>{
+  console.log("function creator says " , message);
+  return {type: SET_MESSAGE, message};
+}
 export const removeUser = _    => ({ type: REMOVE_USER    })
 export const newUser    = user => ({ type: NEW_USER, user })
 
@@ -18,6 +23,7 @@ export const login = (email, password) => {
     let data = await response.json();
     console.log(data.message);
     if (response.ok) dispatch(setUser(data.user))
+    if (!response.ok)dispatch(setMessage(data.message))
   };
 };
 
@@ -27,6 +33,8 @@ export const signup = (email, password) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
+    // let data = await response.json();
+    // console.log(data);
     if (response.ok) dispatch(setUser((await response.json()).user))
   };
 };
@@ -56,6 +64,9 @@ export default function reducer(state=loadUser(), action) {
   switch (action.type) {
     case SET_USER:
       return action.user;
+    case SET_MESSAGE:
+      console.log("reducer say ", action.message)
+      return {message: action.message};
     case REMOVE_USER:
       return {};
     default:
