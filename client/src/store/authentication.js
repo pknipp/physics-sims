@@ -15,7 +15,9 @@ export const login = (email, password) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    if (response.ok) dispatch(setUser((await response.json()).user))
+    let data = await response.json();
+    console.log(data.message);
+    if (response.ok) dispatch(setUser(data.user))
   };
 };
 

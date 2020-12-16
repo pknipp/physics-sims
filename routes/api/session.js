@@ -24,7 +24,7 @@ router.put('/', [email, password],
     return next({ status: 401, message: "UserRepo.findByEmail did not work" });
   }
   if (!user.isValidPassword(password)) {
-    const err = new Error('Login failed');
+    const err = new Error('Invalid credentials');
     err.status = 401;
     err.title = 'Login failed';
     err.errors = ['Invalid credentials'];
