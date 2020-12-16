@@ -1,6 +1,8 @@
 GENERAL:
 * Style "splash" page
-* Style page which contains links to the various sims (asteroids, drumhead, heat equation)
+* Style landing page which contains links to the various sims (asteroids, drumhead, heat equation)
+* install "edit user" page
+* format createdAt output in a more friendly manner
 
 DRUMHEAD:
 * make each particle an instance of an Particle class

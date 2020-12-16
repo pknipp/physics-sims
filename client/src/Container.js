@@ -8,6 +8,7 @@ import Asteroids from "./components/Asteroids";
 import Heat from "./components/Heat";
 import Draw from "./components/Draw";
 import Account from "./components/Account";
+import Signup from "./components/Signup";
 import { store } from "./index";
 
 class Container extends React.Component {
@@ -26,6 +27,7 @@ class Container extends React.Component {
             <span><NavLink className="nav" to="/heat"      activeClassName="active">Heat equation </NavLink></span>
             {/* <span><NavLink className="nav" to="/draw" activeClassName="active">Draw (coming soon)</NavLink></span> */}
             <span><NavLink className="nav" to="/account"   activeClassName="active">Account details</NavLink></span>
+            <span><NavLink className="nav" to="/edituser" activeClassName="active">Edit Account Details</NavLink></span>
             <span><NavLink className="nav" to="/logout"    activeClassName="active">Logout         </NavLink></span>
           </div>
         </nav>
@@ -36,6 +38,7 @@ class Container extends React.Component {
           <Route path="/heat"      component={Heat}     />
           <Route path="/draw"      component={Draw}     />
           <Route path="/account"   component={Account}  />
+          <Route path="/edituser"  component={Signup} />
         </Switch>
       </BrowserRouter>
     )
