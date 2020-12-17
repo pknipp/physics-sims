@@ -33,6 +33,18 @@ export const signup = (email, password) => {
   };
 };
 
+export const editUser = (email, password, id) => {
+  console.log("editUser's 3 inputs are ", email, password, id);
+  return async dispatch => {
+    const res = await fetch(`/api/users`, { method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, id })
+    });
+    let data = await res.json();
+    dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
+  };
+};
+
 export const logout = () => async dispatch => {
   const res = await fetch('/api/session', { method: "delete" });
   if (res.ok) dispatch(removeUser());

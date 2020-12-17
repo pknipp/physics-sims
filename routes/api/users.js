@@ -25,6 +25,65 @@ router.post('/', email, password,
   res.json({ token, user: user.toSafeObject() });
 }));
 
+router.put('/', email, password,
+// firstName, lastName,
+  asyncHandler(async function (req, res, next) {
+    // console.log("req.body = ", req.body)
+  const errors = validationResult(req);
+  // console.log(errors);
+  if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
+  let user = await User.findByPk(req.body.id);
+  console.log(req.body, user.dataValues)
+
+  if(user.id === 1) {
+    res.status(404).json({errors: ["You can not edit the details of the demo user!"]})
+  } else {
+    user.email = req.body.email;
+    user = user.setPassword(req.body.password);
+    const { jti, token } = generateToken(user);
+    user.tokenId = jti;
+    //console.log("back-end, imm prior to user.save")
+    await user.save();
+    res.cookie("token", token);
+    res.json({ token, user: user.toSafeObject() });
+  }
+
+
+
+  // const user = await create(req.body);
+  const { jti, token } = generateToken(user);
+  user.tokenId = jti;
+  await user.save();
+  res.cookie("token", token);
+  res.json({ token, user: user.toSafeObject() });
+}));
+
+// router.put(
+//   "/edit",
+//   csrfProtection,
+//   validateAuthFields,
+//   handleValidationErrors,
+//   routeHandler(async (req, res, next) => {
+//     const token = req.cookies.token;
+//     const user = await User.findByPk(jwt.verify(token, secret).id);
+//     if(user.firstName === "Demo" || user.lastName === "User" || user.id === "2" || user.email === "demo@user.io") {
+//       res.status(404).json({errors: ["You can not edit the details of the demo user!"]})
+//     } else {
+//       user.firstName = req.body.firstName;
+//       user.lastName = req.body.lastName;
+//       user.email = req.body.email;
+//       user.phone = req.body.phone;
+//       user.hashedPassword = bcrypt.hashSync(req.body.password, 10);
+
+//       await user.save();
+//       res.cookie("token", req.cookies.token, { maxAge: expiresIn * 1000 });
+//       // Is following step really needed?  (PK)
+//       res.json({ id: user.id, token });
+//     }
+
+//   })
+// );
+
 router.get('/', asyncHandler(async function (req, res, next) {
     const users = await User.findAll();
     res.json(users);
