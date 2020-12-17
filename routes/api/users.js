@@ -28,28 +28,23 @@ router.post('/', email, password,
 router.put('/', email, password,
 // firstName, lastName,
   asyncHandler(async function (req, res, next) {
-    // console.log("req.body = ", req.body)
+  let success = "Success!";
   const errors = validationResult(req);
-  // console.log(errors);
-  if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
+  let message = errors.array()[0];
+  message = message ? message.msg : success;
+  // if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
   let user = await User.findByPk(req.body.id);
-  console.log(req.body, user.dataValues)
-
   if(user.id === 1) {
     res.status(404).json({errors: ["You can not edit the details of the demo user!"]})
   } else {
-    user.email = req.body.email;
+    if (message === success) user.email = req.body.email;
     user = user.setPassword(req.body.password);
     const { jti, token } = generateToken(user);
     user.tokenId = jti;
-    //console.log("back-end, imm prior to user.save")
     await user.save();
     res.cookie("token", token);
-    res.json({ token, user: user.toSafeObject() });
+    res.json({ token, user: {...user.toSafeObject(), message }});
   }
-
-
-
   // const user = await create(req.body);
   const { jti, token } = generateToken(user);
   user.tokenId = jti;

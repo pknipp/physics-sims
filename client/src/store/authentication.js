@@ -34,18 +34,19 @@ export const signup = (email, password) => {
 };
 
 export const editUser = (email, password, id) => {
-  console.log("editUser's 3 inputs are ", email, password, id);
+  // console.log("editUser's 3 inputs are ", email, password, id);
   return async dispatch => {
     const res = await fetch(`/api/users`, { method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, id })
     });
     let data = await res.json();
-    dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
+    // dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
+    dispatch(setUser(data.user));
   };
 };
 
-export const logout = () => async dispatch => {
+export const logout = _ => async dispatch => {
   const res = await fetch('/api/session', { method: "delete" });
   if (res.ok) dispatch(removeUser());
 }
@@ -58,6 +59,7 @@ const loadUser = () => {
       const decodedPayload = atob(payload);
       const payloadObj = JSON.parse(decodedPayload);
       const { data } = payloadObj;
+      // console.log("loaduser says that payloadObj.data = ", data)
       return data;
     } catch (e) {
       Cookies.remove("token");
