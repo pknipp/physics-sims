@@ -45,12 +45,6 @@ router.put('/', email, password,
     res.cookie("token", token);
     res.json({ token, user: {...user.toSafeObject(), message }});
   }
-  // const user = await create(req.body);
-  const { jti, token } = generateToken(user);
-  user.tokenId = jti;
-  await user.save();
-  res.cookie("token", token);
-  res.json({ token, user: user.toSafeObject() });
 }));
 
 // router.put(
