@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signup, editUser } from '../store/authentication';
+import { signup, editUser, resetMessage } from '../store/authentication';
 import { Input, Button } from '@material-ui/core';
 
 class Signup extends Component {
@@ -11,6 +11,8 @@ class Signup extends Component {
       password: "",
       password2: "" };
   }
+
+  componentDidMount() {this.props.resetMessage()};
 
   handleSubmit = e => {
     e.preventDefault();
@@ -51,6 +53,7 @@ const msp = state => ({
 });
 const mdp = dispatch => ({
   signup: (email, password) => dispatch(signup(email, password)),
-  editUser:(email,password,id) => dispatch(editUser(email,password,id))
+  editUser:(email,password,id) => dispatch(editUser(email,password,id)),
+  resetMessage: _ => dispatch(resetMessage()),
 })
 export default connect(msp, mdp)(Signup);

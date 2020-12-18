@@ -51,6 +51,8 @@ export const logout = _ => async dispatch => {
   if (res.ok) dispatch(removeUser());
 }
 
+export const resetMessage = _ => dispatch => dispatch(setMessage(""));
+
 const loadUser = () => {
   const authToken = Cookies.get("token");
   if (authToken) {
@@ -69,11 +71,13 @@ const loadUser = () => {
 }
 
 export default function reducer(state=loadUser(), action) {
+  let newState = {...state}
   switch (action.type) {
     case SET_USER:
       return action.user;
     case SET_MESSAGE:
-      return {message: action.message};
+      newState.message = action.message;
+      return newState;
     case REMOVE_USER:
       return {};
     default:
