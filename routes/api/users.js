@@ -1,6 +1,7 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { check, validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
 const { create } = require("../../db/user-repository")
 const { User } = require('../../db/models');
 const { authenticated, generateToken } = require('./security-utils');
@@ -29,23 +30,61 @@ router.put('/', email, password,
 // firstName, lastName,
   asyncHandler(async function (req, res, next) {
   let success = "Success!";
-  const errors = validationResult(req);
-  let message = errors.array()[0];
-  message = message ? message.msg : success;
-  // if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
   let user = await User.findByPk(req.body.id);
-  if(user.id === 1) {
-    res.status(404).json({errors: ["You can not edit the details of the demo user!"]})
+  const { jti, token } = generateToken(user);
+  user.tokenId = jti;
+  res.cookie("token", token);
+  let message;
+  const errors = validationResult(req).errors;
+  // console.log("errors = ", errors);
+  // console.log("errors.errors = ", errors.errors)
+  if (user.id === 1) {
+    message = "You cannot edit my 'demo' user, whose details are needed in order to allow my site's visitors to login easily.  Feel free to use the 'Signup' route to create a new user if you'd like to test out the 'EditUser' route.";
+  } else if (errors.length) {
+    message = errors[0].msg;
   } else {
-    if (message === success) user.email = req.body.email;
-    user = user.setPassword(req.body.password);
-    const { jti, token } = generateToken(user);
-    user.tokenId = jti;
-    await user.save();
-    res.cookie("token", token);
-    res.json({ token, user: {...user.toSafeObject(), message }});
+    let otherUser = await User.findOne({
+      where: {
+        [Sequelize.Op.and]: [
+          {email: req.body.email},
+          {[Sequelize.Op.not]: {id: user.id }}
+        ]
+      }
+    });
+    if (otherUser) {
+      message = "That email is taken.";
+    } else {
+      message = "Success!";
+      user.email = req.body.email;
+      user = user.setPassword(req.body.password);
+      await user.save();
+    }
   }
-}));
+  res.json({ token, user: {...user.toSafeObject(), message }});
+  }));
+
+// router.put('/', email, password,
+// // firstName, lastName,
+//   asyncHandler(async function (req, res, next) {
+//   let success = "Success!";
+//   const errors = validationResult(req);
+//   let message = errors.array()[0];
+//   message = message ? message.msg : success;
+//   // if (!errors.isEmpty()) return next({ status: 422, errors: errors.array() });
+//   let user = await User.findByPk(req.body.id);
+//   if(user.id === 1) {
+//     // res.status(404).json({errors: ["You can not edit the details of the demo user!"]})
+//     return res.json({ token, {...user.toSafeObject(), message })
+//   } else {
+//     if (message === success) user.email = req.body.email;
+//     user = user.setPassword(req.body.password);
+//     const { jti, token } = generateToken(user);
+//     user.tokenId = jti;
+//     await user.save();
+//     res.cookie("token", token);
+//     res.json({ token, user: {...user.toSafeObject(), message }});
+//   }
+// }));
 
 // router.put(
 //   "/edit",
@@ -85,36 +124,14 @@ router.get('/me', authenticated, function(req, res) {
 });
 
 router.delete("/:id", [authenticated], asyncHandler(async(req, res) => {
-  debugger
+  // console.log("top of back-end delete route")
   const user = await User.findByPk(Number(req.params.id));
-    //  {include: [Subscription, Class]}
-  //ONLY DELETE PRIVATE RESOURCES, AND LOGOUT AFTERWARDS
-  // subscriptions must be destroyed before the user and any private classes
-  //console.log("subscriptions are ", user.Subscriptions.dataValues);
-  // console.log(user.Subscriptions.length);
-  // user.Subscriptions.forEach(async subscription => await subscription.destroy());
-  // for (const classFound of user.Classes) {
-    //of course only private classes are deleted
-    // if (classFound.isPublic) continue;
-    // const classId = classFound.id;
-    // decks, cards, and histories must be deleted prior to classes
-    // const decks = await Deck.findAll({where: {classId}});
-    // for (const deck of decks) {
-      // const deckId = deck.id;
-      // const cards = await Card.findAll({where: {deckId}});
-      // for (const card of cards) {
-        // const histories = await History.findAll({where: {cardId: card.id}});
-        // histories.forEach(async history => await history.destroy())
-        // await card.destroy();
-    //   }
-    //   await deck.destroy();
-    // }
-    // await classFound.destroy();
-  //}
-  await user.destroy();
+  if (user.id === 1) return res.json({ message: "You cannot delete my 'demo' user, because visitors to my site use that for testing purposes.  Create a new user via the 'Signup' route if you'd like to test out the deletion of a user." })
   user.tokenId = null;
   res.clearCookie('token');
-  res.json({ message: "farewell" });
+  // console.log("line before user is deleted in db")
+  await user.destroy();
+  res.json({ message: "" });
 }));
 
 module.exports = router;

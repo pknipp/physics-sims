@@ -1,7 +1,7 @@
 GENERAL:
+* In the Signup route, prevent a new user from selecting an email which has already been taken.
 * Style "splash" page
 * Style landing page which contains links to the various sims (asteroids, drumhead, heat equation)
-* install "edit user" page
 * format createdAt output in a more friendly manner
 
 DRUMHEAD:

@@ -42,6 +42,7 @@ export const editUser = (email, password, id) => {
       body: JSON.stringify({ email, password, id })
     });
     let data = await res.json();
+    debugger;
     // dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
     dispatch(setUser(data.user));
   };
@@ -51,7 +52,11 @@ export const deleteUser = id => {
   // debugger
   return async dispatch => {
     const res = await fetch(`/api/users/${id}`, { method: 'DELETE'});
-    if (res.ok) dispatch(removeUser());
+    // if (res.ok) dispatch(removeUser());
+    let data = await res.json();
+    console.log(data)
+    // debugger
+    dispatch(!data.message ? removeUser() : setMessage(data.message));
   }
 }
 
@@ -66,10 +71,7 @@ const loadUser = () => {
   const authToken = Cookies.get("token");
   if (authToken) {
     try {
-      const payload = authToken.split(".")[1];
-      const decodedPayload = atob(payload);
-      const payloadObj = JSON.parse(decodedPayload);
-      // const { data } = payloadObj;
+      const payloadObj = JSON.parse(atob(authToken.split(".")[1]))
       return payloadObj.data;
     } catch (e) {
       Cookies.remove("token");
@@ -84,6 +86,7 @@ export default function reducer(state=loadUser(), action) {
     case SET_USER:
       return action.user;
     case SET_MESSAGE:
+      // debugger
       newState.message = action.message;
       return newState;
     case REMOVE_USER:
