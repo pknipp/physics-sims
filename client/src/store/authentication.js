@@ -7,8 +7,9 @@ const NEW_USER = "physics_sims/authentication/NEW_USER";
 
 export const setUser    = user   => ({ type: SET_USER, user });
 export const setMessage = message=> ({type: SET_MESSAGE, message});
-export const removeUser = _      => ({ type: REMOVE_USER    })
+export const removeUser = _      => ({ type: REMOVE_USER    });
 export const newUser    = user   => ({ type: NEW_USER, user })
+// export const deleteuser = _      => ({ type: DELETE_USER    })
 
 export const login = (email, password) => {
   return async dispatch => {
@@ -46,6 +47,14 @@ export const editUser = (email, password, id) => {
   };
 };
 
+export const deleteUser = id => {
+  // debugger
+  return async dispatch => {
+    const res = await fetch(`/api/users/${id}`, { method: 'DELETE'});
+    if (res.ok) dispatch(removeUser());
+  }
+}
+
 export const logout = _ => async dispatch => {
   const res = await fetch('/api/session', { method: "delete" });
   if (res.ok) dispatch(removeUser());
@@ -60,9 +69,8 @@ const loadUser = () => {
       const payload = authToken.split(".")[1];
       const decodedPayload = atob(payload);
       const payloadObj = JSON.parse(decodedPayload);
-      const { data } = payloadObj;
-      // console.log("loaduser says that payloadObj.data = ", data)
-      return data;
+      // const { data } = payloadObj;
+      return payloadObj.data;
     } catch (e) {
       Cookies.remove("token");
     }
@@ -79,6 +87,7 @@ export default function reducer(state=loadUser(), action) {
       newState.message = action.message;
       return newState;
     case REMOVE_USER:
+      // debugger
       return {};
     default:
       return state;

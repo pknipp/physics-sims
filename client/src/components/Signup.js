@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signup, editUser, resetMessage } from '../store/authentication';
+import { signup, editUser, resetMessage, deleteUser } from '../store/authentication';
 import { Input, Button } from '@material-ui/core';
 
 class Signup extends Component {
@@ -25,10 +25,16 @@ class Signup extends Component {
       this.props.update ? this.props.editUser(email, password, this.props.currentUserId) : this.props.signup(email, password)})
   }
 
+  handleDelete = e => {
+    // debugger
+    e.preventDefault();
+    this.props.deleteUser(this.props.currentUserId);
+  }
+
   updateInput = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    let { state, props, updateInput, handleSubmit } = this;
+    let { state, props, updateInput, handleSubmit, handleDelete } = this;
     let { update, currentUserId } = props;
     let { email, password, password2 } = state;
     return (currentUserId && !update) ? <Redirect to="/" /> : (
@@ -41,6 +47,9 @@ class Signup extends Component {
           <Button color="primary" variant="outlined" type="submit">{update ? "Submit changes" : "Signup"}</Button>
           <span style={{color: "red", paddingLeft:"10px"}}>{ state.message || props.message }</span>
         </form>
+        {!update ? null : <form onSubmit={handleDelete}>
+          <Button color="primary" variant="outlined" type="submit">{"Delete account?"}</Button>
+        </form>}
       </main>
     );
   }
@@ -55,5 +64,6 @@ const mdp = dispatch => ({
   signup: (email, password) => dispatch(signup(email, password)),
   editUser:(email,password,id) => dispatch(editUser(email,password,id)),
   resetMessage: _ => dispatch(resetMessage()),
+  deleteUser: id => dispatch(deleteUser(id)),
 })
 export default connect(msp, mdp)(Signup);

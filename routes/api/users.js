@@ -84,10 +84,10 @@ router.get('/me', authenticated, function(req, res) {
   });
 });
 
-router.delete("/", [authenticated], asyncHandler(async(req, res) => {
-  const user = await User.findByPk(req.user.id,
+router.delete("/:id", [authenticated], asyncHandler(async(req, res) => {
+  debugger
+  const user = await User.findByPk(Number(req.params.id));
     //  {include: [Subscription, Class]}
-    );
   //ONLY DELETE PRIVATE RESOURCES, AND LOGOUT AFTERWARDS
   // subscriptions must be destroyed before the user and any private classes
   //console.log("subscriptions are ", user.Subscriptions.dataValues);
@@ -112,7 +112,7 @@ router.delete("/", [authenticated], asyncHandler(async(req, res) => {
     // await classFound.destroy();
   //}
   await user.destroy();
-  req.user.tokenId = null;
+  user.tokenId = null;
   res.clearCookie('token');
   res.json({ message: "farewell" });
 }));
