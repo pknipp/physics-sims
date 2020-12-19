@@ -197,10 +197,10 @@ div.BC {
   padding: 0;
 }
 
-div.bar-container {
+div.bar-container input {
   height: 20px;
   margin: 0;
-  /* transform: rotate(-90deg); */
+  transform: rotate(-90deg);
 }
 
 .stripe {
