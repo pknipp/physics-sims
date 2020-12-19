@@ -26,7 +26,7 @@ class Container extends React.Component {
             <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroid field</NavLink></span>
             <span><NavLink className="nav" to="/heat"      activeClassName="active">Heat equation </NavLink></span>
             <span><NavLink className="nav" to="/account"   activeClassName="active">Account details</NavLink></span>
-            <span><NavLink className="nav" to="/edituser"  activeClassName="active">Edit Account Details</NavLink></span>
+            <span><NavLink className="nav" to="/manageuser"  activeClassName="active">Manage Account</NavLink></span>
             <span><NavLink className="nav" to="/logout"    activeClassName="active">Logout              </NavLink></span>
           </div>
         </nav>
@@ -38,7 +38,7 @@ class Container extends React.Component {
           <Route path="/draw"      component={Draw}     />
           <Route path="/account"   component={Account} />
           {/* <Route path="/signup"  component={Signup}    /> */}
-          <Route path="/edituser"   render={() => <Signup update={true}/>}/>
+          <Route path="/manageuser"   render={() => <Signup update={true}/>}/>
         </Switch>
       </BrowserRouter>
     )
