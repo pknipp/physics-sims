@@ -200,7 +200,7 @@ div.BC {
 div.bar-container {
   height: 20px;
   margin: 0;
-  transform: rotate(-90deg);
+  /* transform: rotate(-90deg); */
 }
 
 .stripe {

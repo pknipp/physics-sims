@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import Login from './components/admin/Login';
+import Signup from './components/admin/Signup';
 // import Navbar from './components/Navbar';
-import Container from "./Container";
+import Container from "./components/Container";
 // import { store } from './index';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {

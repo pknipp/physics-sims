@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 // import DrawArea from './components/DrawArea';
-import configureStore from './store/configureStore';
+import configureStore from './components/admin/store/configureStore';
 require("dotenv").config();
 
 export const store = configureStore();
