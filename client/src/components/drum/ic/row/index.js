@@ -1,6 +1,6 @@
 import React from "react";
-import Element from "./Element";
-import ChooseIndex from "./ChooseIndex";
+import Element from "./element/index";
+import ChooseIndex from "./chooseIndex/index";
 const Row = ({ optionsI, optionsJ, rvs, i, j, iIC, handleIndex, handleIC}) => {
     let row = [];
     for (let k = 0; k < 6; k++) {

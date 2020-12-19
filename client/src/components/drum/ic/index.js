@@ -1,5 +1,5 @@
 import React from "react";
-import Row from "./Row";
+import Row from "./row/index";
 const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handleInput}) => {
     let Rows = [];
     for (let iIC = 0; iIC < nIC; iIC++) {
