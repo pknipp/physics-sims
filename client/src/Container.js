@@ -3,10 +3,10 @@ import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Logout from "./components/Logout";
-import Drum from "./components/Drum";
-import Asteroids from "./components/Asteroids";
-import Heat from "./components/Heat";
-import Draw from "./components/Draw";
+import Drum from "./components/drum/index";
+import Asteroids from "./components/asteroids/index";
+import Heat from "./components/heat/index";
+// import Draw from "./components/Draw";
 import Account from "./components/Account";
 import Signup from "./components/Signup";
 import { store } from "./index";
@@ -35,9 +35,8 @@ class Container extends React.Component {
           <Route path="/drum"      component={Drum}     />
           <Route path="/asteroids" component={Asteroids}/>
           <Route path="/heat"      component={Heat}     />
-          <Route path="/draw"      component={Draw}     />
+          {/* <Route path="/draw"      component={Draw}     /> */}
           <Route path="/account"   component={Account} />
-          {/* <Route path="/signup"  component={Signup}    /> */}
           <Route path="/manageuser"   render={() => <Signup update={true}/>}/>
         </Switch>
       </BrowserRouter>

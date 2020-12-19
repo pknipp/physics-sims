@@ -197,7 +197,7 @@ div.BC {
   padding: 0;
 }
 
-div.bar-container input {
+div.bar-container {
   height: 20px;
   margin: 0;
   transform: rotate(-90deg);
@@ -261,4 +261,13 @@ input {
 
 td>input {
   width: 4em;
+}
+
+span input {
+  width: 3em;
+  margin-left: 10px;
+}
+
+.container .side span {
+  margin-bottom: 5px;
 }
