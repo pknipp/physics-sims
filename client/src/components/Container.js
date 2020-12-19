@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import Logout from "./admin/Logout";
 import Drum from "./drum/index";
-import Asteroids from "./asteroids/index";
 import Heat from "./heat/index";
+import Asteroids from "./asteroids/index";
 // import Draw from "./components/Draw";
 import Account from "./admin/Account";
 import Signup from "./admin/Signup";
@@ -24,8 +24,8 @@ class Container extends React.Component {
           <div className="nav-bar">
             <span><NavLink className="nav" exact to="/"    activeClassName="active">Home          </NavLink></span>
             <span><NavLink className="nav" to="/drum"      activeClassName="active">Vibrating drumhead </NavLink></span>
-            <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroid field</NavLink></span>
             <span><NavLink className="nav" to="/heat"      activeClassName="active">Heat equation </NavLink></span>
+            <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroid field</NavLink></span>
             <span><NavLink className="nav" to="/account"   activeClassName="active">Account details</NavLink></span>
             <span><NavLink className="nav" to="/manageuser"  activeClassName="active">Manage account</NavLink></span>
             <span><NavLink className="nav" to="/logout"    activeClassName="active">Logout              </NavLink></span>

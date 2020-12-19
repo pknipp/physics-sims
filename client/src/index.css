@@ -271,3 +271,12 @@ span input {
 .container .side span {
   margin-bottom: 5px;
 }
+
+li {
+  margin-top: 20px;
+}
+
+.welcome p {
+  font-size: 1.2em;
+  text-align: center;
+}

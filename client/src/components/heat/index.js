@@ -258,7 +258,7 @@ class Heat extends React.Component {
                                     <td>1 s</td>
                                 </tr>
                                 <tr>
-                                    <td>Thermal conductivity: </td>
+                                    <td>Thermal diffusivity: </td>
                                     <td align="right">low</td>
                                     <td>
                                         <input
