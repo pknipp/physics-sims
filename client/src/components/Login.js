@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../store/authentication';
-import { Input, Button } from '@material-ui/core';
+// import { Input, Button } from '@material-ui/core';
 
 class Login extends Component {
   constructor(props) { super(props);
@@ -25,10 +25,12 @@ class Login extends Component {
     return (this.props.currentUserId) ? <Redirect to="/" /> : (
       <main className="centered middled">
          <span><NavLink className="nav" to="/signup"      activeClassName="active">Signup</NavLink></span>
-        <form onSubmit={this.handleSubmit}>
-          <Input type="text" placeholder="Email" value={this.state.email} onChange={this.updateEmail} />
-          <Input type="password" placeholder="Password" value={this.state.password} onChange={this.updatePassword} />
-          <Button color="primary" variant="outlined" type="submit">Login</Button>
+        <form className="auth" onSubmit={this.handleSubmit}>
+          <span>Email address:</span>
+          <input type="text" placeholder="" value={this.state.email} onChange={this.updateEmail} />
+          <span>Password:</span>
+          <input type="password" placeholder="" value={this.state.password} onChange={this.updatePassword} />
+          <button color="primary" variant="outlined" type="submit">Login</button>
           <span style={{color:"red", paddingLeft:"10px"}}>{this.state.message || this.props.message}</span>
         </form>
       </main>

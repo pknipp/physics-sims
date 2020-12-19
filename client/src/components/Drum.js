@@ -249,6 +249,7 @@ class Drum extends React.Component {
                     <form>
                         <label>How many particles should be along each edge? </label>
                         <input
+                            width="150px"
                             type="number"
                             onChange={this.handleN}
                             placeholder="# of particles"

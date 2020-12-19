@@ -35,14 +35,12 @@ export const signup = (email, password) => {
 };
 
 export const editUser = (email, password, id) => {
-  debugger
   return async dispatch => {
     const res = await fetch(`/api/users`, { method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, id })
     });
     let user = (await res.json()).user;
-    debugger
     // dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
     dispatch(setUser(user));
   };
@@ -83,9 +81,7 @@ export default function reducer(state=loadUser(), action) {
     case SET_USER:
       return action.user;
     case SET_MESSAGE:
-      debugger
       newState.message = action.message;
-      debugger
       return newState;
     case REMOVE_USER:
       return {};

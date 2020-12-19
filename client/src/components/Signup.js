@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signup, editUser, resetMessage, deleteUser } from '../store/authentication';
-import { Input, Button } from '@material-ui/core';
+// import { Input, Button } from '@material-ui/core';
 
 class Signup extends Component {
   constructor(props) { super(props);
@@ -15,7 +15,6 @@ class Signup extends Component {
   componentDidMount() {this.props.resetMessage()};
 
   handleSubmit = e => {
-    debugger
     e.preventDefault();
     let { email, password } = this.state;
     let message = !email ? "Email address is needed." :
@@ -40,15 +39,18 @@ class Signup extends Component {
     return (currentUserId && !update) ? <Redirect to="/" /> : (
       <main className="centered middled">
         {update ? null : <span><NavLink className="nav" to="/login"      activeClassName="active">Login</NavLink></span>}
-        <form onSubmit={handleSubmit}>
-          <Input type="text" placeholder="Email" name="email" value={email} onChange={updateInput} />
-          <Input type="password" placeholder="Password" name="password" value={password} onChange={updateInput} />
-          <Input type="password" placeholder="Confirm password" name="password2" value={password2} onChange={updateInput} />
-          <Button color="primary" variant="outlined" type="submit">{update ? "Submit changes" : "Signup"}</Button>
+        <form className="auth" onSubmit={handleSubmit}>
+          <span>Email address:</span>
+          <input type="text" placeholder="Email" name="email" value={email} onChange={updateInput} />
+          <span>Password:</span>
+          <input type="password" placeholder="" name="password" value={password} onChange={updateInput} />
+          <span>Confirm password:</span>
+          <input type="password" placeholder="" name="password2" value={password2} onChange={updateInput} />
+          <button color="primary" variant="outlined" type="submit">{update ? "Submit changes" : "Signup"}</button>
           <span style={{color: "red", paddingLeft:"10px"}}>{ state.message || props.message }</span>
         </form>
-        {!update ? null : <form onSubmit={handleDelete}>
-          <Button color="primary" variant="outlined" type="submit">{"Delete account?"}</Button>
+        {!update ? null : <form className="auth" onSubmit={handleDelete}>
+          <button color="primary" variant="outlined" type="submit">{"Delete account?"}</button>
         </form>}
       </main>
     );

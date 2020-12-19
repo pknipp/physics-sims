@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button } from '@material-ui/core';
+// import { Button } from '@material-ui/core';
 import { logout } from '../store/authentication';
 
 class Logout extends Component {
@@ -14,7 +14,7 @@ class Logout extends Component {
   render() {
     return (!this.props.currentUserId) ? <Redirect to="/login" /> : (
       <form className="simple" onSubmit={this.handleSubmit}>
-        <Button color="primary" variant="outlined" type="submit">Logout</Button>
+        <button color="primary" variant="outlined" type="submit">Logout</button>
       </form>
     );
   }

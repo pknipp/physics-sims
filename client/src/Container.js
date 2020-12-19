@@ -26,7 +26,7 @@ class Container extends React.Component {
             <span><NavLink className="nav" to="/asteroids" activeClassName="active">Asteroid field</NavLink></span>
             <span><NavLink className="nav" to="/heat"      activeClassName="active">Heat equation </NavLink></span>
             <span><NavLink className="nav" to="/account"   activeClassName="active">Account details</NavLink></span>
-            <span><NavLink className="nav" to="/manageuser"  activeClassName="active">Manage Account</NavLink></span>
+            <span><NavLink className="nav" to="/manageuser"  activeClassName="active">Manage account</NavLink></span>
             <span><NavLink className="nav" to="/logout"    activeClassName="active">Logout              </NavLink></span>
           </div>
         </nav>

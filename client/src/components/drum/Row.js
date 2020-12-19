@@ -20,7 +20,7 @@ const Row = ({ optionsI, optionsJ, rvs, i, j, iIC, handleIndex, handleIC}) => {
         <tr>
             <ChooseIndex key={"selectJ"} options={optionsJ} name={`j${iIC}`} iorj={j[iIC]} handleIndex={handleIndex} />
             <ChooseIndex key={"selectI"} options={optionsI} name={`i${iIC}`} iorj={i[iIC]} handleIndex={handleIndex} />
-            {(!i || !i[iIC] || !j || !j[iIC]) ? <td colSpan="4"></td> : row}
+            {(!i || !i[iIC] || !j || !j[iIC]) ? <td colSpan="6"></td> : row}
         </tr>
     )
 }
