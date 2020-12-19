@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../Button";
 class Heat extends React.Component {
     constructor(props) {
         super(props);
@@ -15,9 +16,23 @@ class Heat extends React.Component {
             logDt: 2,
             width: 1000,
             mousePressed: false,
-            hideInstructions: false,
+            info: {instructions: true},
         }
         this.height = 500;
+        this.info = {
+            dx: "This controls the width of each bar on the graph below.  Narrower bars means more accurate results, but the calculations may take longer, and the click-and-drag process may become 'glitchy'.",
+            dt: "This controls the extent of the approximatation used when computing derivatives with respect to time.  Shorter timesteps make the results more accurate but may make the simulation run slowly.",
+            alpha: "The thermal diffusivity of a material is proportional to its thermal conductivity.  The thermal conductivity is a measure of how easily heat flows thru the material.  For instance the thermal conductivity of metal is much higher than that of cloth or wood, which is why you use a wooden utensil to stir boiling soup rather than a metal one.",
+            BC: "There are two types of 'boundary conditions' (BC) which you may find at either end of an object: insulating ('Neumann') or 'fixed temperature ('Dirichlet').  Insulating BC means that no heat flows out of or into that end of the object, in which case the first derivative of the temperature profile (T<sub>x</sub>) is zero at that end, ie the curve is flat. Fixed-temperature BC means that T equals a specified value at that end.  For this type of BC you may control that value of T with the slider at that end of the graph.",
+            instructions :
+            "The heights of the gray bars graphed below indicate the system's 'temperature profile'. The default value of the system's 'initial conditions' has been set to equal the system's 'steady state' profile.  This means that the temperature profile will not change when you run the simulation unless you first change the initial conditions as follows:",
+            steps : [
+                "Ensure that the simulation is not running.",
+                "Click (and hold) in the margin to the left of the graph.",
+                "Drag the mouse slowly across the graph.",
+                "Release the mouse button after you've reached the right side of the graph."
+            ]
+        }
     }
 
     componentDidMount() {
@@ -50,8 +65,12 @@ class Heat extends React.Component {
 
     handleInput = e => this.setState({[e.target.name]: Number(e.target.value)},()=>this.makeDist());
     handleCheckbox = e => this.setState({[e.target.name]: e.target.checked}, () => this.makeDist());
-    handleToggle = e => this.setState({[e.target.name]: e.target.checked});
-
+    handleToggle = e => {
+        let name = e.target.name;
+        let info = this.state.info;
+        info[name] = !this.state.info[name];
+        this.setState({ info });
+    }
     handleMouseDown = _ => this.setState({ mousePressed: true });
     handleMouseUp   = _ => this.setState({ mousePressed: false});
     handleMouseLeave = e => {
@@ -199,14 +218,6 @@ class Heat extends React.Component {
                 </div>
             )
         }
-        const instructions = this.state.hideInstructions ? "" :
-            `The heights of the gray bars graphed below indicate the system's "temperature profile". The default value of the system's "initial conditions" have been set to equal the system's "steady state" profile.  This means that the temperature profile will not change when you run the simulation unless you first change the initial conditions as follows:`;
-        const steps = this.state.hideInstructions ? [] : [
-            "Ensure that the simulation is not running.",
-            "Click (and hold) in the margin to the left of the graph.",
-            "Drag the mouse slowly across the graph.",
-            "Release the mouse button after you've reached the right side of the graph."
-        ];
         return (
             <div onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
                 <>
@@ -218,10 +229,10 @@ class Heat extends React.Component {
                             </button>
                             <div>time: {Math.round(100 * this.state.time)/100} s</div>
                         </div>
-                        <table>
+                        <table className="sliders">
                             <thead>
                                 <tr>
-                                    <th colSpan="4" align="center"> (logarithmic) slider controls</th>
+                                    <th colSpan="5" align="center"> (logarithmic) slider controls</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -240,7 +251,9 @@ class Heat extends React.Component {
                                         />
                                     </td>
                                     <td>fine</td>
+                                    <td><Button onClick={this.handleToggle} name="dx" toggle={this.state.info.dx} /></td>
                                 </tr>
+                                <tr><td colSpan="5"><i>{this.state.info.dx ? this.info.dx : null}</i></td></tr>
                                 <tr>
                                     <td>Timestep: </td>
                                     <td align="right">1 ms</td>
@@ -256,7 +269,9 @@ class Heat extends React.Component {
                                         />
                                     </td>
                                     <td>1 s</td>
+                                    <td><Button onClick={this.handleToggle} name="dt" toggle={this.state.info.dt} /></td>
                                 </tr>
+                                <tr><td colSpan="5"><i>{this.state.info.dt ? this.info.dt : null}</i></td></tr>
                                 <tr>
                                     <td>Thermal diffusivity: </td>
                                     <td align="right">low</td>
@@ -272,12 +287,24 @@ class Heat extends React.Component {
                                         />
                                     </td>
                                     <td>high</td>
+                                    <td><Button onClick={this.handleToggle} name="alpha" toggle={this.state.info.alpha} /></td>
                                 </tr>
+                                <tr><td colSpan="5"><i>{this.state.info.alpha ? this.info.alpha : null}</i></td></tr>
                             </tbody>
                         </table>
-                        <table>
-                            <thead><tr><th colSpan="4">boundary conditions:</th></tr></thead>
+                        <table className="BC">
+                            <thead>
+                                <tr>
+                                    <>
+                                        <th colSpan="3">boundary conditions:</th>
+                                        <th>
+                                            <Button onClick={this.handleToggle} name="BC" toggle={this.state.info.BC} />
+                                        </th>
+                                    </>
+                                </tr>
+                            </thead>
                             <tbody>
+                                <tr><td colSpan="4"><i>{this.state.info.BC ? this.info.BC : null}</i></td></tr>
                                 <tr>
                                     <td rowSpan="2">Is this system insulated at its ...</td>
                                     <td> left end? </td>
@@ -289,7 +316,7 @@ class Heat extends React.Component {
                                             onChange={this.handleCheckbox}
                                         />
                                     </td>
-                                    <td rowSpan="2">{(this.state.leftIns && this.state.rightIns) ? null : 'Adjust temperature at end ("BC") with vertical slider.'}</td>
+                                    <td rowSpan="2">{(this.state.leftIns && this.state.rightIns) ? null : 'Adjust temperature with vertical slider.'}</td>
                                 </tr>
                                 <tr>
                                     <td> right end? </td>
@@ -305,7 +332,20 @@ class Heat extends React.Component {
                             </tbody>
                         </table>
                     </div>
-                    <div>
+                    <Button
+                        name="instructions"
+                        onClick={this.handleToggle}
+                        toggle={this.state.instructions}
+                    />
+                    <i>{!this.state.info.instructions ? null :
+                        <>
+                            <div>{this.info.instructions}</div>
+                            <ul>
+                                {this.info.steps.map(step => (<li>{step}</li>))}
+                            </ul>
+                        </>
+                    }</i>
+                    {/* <div>
                         <span>Hide instructions?</span>
                         <span>
                             <input
@@ -316,10 +356,10 @@ class Heat extends React.Component {
                             />
                         </span>
                     </div>
-                    {instructions}
-                    <ul>
+                    {instructions} */}
+                    {/* <ul>
                         {steps.map(step => (<li>{step}</li>))}
-                    </ul>
+                    </ul> */}
                     <div className="bar-container">
                             {this.state.leftIns ? null : leftT}
                             <div className="bars"

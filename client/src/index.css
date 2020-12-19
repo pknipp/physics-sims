@@ -214,11 +214,13 @@ div.bar-container input {
   align-items: flex-start;
 }
 
-.button-container {
+.parameters>* {
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 100px;
 }
+.button-container {flex-basis: 90px}
+.parameters>table.sliders {flex-basis: 400px}
+.parameters>table.BC {flex-basis: 750px}
 
 nav {
   display: flex;
