@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import { Button } from '@material-ui/core';
-import { logout } from '../store/authentication';
+import { logout } from './store/authentication';
 
 class Logout extends Component {
 

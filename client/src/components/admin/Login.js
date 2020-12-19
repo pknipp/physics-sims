@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from '../store/authentication';
+import { login } from './store/authentication';
 // import { Input, Button } from '@material-ui/core';
 
 class Login extends Component {
