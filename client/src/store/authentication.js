@@ -8,8 +8,7 @@ const NEW_USER = "physics_sims/authentication/NEW_USER";
 export const setUser    = user   => ({ type: SET_USER, user });
 export const setMessage = message=> ({type: SET_MESSAGE, message});
 export const removeUser = _      => ({ type: REMOVE_USER    });
-export const newUser    = user   => ({ type: NEW_USER, user })
-// export const deleteuser = _      => ({ type: DELETE_USER    })
+export const newUser    = user   => ({ type: NEW_USER, user });
 
 export const login = (email, password) => {
   return async dispatch => {
@@ -29,33 +28,31 @@ export const signup = (email, password) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    let data = await res.json();
-    dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
+    let user = (await res.json()).user;
+    // dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
+    dispatch(setUser(user));
   };
 };
 
 export const editUser = (email, password, id) => {
-  // console.log("editUser's 3 inputs are ", email, password, id);
+  debugger
   return async dispatch => {
     const res = await fetch(`/api/users`, { method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, id })
     });
-    let data = await res.json();
-    debugger;
+    let user = (await res.json()).user;
+    debugger
     // dispatch(res.ok ? setUser(data.user) : setMessage(data.error.errors[0].msg));
-    dispatch(setUser(data.user));
+    dispatch(setUser(user));
   };
 };
 
 export const deleteUser = id => {
-  // debugger
   return async dispatch => {
     const res = await fetch(`/api/users/${id}`, { method: 'DELETE'});
     // if (res.ok) dispatch(removeUser());
     let data = await res.json();
-    console.log(data)
-    // debugger
     dispatch(!data.message ? removeUser() : setMessage(data.message));
   }
 }
@@ -86,11 +83,11 @@ export default function reducer(state=loadUser(), action) {
     case SET_USER:
       return action.user;
     case SET_MESSAGE:
-      // debugger
+      debugger
       newState.message = action.message;
+      debugger
       return newState;
     case REMOVE_USER:
-      // debugger
       return {};
     default:
       return state;

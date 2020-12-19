@@ -15,6 +15,7 @@ class Signup extends Component {
   componentDidMount() {this.props.resetMessage()};
 
   handleSubmit = e => {
+    debugger
     e.preventDefault();
     let { email, password } = this.state;
     let message = !email ? "Email address is needed." :
@@ -26,7 +27,6 @@ class Signup extends Component {
   }
 
   handleDelete = e => {
-    // debugger
     e.preventDefault();
     this.props.deleteUser(this.props.currentUserId);
   }
