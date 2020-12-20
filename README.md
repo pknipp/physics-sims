@@ -31,7 +31,7 @@ export default Bond;
 
 1. **Drumhead** simulates the three-dimensional motion of an *N* x *N* system of particles, which may be regarded as a model for the vibrating head of a drum.  This component of the project was inspired by PhET's [Normal Modes simulation](https://phet.colorado.edu/en/simulation/legacy/normal-modes), now largely defunct because of its reliance upon [Adobe Flash Player](https://en.wikipedia.org/wiki/Adobe_Flash_Player).
 
-![Drumhead](assets/drumhead.png)
+![Drumhead](assets/drumhead4.png)
 
 * Each particle is connected ("bonded") to its four neighbors or - if it resides along the edge - to the adjacent wall.  The [equilibrium](https://en.wikipedia.org/wiki/Mechanical_equilibrium) position for each particle is represented by a (stationary) dashed circle.
 * Each particle's displacement is measured relative to its equilibrium position.  The positive directions are to the right (for *x*), down the screen (for *y*), or out of the screen (for *z*).
