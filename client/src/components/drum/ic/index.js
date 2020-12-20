@@ -20,7 +20,19 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
     }
     return (
         <>
-            <h2>Initial conditions:</h2>
+            <h2>
+                <span>
+                    Initial conditions:
+                    <Button
+                        onClick={handleToggle}
+                        toggle={toggle.IC}
+                        name="IC"
+                    />
+                </span>
+            </h2>
+            <div>
+                <i>{toggle.IC ? info.IC : null}</i>
+            </div>
             <span>
                 Specify the number of particles to displace from equilibrium:
                 <input
@@ -34,19 +46,42 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
                 />
                 <Button
                     onClick={handleToggle}
-                    toggle={toggle}
+                    toggle={toggle.nIC}
                     name="nIC"
                 />
             </span>
             <div>
-                <i>{toggle ? info : null}</i>
+                <i>{toggle.nIC ? info.nIC : null}</i>
             </div>
             <table>
                 <thead>
                     <tr>
                         <th colSpan="2" align="center">choose particle's</th>
-                        <th colSpan="3">displacement</th>
-                        <th colSpan="3">velocity</th>
+                        <th colSpan="3">
+                            displacement
+                            <Button
+                                onClick={handleToggle}
+                                toggle={toggle.dx}
+                                name="dx"
+                            />
+                        </th>
+                        <th colSpan="3">
+                            velocity
+                            <Button
+                                onClick={handleToggle}
+                                toggle={toggle.v}
+                                name="v"
+                            />
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colSpan="2"></td>
+                        <td colSpan="3">
+                            <i>{toggle.dx ? info.dx : null}</i>
+                        </td>
+                        <td colSpan="3">
+                            <i>{toggle.v ? info.v : null}</i>
+                        </td>
                     </tr>
                     <tr>
                         <td colSpan="2">row and column</td>

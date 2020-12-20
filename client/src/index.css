@@ -69,8 +69,9 @@ td {
     align-items: end;
     grid-template-areas:
     "graphtitle graphtitle graphtitle graphtitle"
-    "energyinfo energyinfo energyinfo energyinfo"
+    /* "energyinfo energyinfo energyinfo energyinfo" */
     "titleke titlepe titlee titleei"
+    "keinfo peinfo einfo ."
     "valke valpe vale valei"
     "barke barpe bare barei";
 }
@@ -78,12 +79,16 @@ td {
 .graph .title {grid-area: graphtitle}
 .graph * {justify-self: center}
 
-.energy.info {grid-area: energyinfo}
+/* .energy.info {grid-area: energyinfo} */
 
 .title.ke {grid-area: titleke}
 .title.pe {grid-area: titlepe}
 .title.e  {grid-area: titlee}
 .title.ei {grid-area: titleei}
+
+.info.ke {grid-area: keinfo}
+.info.pe {grid-area: peinfo}
+.info.e  {grid-area:  einfo}
 
 .val.ke   {grid-area: valke}
 .val.pe   {grid-area: valpe}

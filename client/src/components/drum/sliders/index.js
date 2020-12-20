@@ -44,7 +44,7 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                 />
                 <Slider
                     key="logdt"
-                    label='Time-step (logarithmic scale)'
+                    label='Timestep (logarithmic scale)'
                     secondLine={`Present value is ${dt} ms.`}
                     minText="1 ms"
                     maxText="1 s"

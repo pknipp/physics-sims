@@ -173,7 +173,7 @@ class Asteroids extends React.Component {
                 <div>
                     <span className="button-container">
                         <button onClick={this.toggle} style={{zIndex:1000}}>
-                                {this.state.running ? "Pause" : "Run"}
+                                {this.state.running ? "PAUSE" : "RUN"}
                         </button>
                     </span>
                     <span>time: {time.toFixed(3)} s</span>

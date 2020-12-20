@@ -4,6 +4,7 @@ import Graph from "./graph/index";
 import Sliders from "./sliders/index";
 import Drumhead from "./drumhead/index";
 import IC from "./ic/index";
+import Button from '../Button';
 class Drum extends React.Component {
     constructor(props) {
         super(props);
@@ -34,14 +35,21 @@ class Drum extends React.Component {
         }
         this.numPx = 540;
         this.info = {
-            energy: "This system's kinetic energy (KE) equals the sum of the KE of each of the particles, and each particle's KE is proportional to the square of its speed.  The system's potential potential energy (PE) equals the sum of the PE of each of the bonds, and each bond's PE is proportional to the square of the amount by which it has been distorted from it 'equilibrium' size and shape.  In the absence of damping the total energy of this system should not change.  If it does change, you should probably decrease the time-step.",
+            energy: "This system's kinetic energy (KE) equals the sum of the KE of each of the particles, and each particle's KE is proportional to the square of its speed.  The system's potential potential energy (PE) equals the sum of the PE of each of the bonds, and each bond's PE is proportional to the square of the amount by which it has been distorted from it 'equilibrium' size and shape.  In the absence of damping the total energy of this system should not change.  If the total does change, you should probably decrease the time-step.",
+            KE: "This system's KE equals the sum of the KE of each of the particles, and each particle's KE is proportional to the square of its speed.",
+            PE: "The system's PE equals the sum of the PE of each of the bonds, and each bond's PE is proportional to the square of the amount by which it has been distorted from it 'equilibrium' size and shape.",
+            E: "In the absence of damping the total energy of this system should not change.  If the total does change, you should probably decrease the timestep.",
             damping: "Viscous damping is like friction, in that it resists the particle's forward motion.  If there is no damping in this system, the particles will move forever and their energy will not change.  If there is damping, the particles will eventually stop moving.",
             logdt: "This controls the extent of the approximation used when computing derivatives with respect to time.  Shorter timesteps make the results more accurate but may make the simulation run slowly.",
-            T: "When a particle moves away from its 'equilibrium' position (indicated by the dashed circle), the bonds push the particle back towards equilibrium.  This is called a 'restoring force'.  These bonds exert two types of restoring forces.  One is like that of a spring, which pushes when compressed and pulls when stretched.  The other is like a violin string which is under tension (and it is this type of force which leads to the oscillations which are perpendicular to the screen).  This slider enables you to control the extent to which this restoring force is like one type or another.",
+            T: "When a particle moves away from its 'equilibrium' position (indicated by the dashed circle), the bonds push the particle back towards equilibrium.  This is called a 'restoring force'.  These bonds exert two types of restoring forces.  One is like that of a spring, which pushes when compressed and pulls when stretched.  The other is like a violin string which is under tension (and it is this type of force which leads to the oscillations which are perpendicular to the screen).  This slider enables you to control the extent to which this restoring force is like one type or the other.",
             springConstant: "For larger values of the stiffness, the particles will vibrate back and forth more frequently, and conversely for smaller values.  In fact if the stiffness is zero, each particle will obey Newton's first law by either remaining stationary or by moving in a straight line at a constant speed. By the way, the technical term for stiffness is 'spring constant'. ",
             velocityLength: "Velocity is an example a vector, a quantity that has both 'magnitude' (size) and direction.  The dotted green line segment shown here points in the direction of the velocity, and the segment's length is proportional to the velocity's magnitude (which is usually called 'speed').  This slider controls the proportionality factor of this relationship.",
             accelerationLength: "Acceleration is an example a vector, a quantity that has both 'magnitude' (size) and direction.  The solid red line segment shown here points in the direction of the acceleration.  (Note that the velocity and acceleration usually do not point in the same direction!) The segment's length is proportional to the acceleration's magnitude, and this slider controls the proportionality factor of this relationship.",
-            nIC: `You may choose this number may be as large as ${this.state.n} x ${this.state.n} = ${this.state.n * this.state.n}.`,
+            IC: "'Initial conditions' (IC) are required for the solution to any differential equation.  In this case, that means specifying the values of two things at a specific moment (time = 0 s) for each particle in this system: (a) displacement and (b) velocity.",
+            nIC: `You may choose this number may be as small as zero and as large as ${this.state.n} x ${this.state.n} = ${this.state.n * this.state.n}.  However if you set the initial conditions to be all zero, absolute nothing will happen when you click 'RUN', because the system is at equilibrium.`,
+            dx: "Each particle's displacement is measured relative to its equibrium position, which is indicated by the dashed circle.  The displacement is a vector which has x-, y-, and z-components: x is measured to the right, y is down, and z is out of the page.  The displacement is expressed in units in which '1' equals the square's sidelength.",
+            v: "The initial velocity is a vector which has x-, y-, and z-components as follows: 'x' is rightward, 'y' is downward, and 'z' is out of the page.",
+            n: "If you want to learn about all of the controls in this animation you should probably use only one particle.  However if you want to see a more realistic model for an actual drumhead (which has very many particles) you should use a larger number.  Note that large numbers of particles may make the animation run slowly.",
         }
     }
 
@@ -240,7 +248,7 @@ class Drum extends React.Component {
     };
 
     render() {
-        let { state, handleToggle, handleN, toggle } = this;
+        let { state, handleToggle, handleN, toggle, info } = this;
         let { n, rvs, velocityLength, accelerationLength, showBond, time, KE, PE, E, Ei } = state;
         return (
             <>
@@ -258,17 +266,21 @@ class Drum extends React.Component {
                                 max="50"
                                 step="1"
                             />
+                            <Button onClick={handleToggle} name="n" toggle={state.info.n} />
                         </span>
+                        <div>
+                            <i>{state.info.n ? info.n : null}</i>
+                        </div>
                         <div className="controls">
                             <span className="button-container">
                                 <button onClick={toggle}>
-                                    {this.state.running ? "Pause" : "Run"}
+                                    {this.state.running ? "PAUSE" : "RUN"}
                                 </button>
                             </span>
                             time: {Math.round(100 * time)/100} s
                         </div>
                         <Graph KE={KE} PE={PE} E={E} Ei={Ei} handleToggle={handleToggle}
-                            toggle={state.info.energy} info={this.info.energy}
+                            toggle={state.info} info={this.info}
                         />
                         <div
                             className="drumContainer"
@@ -324,8 +336,8 @@ class Drum extends React.Component {
                             handleIndex={this.handleIndex}
                             handleIC={this.handleIC}
                             handleToggle={handleToggle}
-                            toggle={state.info.nIC}
-                            info={this.info.nIC}
+                            toggle={state.info}
+                            info={this.info}
                         />
                     </div>
                 </div>

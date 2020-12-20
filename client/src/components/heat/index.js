@@ -226,16 +226,16 @@ class Heat extends React.Component {
             <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
                 <>
                     <h2 align="center">Simulation parameters:</h2>
-                    <p align="center">
+                    {/* <p align="center">
                         <span>(Click on particular instances below of </span>
                         "<img src={info} alt="Show information." />"
                         <span> and </span>
                         "<img src={cancel} alt="Hide information." />"
                         <span> in order to toggle information about various details.)</span>
-                    </p>
+                    </p> */}
                     <div className="parameters">
                         <div className="button-container">
-                            <button onClick={toggle}>{running ? "Pause" : "Run"}</button>
+                            <button onClick={toggle}>{running ? "PAUSE" : "RUN"}</button>
                             <div>time: {Math.round(10 * time)/10} s</div>
                         </div>
                         <table className="sliders">

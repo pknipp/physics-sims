@@ -19,7 +19,7 @@ const Home = _ => {
 
             <li> In the last animation there is not much for you to do except to sit back and enjoy a simulation of what it would feel like to travel thru a three-dimensional <NavLink to="/asteroids">asteroid field.</NavLink>  Be aware of any near misses!</li>
         </ul>
-        Note: in these animations click on <img src={info} alt="Show information." /> and <img src={cancel} alt="Hide information." /> in order to toggle the display of information about various details.
+        Note: in these animations click "<img src={info} alt="Show information." />/<img src={cancel} alt="Hide information." />" in order to toggle the display of information about various details, and click "<button disabled>RUN</button>/<button disabled>PAUSE</button>" in order to toggle the animation on/off.
     </div>
 )}
 export default Home;
