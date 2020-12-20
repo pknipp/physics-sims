@@ -1,23 +1,30 @@
 import React from "react";
 import Rock from "./rock/index";
+import Button from "../Button";
 class Asteroids extends React.Component {
     constructor() {
         super();
         this.state = {
             time: 0,
             running: false,
-            logDt: 2,
+            logdt: 2,
             width: 10,
             nRocks: 100,
             rocks: [],
             logSpeed: 0.2,
+            info: {},
         }
         this.nx = 1380;
         this.ny = 630;
+        this.info = {
+            nRocks: "This is the number of asteroids which are within your field of view.  If/when an asteroid leaves your field of view, it is replaced by one in the distance.  Having too many asteroids will cause the animation to run slowly and/or choppy.",
+            logdt: "This controls the amount of time between frames in the animation.  Longer timesteps make the results more choppy, especially for those asteroids which are in the distance.  Smaller timesteps may make the simulation run slowly.",
+            width: "This controls the apparent size of each asteroid when it first appears in the distance. The animation is more realistic for smaller values of this parameter, because this makes the asteroid's first appearance less noticeable.  However smaller values also make it less likely that an asteroid will ever approach close enough to the viewer to become dramatically large."
+        }
     }
 
     componentDidMount() {this.setState(
-        {dt: Math.round(10 ** this.state.logDt)},
+        {dt: Math.round(10 ** this.state.logdt)},
         () => this.setRocks()
     )}
 
@@ -34,9 +41,16 @@ class Asteroids extends React.Component {
         this.setState(newState);
     }
 
-    handleLogDt = e => {
-        let logDt = Number(e.target.value);
-        this.setState({ logDt, dt: Math.round(10 ** logDt)});
+    handleLogdt = e => {
+        let logdt = Number(e.target.value);
+        this.setState({ logdt, dt: Math.round(10 ** logdt)});
+    }
+
+    handleToggle = e => {
+        let name = e.currentTarget.name;
+        let info = this.state.info;
+        info[name] = !this.state.info[name];
+        this.setState({ info });
     }
 
     handleSpeed = e => this.setState({logSpeed: e.target.value});
@@ -102,6 +116,7 @@ class Asteroids extends React.Component {
     // componentWillUnmount() {clearInterval(this.interval)}
 
     render() {
+        let { state, handleToggle, info } = this;
         let rockComponents = this.state.rocks.map((rock, indx) => {
             let z = rock.z;
             // The 2nd term in the expression below is unphysical but seems to succeed, psychovisually
@@ -133,7 +148,13 @@ class Asteroids extends React.Component {
                                     min="0" type="number" name="nRocks"
                                     onChange={this.handleInput} value={this.state.nRocks}
                                 />
+                                <Button onClick={handleToggle} name="nRocks" toggle={state.info.nRocks}/>
                             </td><td></td>
+                        </tr>
+                        <tr>
+                            <td colSpan="4">
+                                <i>{state.info.nRocks ? info.nRocks : null}</i>
+                            </td>
                         </tr>
                         <tr>
                             <td align="right">How fast do you want to travel through the field?</td>
@@ -151,11 +172,19 @@ class Asteroids extends React.Component {
                             <td align="right">1 ms</td>
                             <td align="center">
                                 <input
-                                    type="range" onChange={this.handleLogDt}
-                                    min="0" max="3" step="0.2" value={this.state.logDt}
+                                    type="range" onChange={this.handleLogdt}
+                                    min="0" max="3" step="0.2" value={this.state.logdt}
                                />
                             </td>
-                            <td align="left">1 s</td>
+                            <td align="left">
+                                1 s
+                                <Button onClick={handleToggle} name="logdt" toggle={state.info.logdt}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan="4">
+                                <i>{state.info.logdt ? info.logdt : null}</i>
+                            </td>
                         </tr>
                         <tr>
                             <td align="right">Asteroid size (when distant):</td>
@@ -165,8 +194,17 @@ class Asteroids extends React.Component {
                                     type="range" onChange={this.handleInput2} name="width"
                                     min="1" max="10" step="0.1" value={this.state.width}
                                />
+
                             </td>
-                            <td align="left">10 px</td>
+                            <td align="left">
+                                10 px
+                                <Button onClick={handleToggle} name="width" toggle={state.info.width}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan="4">
+                                <i>{state.info.width ? info.width : null}</i>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

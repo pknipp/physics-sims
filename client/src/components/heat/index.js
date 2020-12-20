@@ -1,7 +1,5 @@
 import React from "react";
 import Button from "../Button";
-import info from "../info.png";
-import cancel from "../cancel.jpeg";
 
 class Heat extends React.Component {
     constructor(props) {

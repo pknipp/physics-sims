@@ -20,7 +20,7 @@ class Container extends React.Component {
     return (
       <BrowserRouter>
         <nav>
-          <h1>{this.props.email} welcome to my physics simulations</h1>
+          <h1>{this.props.email}: Welcome to my physics simulations!</h1>
           <div className="nav-bar">
             <span><NavLink className="nav" exact to="/"    activeClassName="active">Home          </NavLink></span>
             <span><NavLink className="nav" to="/drum"      activeClassName="active">Vibrating drumhead </NavLink></span>
