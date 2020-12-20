@@ -13,6 +13,7 @@ class Asteroids extends React.Component {
             rocks: [],
             logSpeed: 0.2,
             info: {},
+            closest: 1,
         }
         this.nx = 1380;
         this.ny = 630;
@@ -90,14 +91,16 @@ class Asteroids extends React.Component {
 
     propagate = _ => {
         let rocks = JSON.parse(JSON.stringify(this.state.rocks));
+        let closest = this.state.closest;
         rocks.forEach((rock, i, rocks) => {
             rocks[i].x += rocks[i].vx * this.state.dt;
             rocks[i].y += rocks[i].vy * this.state.dt;
             rocks[i].z += rocks[i].vz * this.state.dt;
             rocks[i].hidden = rocks[i].hidden && !rocks[i].hidden;
             rocks[i] = (this.isVisible(rocks[i])) ? rocks[i] : this.newRock(0);
+            if (rocks[i].z < 1 && 1 - rocks[i].z < closest) closest = 1 - rocks[i].z;
         })
-        this.setState({ rocks });
+        this.setState({ rocks, closest });
     }
 
     toggle = () => {
@@ -216,6 +219,7 @@ class Asteroids extends React.Component {
                     </span>
                     <span>time: {time.toFixed(3)} s</span>
                 </div>
+                {/* <div>{this.state.closest}</div> */}
                 <div
                     className="rockContainer"
                     style={{height:`${this.ny}px`, width:`${this.nx}px`}}
