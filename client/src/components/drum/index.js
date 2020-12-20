@@ -30,7 +30,7 @@ class Drum extends React.Component {
             accelerationLength: 0.5,
             calcEi: false,
             springConstant: 2,
-            info: {instructions: true},
+            info: {},
         }
         this.numPx = 540;
         this.info = {
@@ -41,7 +41,7 @@ class Drum extends React.Component {
             springConstant: "For larger values of the stiffness, the particles will vibrate back and forth more frequently, and conversely for smaller values.  In fact if the stiffness is zero, each particle will obey Newton's first law by either remaining stationary or by moving in a straight line at a constant speed. By the way, the technical term for stiffness is 'spring constant'. ",
             velocityLength: "Velocity is an example a vector, a quantity that has both 'magnitude' (size) and direction.  The dotted green line segment shown here points in the direction of the velocity, and the segment's length is proportional to the velocity's magnitude (which is usually called 'speed').  This slider controls the proportionality factor of this relationship.",
             accelerationLength: "Acceleration is an example a vector, a quantity that has both 'magnitude' (size) and direction.  The solid red line segment shown here points in the direction of the acceleration.  (Note that the velocity and acceleration usually do not point in the same direction!) The segment's length is proportional to the acceleration's magnitude, and this slider controls the proportionality factor of this relationship.",
-            nIC: `You may choose this number may be as large as ${this.state.n} x ${this.state.n} = ${this.state.n * this.state.n}`,
+            nIC: `You may choose this number may be as large as ${this.state.n} x ${this.state.n} = ${this.state.n * this.state.n}.`,
         }
     }
 
@@ -80,9 +80,8 @@ class Drum extends React.Component {
     //The following handles the on/off toggling of information panels.
     handleToggle = e => {
         let name = e.currentTarget.name;
-        let info = this.state.info;
-        info[name] = !this.state.info[name];
-        debugger
+        let info = {...this.state.info};
+        info[name] = !info[name];
         this.setState({ info });
     }
     // The following method handles many inputs

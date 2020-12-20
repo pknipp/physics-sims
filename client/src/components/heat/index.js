@@ -227,11 +227,11 @@ class Heat extends React.Component {
                 <>
                     <h2 align="center">Simulation parameters:</h2>
                     <p align="center">
-                        <span>(Click on </span>
-                        <img src={info} alt="Show information." />
+                        <span>(Click on particular instances below of </span>
+                        "<img src={info} alt="Show information." />"
                         <span> and </span>
-                        <img src={cancel} alt="Hide information." />
-                        <span> in order to toggle information about various details on this page.)</span>
+                        "<img src={cancel} alt="Hide information." />"
+                        <span> in order to toggle information about various details.)</span>
                     </p>
                     <div className="parameters">
                         <div className="button-container">
