@@ -330,7 +330,7 @@ class Heat extends React.Component {
                                     </td>
                                     <td rowSpan="2">
                                         {(leftIns && rightIns) ? null :
-                                        `Adjust boundary temperature${leftIns || rightIns ? "" : "s"} with slider.`}
+                                        `Adjust boundary temperature${leftIns || rightIns ? "" : "s"} with slider${leftIns || rightIns ? "" : "s"}.`}
                                     </td>
                                 </tr>
                                 <tr>
