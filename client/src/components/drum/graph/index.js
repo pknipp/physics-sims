@@ -1,13 +1,18 @@
 import React from "react";
 import Bar from "./Bar";
 import Number from "./Number";
-const Graph = ({KE, PE, E, Ei}) => {
+import Button from "../../Button.js";
+const Graph = ({KE, PE, E, Ei, handleToggle, toggle, info}) => {
     let Efac = (Ei) ? Ei : (PE) ? PE : 1;
     return (
         <div className="graph container">
             <div className="title">
-                <h3>Energies (arbitrary units)</h3>
+                <h3>
+                    <span>Energies (arbitrary units)</span>
+                    <Button onClick={handleToggle} name="energy" toggle={toggle} />
+                </h3>
             </div>
+            <span className="energy info"><i>{toggle ? info : null}</i></span>
             <div className="title ke">kinetic (KE)</div>
             <div className="title pe">potential (PE)</div>
             <div className="title e">total (KE + PE)</div>

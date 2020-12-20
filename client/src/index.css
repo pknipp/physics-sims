@@ -69,6 +69,7 @@ td {
     align-items: end;
     grid-template-areas:
     "graphtitle graphtitle graphtitle graphtitle"
+    "energyinfo energyinfo energyinfo energyinfo"
     "titleke titlepe titlee titleei"
     "valke valpe vale valei"
     "barke barpe bare barei";
@@ -76,6 +77,8 @@ td {
 
 .graph .title {grid-area: graphtitle}
 .graph * {justify-self: center}
+
+.energy.info {grid-area: energyinfo}
 
 .title.ke {grid-area: titleke}
 .title.pe {grid-area: titlepe}
@@ -210,17 +213,17 @@ div.bar-container input {
 
 .parameters {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: flex-start;
 }
 
 .parameters>* {
   flex-grow: 0;
-  flex-shrink: 0;
+  flex-shrink: 5;
 }
 .button-container {flex-basis: 90px}
 .parameters>table.sliders {flex-basis: 400px}
-.parameters>table.BC {flex-basis: 750px}
+.parameters>table.BC {flex-basis: 700px}
 
 nav {
   display: flex;
@@ -281,4 +284,9 @@ li {
 .welcome p {
   font-size: 1.2em;
   text-align: center;
+}
+
+button.info {
+  margin: 0px;
+  padding: 0px;
 }

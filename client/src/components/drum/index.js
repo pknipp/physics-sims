@@ -30,8 +30,19 @@ class Drum extends React.Component {
             accelerationLength: 0.5,
             calcEi: false,
             springConstant: 2,
+            info: {instructions: true},
         }
         this.numPx = 540;
+        this.info = {
+            energy: "This system's kinetic energy (KE) equals the sum of the KE of each of the particles, and each particle's KE is proportional to the square of its speed.  The system's potential potential energy (PE) equals the sum of the PE of each of the bonds, and each bond's PE is proportional to the square of the amount by which it has been distorted from it 'equilibrium' size and shape.  In the absence of damping the total energy of this system should not change.  If it does change, you should probably decrease the time-step.",
+            damping: "Viscous damping is like friction, in that it resists the particle's forward motion.  If there is no damping in this system, the particles will move forever and their energy will not change.  If there is damping, the particles will eventually stop moving.",
+            logdt: "This controls the extent of the approximation used when computing derivatives with respect to time.  Shorter timesteps make the results more accurate but may make the simulation run slowly.",
+            T: "When a particle moves away from its 'equilibrium' position (indicated by the dashed circle), the bonds push the particle back towards equilibrium.  This is called a 'restoring force'.  These bonds exert two types of restoring forces.  One is like that of a spring, which pushes when compressed and pulls when stretched.  The other is like a violin string which is under tension (and it is this type of force which leads to the oscillations which are perpendicular to the screen).  This slider enables you to control the extent to which this restoring force is like one type or another.",
+            springConstant: "For larger values of the stiffness, the particles will vibrate back and forth more frequently, and conversely for smaller values.  In fact if the stiffness is zero, each particle will obey Newton's first law by either remaining stationary or by moving in a straight line at a constant speed. By the way, the technical term for stiffness is 'spring constant'. ",
+            velocityLength: "Velocity is an example a vector, a quantity that has both 'magnitude' (size) and direction.  The dotted green line segment shown here points in the direction of the velocity, and the segment's length is proportional to the velocity's magnitude (which is usually called 'speed').  This slider controls the proportionality factor of this relationship.",
+            accelerationLength: "Acceleration is an example a vector, a quantity that has both 'magnitude' (size) and direction.  The solid red line segment shown here points in the direction of the acceleration.  (Note that the velocity and acceleration usually do not point in the same direction!) The segment's length is proportional to the acceleration's magnitude, and this slider controls the proportionality factor of this relationship.",
+            nIC: `You may choose this number may be as large as ${this.state.n} x ${this.state.n} = ${this.state.n * this.state.n}`,
+        }
     }
 
     componentDidMount() {this.makeLattice(this.state.n)}
@@ -65,6 +76,14 @@ class Drum extends React.Component {
         const newIndices = {i: iNew, j: jNew};
         newIndices[name[0]][Number(name.slice(1))] = Number(e.target.value);
         this.setState(newIndices);
+    }
+    //The following handles the on/off toggling of information panels.
+    handleToggle = e => {
+        let name = e.currentTarget.name;
+        let info = this.state.info;
+        info[name] = !this.state.info[name];
+        debugger
+        this.setState({ info });
     }
     // The following method handles many inputs
     handleInput = e => {
@@ -222,31 +241,36 @@ class Drum extends React.Component {
     };
 
     render() {
-        let { n, rvs, velocityLength, accelerationLength, showBond } = this.state;
+        let { state, handleToggle, handleN, toggle } = this;
+        let { n, rvs, velocityLength, accelerationLength, showBond, time, KE, PE, E, Ei } = state;
         return (
             <>
                 <div className="container">
                     <div className="side">
-                        <span>How many particles should be along each edge?
-                        <input
-                            width="3"
-                            type="number"
-                            onChange={this.handleN}
-                            placeholder="# of particles"
-                            value={String(n)}
-                            min="1"
-                            max="50"
-                            step="1"
-                        /></span>
+                        <span>
+                            How many particles should be along each edge?
+                            <input
+                                width="3"
+                                type="number"
+                                onChange={handleN}
+                                placeholder="# of particles"
+                                value={String(n)}
+                                min="1"
+                                max="50"
+                                step="1"
+                            />
+                        </span>
                         <div className="controls">
                             <span className="button-container">
-                                <button onClick={this.toggle}>
+                                <button onClick={toggle}>
                                     {this.state.running ? "Pause" : "Run"}
                                 </button>
                             </span>
-                            time: {Math.round(100 * this.state.time)/100} s
+                            time: {Math.round(100 * time)/100} s
                         </div>
-                        <Graph KE={this.state.KE} PE={this.state.PE} E={this.state.E} Ei={this.state.Ei} />
+                        <Graph KE={KE} PE={PE} E={E} Ei={Ei} handleToggle={handleToggle}
+                            toggle={state.info.energy} info={this.info.energy}
+                        />
                         <div
                             className="drumContainer"
                             style={{
@@ -285,6 +309,9 @@ class Drum extends React.Component {
                             handleInput={this.handleInput}
                             handleCheckbox={this.handleCheckbox}
                             handleLogdt={this.handleLogdt}
+                            handleToggle={handleToggle}
+                            stateInfo={state.info}
+                            thisInfo={this.info}
                         />
                         <IC
                             nIC={this.state.nIC}
@@ -297,6 +324,9 @@ class Drum extends React.Component {
                             handleInput={this.handleInput}
                             handleIndex={this.handleIndex}
                             handleIC={this.handleIC}
+                            handleToggle={handleToggle}
+                            toggle={state.info.nIC}
+                            info={this.info.nIC}
                         />
                     </div>
                 </div>

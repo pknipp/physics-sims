@@ -1,7 +1,8 @@
 import React from "react";
 import Slider from "./Slider";
 const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
-    accelerationLength, showBond, handleInput, handleLogdt, handleCheckbox }) => (
+    accelerationLength, showBond, handleInput, handleLogdt, handleCheckbox, handleToggle,
+    thisInfo, stateInfo }) => (
     <div className="slider">
         <h2>Simulation parameters:</h2>
         <table>
@@ -22,6 +23,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     maxVal="1"
                     stepSize="0.1"
                     quantity={speed}
+                    // handleToggle={handleToggle}
+                    // info={thisInfo.speed}
+                    // toggle={stateInfo.speed}
                 />
                 <Slider
                     key="damping"
@@ -34,6 +38,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     maxVal="2"
                     stepSize="0.2"
                     quantity={damping}
+                    handleToggle={handleToggle}
+                    info={thisInfo.damping}
+                    toggle={stateInfo.damping}
                 />
                 <Slider
                     key="logdt"
@@ -46,6 +53,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     maxVal="3"
                     stepSize="0.15"
                     quantity={logdt}
+                    handleToggle={handleToggle}
+                    info={thisInfo.logdt}
+                    toggle={stateInfo.logdt}
                 />
                 <Slider
                     key="T"
@@ -58,6 +68,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     maxVal="1"
                     stepSize="0.1"
                     quantity={T}
+                    handleToggle={handleToggle}
+                    info={thisInfo.T}
+                    toggle={stateInfo.T}
                 />
                 <Slider
                     key="springConstant"
@@ -70,6 +83,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     maxVal="2"
                     stepSize="0.2"
                     quantity={springConstant}
+                    handleToggle={handleToggle}
+                    info={thisInfo.springConstant}
+                    toggle={stateInfo.springConstant}
                 />
                 <Slider
                     key="velocityLength"
@@ -82,6 +98,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     maxVal="1"
                     stepSize="0.1"
                     quantity={velocityLength}
+                    handleToggle={handleToggle}
+                    info={thisInfo.velocityLength}
+                    toggle={stateInfo.velocityLength}
                 />
                 <Slider
                     key="accelerationLength"
@@ -94,6 +113,9 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     maxVal="1"
                     stepSize="0.1"
                     quantity={accelerationLength}
+                    handleToggle={handleToggle}
+                    info={thisInfo.accelerationLength}
+                    toggle={stateInfo.accelerationLength}
                 />
                 {/* <Slider key="bondThickness" label='Width of "bond" lines (black)' secondLine=""
                     minText="none" maxText="max" handler={handleInput} name="bondThickness"

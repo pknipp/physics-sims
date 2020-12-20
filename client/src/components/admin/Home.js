@@ -1,5 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import info from "../info.png";
+import cancel from "../cancel.jpeg";
 const Home = _ => {
     return (
     <div>
@@ -17,6 +19,7 @@ const Home = _ => {
 
             <li> In the last animation there is not much for you to do except to sit back and enjoy a simulation of what it would feel like to travel thru a three-dimensional <NavLink to="/asteroids">asteroid field.</NavLink>  Be aware of any near misses!</li>
         </ul>
+        Note: in these animations click on <img src={info} alt="Show information." /> and <img src={cancel} alt="Hide information." /> in order to toggle the display of information about various details.
     </div>
 )}
 export default Home;

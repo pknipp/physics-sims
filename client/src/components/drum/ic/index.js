@@ -1,6 +1,8 @@
 import React from "react";
 import Row from "./row/index";
-const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handleInput}) => {
+import Button from "../../Button";
+const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handleInput, handleToggle, toggle, info}) => {
+    debugger;
     let Rows = [];
     for (let iIC = 0; iIC < nIC; iIC++) {
         Rows.push(
@@ -24,17 +26,27 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
                 Specify the number of particles that you'll displace from equilibrium.
             </span>
             <form>
-                <label htmlFor="nIC">number = </label>
-                <input
-                    type="number"
-                    name="nIC"
-                    onChange={handleInput}
-                    value={nIC}
-                    min="0"
-                    max={n * n}
-                    step="1"
-                />
+                <span>
+                    <label htmlFor="nIC">number = </label>
+                    <input
+                        type="number"
+                        name="nIC"
+                        onChange={handleInput}
+                        value={nIC}
+                        min="0"
+                        max={n * n}
+                        step="1"
+                    />
+                    <Button
+                        onClick={handleToggle}
+                        toggle={toggle}
+                        name="nIC"
+                    />
+                </span>
             </form>
+            <div>
+                <i>{toggle ? info : null}</i>
+            </div>
             <table>
                 <thead>
                     <tr>

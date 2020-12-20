@@ -1,6 +1,7 @@
 import React from "react";
+import Button from "../../Button";
 const Slider = ({label, secondLine, minText, maxText, name,
-    maxVal, stepSize, quantity, handler}) => (
+    maxVal, stepSize, quantity, handler, handleToggle, info, toggle}) => (
     <>
         <tr rowSpan="2">
             <>
@@ -24,11 +25,23 @@ const Slider = ({label, secondLine, minText, maxText, name,
                 <td>
                     {maxText}
                 </td>
+                <td>
+                    {!info ? null : <Button
+                        onClick={handleToggle}
+                        toggle={toggle}
+                        name={name}
+                    />}
+                </td>
             </>
         </tr>
         {(!secondLine) ? null : <tr>
             <td colSpan="4" align="left">
                 ({secondLine})
+            </td>
+        </tr>}
+        {!info ? null : <tr>
+            <td colSpan="5">
+                <i>{toggle ? info : null}</i>
             </td>
         </tr>}
     </>
