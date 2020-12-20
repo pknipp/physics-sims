@@ -1,27 +1,24 @@
 GENERAL:
-* Style "splash" page
-* Style landing page which contains links to the various sims (asteroids, drumhead, heat equation)
+* Insert suggested activities for each sim.
 
 DRUMHEAD:
 * make each particle an instance of an Particle class
 * figure out how to use transitions on properties which utilize atan
-* insert instructions (w/checkbox for whether or not to display?)
 * break down some components?
 * readjust scaling for energies?
 * ensure that user can only enter unique (i,j) combos for IC
-* insert U for user (edit details)
 * make it easier for user to enable negative inputs for ICs
 * insert a "reset" button
 * enable "speed" to be changed without first pausing sim?
 * adjust IC by click-and-drag instead of form filling?
 
 HEAT EQUATION:
-* Provide more instructions and explanation as to how to use the sim.
 * determine if a factor of 2 is needed, because of 2-step average that is taken
 * insert outgoing BC (for which green's function should be used, or modified BC)?
 * add any heat sources?
 
 ASTEROIDS:
+* Show a warning if an object comes w/in a certain distance of user (and allow user to adjust this threshhold).
 * Allow two objects that "collide" (ie come within a certain distance of each other) to merge into a single object in a manner which conserves both mass (e.g., size) and momentum (= mass times velocity), and allow for the possibility that single objects may spontaneously split into two objects, again in a manner which conserved mass and momentum.
 
 PLANETARY MOTION:

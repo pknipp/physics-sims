@@ -38,8 +38,9 @@ class Signup extends Component {
     let { email, password, password2 } = state;
     return (currentUserId && !update) ? <Redirect to="/" /> : (
       <main className="centered middled">
-        {update ? null : <span><NavLink className="nav" to="/login"      activeClassName="active">Login</NavLink></span>}
         <form className="auth" onSubmit={handleSubmit}>
+        <h1>Welcome to my physics simulations!</h1>
+        <h4>I hope that you will either login or signup so that you can explore the universe with me.</h4>
           <span>Email address:</span>
           <input type="text" placeholder="Email" name="email" value={email} onChange={updateInput} />
           <span>Password:</span>
@@ -48,10 +49,12 @@ class Signup extends Component {
           <input type="password" placeholder="" name="password2" value={password2} onChange={updateInput} />
           <button color="primary" variant="outlined" type="submit">{update ? "Submit changes" : "Signup"}</button>
           <span style={{color: "red", paddingLeft:"10px"}}>{ state.message || props.message }</span>
+          {update ? null : <span><NavLink className="nav" to="/login"      activeClassName="active">Login</NavLink></span>}
         </form>
         {!update ? null : <form className="auth" onSubmit={handleDelete}>
           <button color="primary" variant="outlined" type="submit">{"Delete account?"}</button>
         </form>}
+
       </main>
     );
   }

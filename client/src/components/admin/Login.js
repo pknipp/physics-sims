@@ -24,14 +24,17 @@ class Login extends Component {
   render() {
     return (this.props.currentUserId) ? <Redirect to="/" /> : (
       <main className="centered middled">
-         <span><NavLink className="nav" to="/signup"      activeClassName="active">Signup</NavLink></span>
+
         <form className="auth" onSubmit={this.handleSubmit}>
+        <h1>Welcome to my physics simulations!</h1>
+        <h4>I hope that you will either login or signup so that you can explore the universe with me.</h4>
           <span>Email address:</span>
           <input type="text" placeholder="" value={this.state.email} onChange={this.updateEmail} />
           <span>Password:</span>
           <input type="password" placeholder="" value={this.state.password} onChange={this.updatePassword} />
           <button color="primary" variant="outlined" type="submit">Login</button>
           <span style={{color:"red", paddingLeft:"10px"}}>{this.state.message || this.props.message}</span>
+          <span><NavLink className="nav" to="/signup"      activeClassName="active">Signup</NavLink></span>
         </form>
       </main>
     );
