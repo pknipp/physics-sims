@@ -1,12 +1,13 @@
 import React from "react";
 const Element = ({ k, rvs, i, j, handleIC }) => {
+    let quantity = rvs[i][j][k];
     return (
         <td>
             <input
-                type="number"
+                type="text"
                 name={`${i}${j}${k}`}
                 onChange={handleIC}
-                value={Math.round(1000 * rvs[i][j][k]) / 1000}
+                value={typeof(quantity) === "string" ? quantity : Math.round(1000 * quantity) / 1000}
             />
         </td>
     )

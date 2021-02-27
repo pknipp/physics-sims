@@ -15,6 +15,7 @@ class Drum extends React.Component {
             nIC: 1,
             optionsI: ["row", 1],
             optionsJ: ["column", 1],
+            rvsInput: [[['0.25', '0', '0.6', '0', '0.6', '0']]],
             rvs: [[[0.25, 0, 0.6, 0, 0.6, 0]]],
             damping: 0,
             speed: 1,
@@ -73,9 +74,16 @@ class Drum extends React.Component {
     handleIC = e => {
         let [i, j, k] = e.target.name.split("").map(char => Number(char));
         let val = e.target.value;
+        let rvsInput = JSON.parse(JSON.stringify(this.state.rvsInput));
         let rvs = JSON.parse(JSON.stringify(this.state.rvs));
-        rvs[i][j][k] = (val === "") ? "" : Number(val);
-        this.setState({rvs});
+        if (val === "." || val === "-" || val === "-." ) {
+            rvsInput[i][j][k] = val;
+        } else {
+            if (isNaN(Number(val))) return;
+            rvsInput[i][j][k] = val;
+            rvs[i][j][k] = Number(val);
+        }
+        this.setState({rvsInput, rvs});
     }
     handleIndex = e => {
         const name = e.target.name;
@@ -107,24 +115,30 @@ class Drum extends React.Component {
 
     makeLattice = n => {
         let xs = [];
+        let zero6Input = []
         let zero6 = [];
         let optionsI = ["col"];
         let optionsJ = ["row"];
         for (let i = 0; i < n; i++) {
           xs.push(-0.5 + (i + 1)/(n + 1));
+          const colZero6Input = [];
           const colZero6 = [];
           for (let j = 0; j < n; j++) {
+            colZero6Input.push(new Array(6).fill(''));
             colZero6.push([0,0,0,0,0,0]);
           }
           optionsI.push(i + 1);
           optionsJ.push(i + 1);
+          zero6Input.push(colZero6Input);
           zero6.push(colZero6);
         }
         let ys  = JSON.parse(JSON.stringify(xs));
+        let rvsInput = JSON.parse(JSON.stringify(zero6Input));
         let rvs = JSON.parse(JSON.stringify(zero6));
+        rvsInput[0][0] = JSON.parse(JSON.stringify(this.state.rvsInput[0][0]));
         rvs[0][0] = JSON.parse(JSON.stringify(this.state.rvs[0][0]));
         let Fs = JSON.parse(JSON.stringify(zero6));
-        const newState = {xs, ys, rvs,
+        const newState = {xs, ys, rvsInput, rvs,
             Fs, zero6, dt: Math.round(10 ** this.state.logdt),
             optionsI, optionsJ, width: 0.2/n, isLattice: true};
         this.setState(newState)
@@ -249,7 +263,7 @@ class Drum extends React.Component {
 
     render() {
         let { state, handleToggle, handleN, toggle, info } = this;
-        let { n, rvs, velocityLength, accelerationLength, showBond, time, KE, PE, E, Ei } = state;
+        let { n, running, rvsInput, rvs, velocityLength, accelerationLength, showBond, time, KE, PE, E, Ei } = state;
         return (
             <>
                 <div className="container">
@@ -274,7 +288,7 @@ class Drum extends React.Component {
                         <div className="controls">
                             <span className="button-container">
                                 <button onClick={toggle}>
-                                    {this.state.running ? "PAUSE" : "RUN"}
+                                    {running ? "PAUSE" : "RUN"}
                                 </button>
                             </span>
                             time: {Math.round(100 * time)/100} s
@@ -329,7 +343,7 @@ class Drum extends React.Component {
                             n={n}
                             i={this.state.i}
                             j={this.state.j}
-                            rvs={this.state.rvs}
+                            rvs={running ? rvs : rvsInput}
                             optionsI={this.state.optionsI}
                             optionsJ={this.state.optionsJ}
                             handleInput={this.handleInput}
