@@ -98,9 +98,7 @@ class Heat extends React.Component {
             let slope = (leftIns || rightIns) ? 0 : (rightT - leftT) / n;
             let T = leftIns ? rightT : leftT;
             Ts[0] = T;
-            for (let i = 1; i < n; i++) {
-                Ts.push(T += slope);
-            }
+            for (let i = 1; i < n; i++) Ts.push(T += slope);
         }
         this.setState({ Ts });
     }
@@ -134,13 +132,9 @@ class Heat extends React.Component {
             u[i] = (r[i] - a[i] * u[i - 1]) / bet;
         }
         // backsubstitution
-        for (let i = n - 2; i >= 0; i--) {
-            u[i] -= g[i + 1] * u[i + 1];
-        }
+        for (let i = n - 2; i >= 0; i--) u[i] -= g[i + 1] * u[i + 1];
         // 2-timestep averaging in order to smooth out Gibbs-phenomenon oscillations
-        for (let i = 0; i < n; i++) {
-            u[i] = (u[i] + Ts[i]) / 2;
-        }
+        for (let i = 0; i < n; i++)  u[i] = (u[i] + Ts[i]) / 2;
         this.setState({Ts: u});
     }
 

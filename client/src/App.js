@@ -7,10 +7,11 @@ import Signup from './components/admin/Signup';
 import Container from "./components/Container";
 // import { store } from './index';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  return (
+const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
-    rest.needLogin === true ? <Redirect to='/login' /> : <Component {...props} />   )}    />  )}
+    rest.needLogin === true ? <Redirect to='/login' /> : <Component {...props} />   )}
+  />
+)
 
 class App extends React.Component {
   render() {

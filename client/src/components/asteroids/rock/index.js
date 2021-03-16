@@ -8,7 +8,7 @@ const Rock = ({ x, y, z, size, color, dt }) => {
         top: `${Math.round(y)}px`,
         zIndex: `${Math.round(1000 * z)}`,
         backgroundColor: `${color}`,
-        transitionDuration: `${dt / 1000}s`,
+        transitionDuration: `${1 * dt / 1000}s`,
         boxShadow:`0px 0px ${Math.round(0 * size/10)}px black`,
         }}>
     </div>

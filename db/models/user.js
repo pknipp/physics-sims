@@ -74,16 +74,19 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.prototype.validatePassword = function(password) {
-    return bcrypt.compareSync(password, this.hashedPassword.toString());};
+    return bcrypt.compareSync(password, this.hashedPassword.toString());
+  };
 
   User.prototype.isValid = () => true;
 
   User.prototype.setPassword = function (password) {
     this.hashedPassword = bcrypt.hashSync(password);
-    return this; };
+    return this;
+  };
 
   User.prototype.isValidPassword = function (password) {
-    return bcrypt.compareSync(password, this.hashedPassword.toString()); }
+    return bcrypt.compareSync(password, this.hashedPassword.toString());
+  };
 
   User.getCurrentUserById = async function(id) {
     return await User.scope("currentUser").findByPk(id);
