@@ -39,8 +39,8 @@ class Signup extends Component {
     return (currentUserId && !update) ? <Redirect to="/" /> : (
       <main className="centered middled">
         <form className="auth" onSubmit={handleSubmit}>
-        <h1>Welcome to my physics simulations!</h1>
-        <h4>I hope that you will either login or signup so that you can explore the universe with me.</h4>
+        <h1>{update ? null : "Welcome to my physics simulations!"}</h1>
+        <h4>{update ? "Change your email and/or password?" : "I hope that you will either login or signup so that you can explore the universe with me."}</h4>
           <span>Email address:</span>
           <input type="text" placeholder="Email" name="email" value={email} onChange={updateInput} />
           <span>Password:</span>
