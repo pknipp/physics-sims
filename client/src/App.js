@@ -24,6 +24,13 @@ class App extends React.Component {
           // exact={true}
           needLogin={this.props.needLogin} component={Container} />
         </Switch>
+        <span className="center">
+          <br/><br/>
+          <span>
+            creator:
+            <a href="https://pknipp.github.io/" target="_blank">Peter Knipp</a>
+          </span>
+        </span>
       </BrowserRouter>
     );
   }

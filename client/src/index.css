@@ -2,6 +2,7 @@
   font-family: "Ubuntu", sans-serif !important;
   z-index: 0;
 }
+.center {display: flex; justify-content: center; }
 
 .nav {
   display: inline-block;

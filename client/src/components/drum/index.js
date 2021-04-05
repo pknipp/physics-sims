@@ -16,7 +16,7 @@ class Drum extends React.Component {
             optionsI: ["row", 1],
             optionsJ: ["column", 1],
             rvsInput: [[['0.25', '0', '0.6', '0', '0.6', '0']]],
-            rvs: [[[0.25, 0, 0.6, 0, 0.6, 0]]],
+            rvs: [[[0.25, 0, 0.6, 0, 0.6, 0],[0,0,0,0,0,0]],[[0,0,0,0,0,0],[0,0,0,0,0,0]]],
             damping: 0,
             speed: 1,
             i: [1],
@@ -353,6 +353,39 @@ class Drum extends React.Component {
                             toggle={state.info}
                             info={this.info}
                         />
+                        <span className="button-container">
+                            <button onClick={() => {
+                                let newState = {
+                                    running: false,
+                                    time: 0,
+                                    n: 2,
+                                    nIC: 1,
+                                    optionsI: ["row", 1],
+                                    optionsJ: ["column", 1],
+                                    rvsInput: [[['0.25', '0', '0.6', '0', '0.6', '0']]],
+                                    rvs: [[[0.25,0,0.6,0,0.6,0],[0,0,0,0,0,0]],[[0,0,0,0,0,0],[0,0,0,0,0,0]]],
+                                    damping: 0,
+                                    speed: 1,
+                                    i: [1],
+                                    j: [1],
+                                    PE: 0,
+                                    KE: 0,
+                                    E: 0,
+                                    Ei: 0,
+                                    logdt: 2.2,
+                                    T: 0.4,
+                                    showBond: true,
+                                    velocityLength: 0.5,
+                                    accelerationLength: 0.5,
+                                    calcEi: false,
+                                    springConstant: 2,
+                                    info: {},
+                                };
+                                this.setState(newState);
+                            }}>
+                                Restore inputs
+                            </button>
+                        </span>
                     </div>
                 </div>
             </>
