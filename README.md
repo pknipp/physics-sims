@@ -1,3 +1,21 @@
+# Contents
+
+[Heroku deployment](https://physics-sims.herokuapp.com)
+
+[Introduction](#introduction)
+
+[Drumhead](#drumhead)
+
+[Asteroid field](#asteroid-field)
+
+[Heat equation](#heat-equation)
+
+# Introduction
+
+[return to "Contents"](#contents)
+
+[go to first sim ("Drumhead")](#drumhead)
+
 This project consists of several [physics simulations](https://en.wikipedia.org/wiki/Physics_engine), each described below.  Although the project includes authentication
  with Redux, Express, and PostgreSQL, most of the activity occurs in the front end with JavaScript and React.  For each simulation the "parent" component is a class which utilizes state, life-cycle methods, and a clock built from the setInterval function, whereas the child components are all functional. The first and last simulations involve [solving differential equations numerically](https://en.wikipedia.org/wiki/Numerical_methods_for_ordinary_differential_equations).
  The most basic user-control for each of these simulations is the value of the requisite "time-step" (&Delta;*t*), for which the following pair of considerations must always be balanced:
@@ -29,7 +47,15 @@ const Bond = ({x, y, z, x1, y1, width, size, dt}) => {
 export default Bond;
 ```
 
-1. **Drumhead** simulates the three-dimensional motion of an *N* x *N* system of particles, which may be regarded as a model for the vibrating head of a drum.  This component of the project was inspired by PhET's [Normal Modes simulation](https://phet.colorado.edu/en/simulation/legacy/normal-modes), now largely defunct because of its reliance upon [Adobe Flash Player](https://en.wikipedia.org/wiki/Adobe_Flash_Player).
+# Drumhead
+
+[return to "Contents"](#contents)
+
+[return to previous section ("Introduction")](#introduction)
+
+[go to next sim ("Asteroid field")](#asteroid-field)
+
+This simulates the three-dimensional motion of an *N* x *N* system of particles, which may be regarded as a model for the vibrating head of a drum.  This component of the project was inspired by PhET's [Normal Modes simulation](https://phet.colorado.edu/en/simulation/legacy/normal-modes), now largely defunct because of its reliance upon [Adobe Flash Player](https://en.wikipedia.org/wiki/Adobe_Flash_Player).
 
 ![Drumhead](assets/drumhead4.png)
 
@@ -166,7 +192,15 @@ const Vector = ({ type, x, y, vec, fac, dt }) => {
 export default Vector;
 ```
 
-2. **Asteroid field** simulates the view from the front of a space ship as it flies through an endless field of asteroids, as inspired by the 1990's-era screensaver with which you may be familiar.
+# Asteroid field
+
+[return to "Contents"](#contents)
+
+[return to previous sim ("Drumhead")](#drumhead)
+
+[go to next sim ("Heat equation")](#heat-equation)
+
+This simulates the view from the front of a space ship as it flies through an endless field of asteroids, as inspired by the 1990's-era screensaver with which you may be familiar.
 
 ![Asteroids](assets/asteroids.png)
 
@@ -214,7 +248,14 @@ rocks[i] = (this.isVisible(rocks[i])) ? rocks[i] : this.newRock(0);
   transition-timing-function: linear;
 }
 ```
-3. [**Heat equation**](https://en.wikipedia.org/wiki/Heat_equation) simulates the time-dependence of the temperature profile of a one-dimensional system that is subject to user-controlled [boundary conditions](https://en.wikipedia.org/wiki/Boundary_value_problem#:~:text=A%20boundary%20value%20problem%20has,%2C%20thus%20the%20term%20%22initial%22) and [initial conditions](https://en.wikipedia.org/wiki/Initial_condition#Continuous_time).
+
+# Heat equation
+
+[return to "Contents"](#contents)
+
+[return to previous sim ("Asteroid field")](#asteroid-field)
+
+The [heat equation](https://en.wikipedia.org/wiki/Heat_equation) governs the time-dependence of the temperature profile of a one-dimensional system that is subject to user-controlled [boundary conditions](https://en.wikipedia.org/wiki/Boundary_value_problem#:~:text=A%20boundary%20value%20problem%20has,%2C%20thus%20the%20term%20%22initial%22) and [initial conditions](https://en.wikipedia.org/wiki/Initial_condition#Continuous_time).
 
 ![Heat](assets/heat.png)
 
@@ -298,4 +339,9 @@ tridiag = _ => {
     this.setState({Ts: u});
 }
 ```
+
+[return to "Contents"](#contents)
+
+[go to beginning of this sim ("Heat equation")](#heat-equation)
+
 I hope that you enjoy learning about our universe!
