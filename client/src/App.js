@@ -28,7 +28,7 @@ class App extends React.Component {
           <br/><br/>
           <span>
             creator:
-            <a href="https://pknipp.github.io/" target="_blank">Peter Knipp</a>
+            <a href="https://pknipp.github.io/" target="_blank" rel="noopener noreferrer">Peter Knipp</a>
           </span>
         </span>
       </BrowserRouter>
