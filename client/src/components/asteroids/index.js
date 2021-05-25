@@ -145,13 +145,17 @@ class Asteroids extends React.Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <td align="right">How many asteroids do you want?</td><td></td>
+                            <td align="right">
+                                <span className="ttip" data-toggle="tooltip" title={info.nRocks}>
+                                    How many asteroids do you want?
+                                </span>
+                            </td><td></td>
                             <td align="center">
                                 <input
                                     min="0" type="number" name="nRocks"
                                     onChange={this.handleInput} value={this.state.nRocks}
                                 />
-                                <Button onClick={handleToggle} name="nRocks" toggle={state.info.nRocks}/>
+                                {/* <Button onClick={handleToggle} name="nRocks" toggle={state.info.nRocks}/> */}
                             </td><td></td>
                         </tr>
                         <tr>
@@ -160,7 +164,9 @@ class Asteroids extends React.Component {
                             </td>
                         </tr>
                         <tr>
-                            <td align="right">How fast do you want to travel through the field?</td>
+                            <td align="right">
+                                How fast do you want to travel through the field?
+                            </td>
                             <td align="right">slowly</td>
                             <td align="center">
                                 <input
@@ -171,7 +177,11 @@ class Asteroids extends React.Component {
                             <td align="left">fast</td>
                         </tr>
                         <tr>
-                            <td align="right"   >Timestep:</td>
+                            <td align="right"   >
+                                <span className="ttip" data-toggle="tooltip" title={info.logdt}>
+                                    Timestep:
+                                </span>
+                            </td>
                             <td align="right">1 ms</td>
                             <td align="center">
                                 <input
@@ -181,7 +191,7 @@ class Asteroids extends React.Component {
                             </td>
                             <td align="left">
                                 1 s
-                                <Button onClick={handleToggle} name="logdt" toggle={state.info.logdt}/>
+                                {/* <Button onClick={handleToggle} name="logdt" toggle={state.info.logdt}/> */}
                             </td>
                         </tr>
                         <tr>
@@ -190,7 +200,11 @@ class Asteroids extends React.Component {
                             </td>
                         </tr>
                         <tr>
-                            <td align="right">Asteroid size (when distant):</td>
+                            <td align="right">
+                                <span className="ttip" data-toggle="tooltip" title={info.width}>
+                                    Asteroid size (when distant):
+                                </span>
+                            </td>
                             <td align="right">1 px</td>
                             <td align="center">
                                 <input
@@ -201,7 +215,7 @@ class Asteroids extends React.Component {
                             </td>
                             <td align="left">
                                 10 px
-                                <Button onClick={handleToggle} name="width" toggle={state.info.width}/>
+                                {/* <Button onClick={handleToggle} name="width" toggle={state.info.width}/> */}
                             </td>
                         </tr>
                         <tr>
