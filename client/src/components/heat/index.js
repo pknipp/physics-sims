@@ -23,8 +23,8 @@ class Heat extends React.Component {
         this.info = {
             dx: "This controls the width of each bar on the graph below.  Narrower bars means more accurate results, but the calculations may take longer, and the click-and-drag process may become 'glitchy'.",
             dt: "This controls the extent of the approximation used when computing derivatives with respect to time.  Shorter timesteps make the results more accurate but may make the simulation run slowly.",
-            alpha: "The thermal diffusivity of a material is proportional to its thermal conductivity.  The thermal conductivity is a measure of how easily heat flows thru the material.  For instance the thermal conductivity of metal is much higher than that of cloth or wood, which is why you use a wooden utensil to stir boiling soup rather than a metal one.",
-            BC: "There are two types of 'boundary conditions' (BC) which you may find at either end of an object: insulating ('Neumann') or 'fixed temperature ('Dirichlet').  Insulating BC means that no heat flows out of or into that end of the object, in which case the first derivative of the temperature profile (dT/dx) is zero at that end, ie the temperature profile is flat there. Fixed-temperature BC means that T equals a specified value at that end.  For this type of BC you may control that value of T with the slider at that end of the graph.",
+            alpha: "This is proportional to its thermal conductivity, which is a measure of how easily heat flows thru the material.  For instance the thermal conductivity of metal is much higher than that of cloth or wood, which is why you use a wooden utensil to stir boiling soup rather than a metal one.",
+            BC: "There are two types of these (BC) which you may find at either end of an object: insulating ('Neumann') or 'fixed temperature ('Dirichlet').  Insulating BC means that no heat flows out of or into that end of the object, in which case the first derivative of the temperature profile (dT/dx) is zero at that end, ie the temperature profile is flat there. Fixed-temperature BC means that T equals a specified value at that end.  For this type of BC you may control that value of T with the slider at that end of the graph.",
             instructions :
             "The heights of the gray bars graphed below indicate the system's 'temperature profile'. The default value of the system's 'initial conditions' has been set to equal the system's 'steady state' profile.  This means that the temperature profile will not change when you run the simulation unless you first change the initial conditions as follows:",
             steps : [
@@ -238,7 +238,11 @@ class Heat extends React.Component {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Spatial resolution: </td>
+                                    <td>
+                                        <span className="ttip" data-toggle="tooltip" title={this.info.dx}>
+                                            Spatial resolution:
+                                        </span>
+                                    </td>
                                     <td>coarse</td>
                                     <td>
                                         <input
@@ -252,11 +256,15 @@ class Heat extends React.Component {
                                         />
                                     </td>
                                     <td>fine</td>
-                                    <td><Button onClick={handleToggle} name="dx" toggle={state.info.dx} /></td>
+                                    {/* <td><Button onClick={handleToggle} name="dx" toggle={state.info.dx} /></td> */}
                                 </tr>
                                 <tr><td colSpan="5"><i>{state.info.dx ? this.info.dx : null}</i></td></tr>
                                 <tr>
-                                    <td>Timestep: </td>
+                                    <td>
+                                        <span className="ttip" data-toggle="tooltip" title={this.info.dt}>
+                                            Timestep:
+                                        </span>
+                                    </td>
                                     <td align="right">1 ms</td>
                                     <td>
                                         <input
@@ -270,13 +278,17 @@ class Heat extends React.Component {
                                         />
                                     </td>
                                     <td>1 s</td>
-                                    <td><Button onClick={handleToggle} name="dt" toggle={state.info.dt} /></td>
+                                    {/* <td><Button onClick={handleToggle} name="dt" toggle={state.info.dt} /></td> */}
                                 </tr>
                                 <tr>
                                     <td colSpan="5"><i>{state.info.dt ? this.info.dt : null}</i></td>
                                 </tr>
                                 <tr>
-                                    <td>Thermal diffusivity: </td>
+                                    <td>
+                                        <span className="ttip" data-toggle="tooltip" title={this.info.alpha}>
+                                            Thermal diffusivity:
+                                        </span>
+                                    </td>
                                     <td align="right">low</td>
                                     <td>
                                         <input
@@ -290,7 +302,7 @@ class Heat extends React.Component {
                                         />
                                     </td>
                                     <td>high</td>
-                                    <td><Button onClick={handleToggle} name="alpha" toggle={state.info.alpha} /></td>
+                                    {/* <td><Button onClick={handleToggle} name="alpha" toggle={state.info.alpha} /></td> */}
                                 </tr>
                                 <tr><td colSpan="5"><i>{state.info.alpha ? this.info.alpha : null}</i></td></tr>
                             </tbody>
@@ -299,10 +311,14 @@ class Heat extends React.Component {
                             <thead>
                                 <tr>
                                     <>
-                                        <th colSpan="1" align="right">boundary conditions:</th>
-                                        <th align="left" colSpan="3">
-                                            <Button onClick={handleToggle} name="BC" toggle={state.info.BC} />
+                                        <th colSpan="1" align="right">
+                                            <span className="ttip" data-toggle="tooltip" title={this.info.BC}>
+                                                boundary conditions:
+                                            </span>
                                         </th>
+                                        {/* // <th align="left" colSpan="3">
+                                        //     <Button onClick={handleToggle} name="BC" toggle={state.info.BC} />
+                                        // </th> */}
                                     </>
                                 </tr>
                             </thead>
