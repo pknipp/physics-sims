@@ -1,7 +1,7 @@
 import React from "react";
 import Bar from "./Bar";
 import Number from "./Number";
-import Button from "../../Button.js";
+// import Button from "../../Button.js";
 const Graph = ({KE, PE, E, Ei, handleToggle, toggle, info}) => {
     let Efac = (Ei) ? Ei : (PE) ? PE : 1;
     return (
@@ -13,17 +13,17 @@ const Graph = ({KE, PE, E, Ei, handleToggle, toggle, info}) => {
                 </h3>
             </div>
             {/* <span className="energy info"><i>{toggle.energy ? info.energy : null}</i></span> */}
-            <div className="title ke">
-                kinetic (KE)
-                <Button onClick={handleToggle} name="KE" toggle={toggle.KE} />
+            <div className="title ke" >
+                <span className="ttip" data-toggle="tooltip" title={info.KE}> kinetic (KE) </span>
+                {/* <Button onClick={handleToggle} name="KE" toggle={toggle.KE} /> */}
             </div>
             <div className="title pe">
-                potential (PE)
-                <Button onClick={handleToggle} name="PE" toggle={toggle.PE} />
+                <span className="ttip" data-toggle="tooltip" title={info.PE}>potential (PE)</span>
+                {/* <Button onClick={handleToggle} name="PE" toggle={toggle.PE} /> */}
             </div>
             <div className="title e">
-                total (KE + PE)
-                <Button onClick={handleToggle} name="E" toggle={toggle.E} />
+                <span className="ttip" data-toggle="tooltip" title={info.E}>total (KE + PE)</span>
+                {/* <Button onClick={handleToggle} name="E" toggle={toggle.E} /> */}
             </div>
             <div className="title ei">initial</div>
             <i className="ke info">{toggle.KE ? info.KE : null}</i>

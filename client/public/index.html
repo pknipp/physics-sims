@@ -2,6 +2,7 @@
 <html lang="en">
 
   <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="utf-8" />
     <meta property='og:title' content='physics-sims'/>
     <meta property='og:image' content="https://lh3.googleusercontent.com/usoo6FtAt6dbJ9bqGQCANM4OiQ7C17NdV48AAFPU0Y1RmwydRoN42NiVCF1PYseLbZIxDVXswQCbZ6AjWrzPnkGe3mQ2Mt43mUAPYs-jAoWs8YyRbqPrnlc2iqhlIqdt8b7_giC6lA=w600-h315-p-k" />
@@ -19,6 +20,10 @@
   <body>
     <div id="root"></div>
     <div id="container"></div>
+    <script>
+      $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
   </body>
-
 </html>

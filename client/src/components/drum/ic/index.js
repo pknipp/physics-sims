@@ -1,6 +1,6 @@
 import React from "react";
 import Row from "./row/index";
-import Button from "../../Button";
+// import Button from "../../Button";
 const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handleInput, handleToggle, toggle, info}) => {
     let Rows = [];
     for (let iIC = 0; iIC < nIC; iIC++) {
@@ -22,19 +22,21 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
         <>
             <h2>
                 <span>
-                    Initial conditions:
-                    <Button
+                    <span className="ttip" data-toggle="tooltip" title={info.IC}>Initial conditions:</span>
+                    {/* <Button
                         onClick={handleToggle}
                         toggle={toggle.IC}
                         name="IC"
-                    />
+                    /> */}
                 </span>
             </h2>
             <div>
                 <i>{toggle.IC ? info.IC : null}</i>
             </div>
             <span>
-                Specify the number of particles to displace from equilibrium:
+                <span className="ttip" data-toggle="tooltip" title={info.nIC}>
+                    Specify the number of particles to displace from equilibrium:
+                </span>
                 <input
                     type="number"
                     name="nIC"
@@ -44,11 +46,11 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
                     max={n * n}
                     step="1"
                 />
-                <Button
+                {/* <Button
                     onClick={handleToggle}
                     toggle={toggle.nIC}
                     name="nIC"
-                />
+                /> */}
             </span>
             <div>
                 <i>{toggle.nIC ? info.nIC : null}</i>
@@ -56,22 +58,26 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
             <table>
                 <thead>
                     <tr>
-                        <th colSpan="2" align="center">choose particle's</th>
+                        <th colSpan="2" align="center">choose particle's ...</th>
                         <th colSpan="3">
-                            displacement
-                            <Button
+                            <span className="ttip" data-toggle="tooltip" title={info.dx}>
+                                displacement
+                            </span>
+                            {/* <Button
                                 onClick={handleToggle}
                                 toggle={toggle.dx}
                                 name="dx"
-                            />
+                            /> */}
                         </th>
                         <th colSpan="3">
-                            velocity
-                            <Button
+                            <span className="ttip" data-toggle="tooltip" title={info.v}>
+                                velocity
+                            </span>
+                            {/* <Button
                                 onClick={handleToggle}
                                 toggle={toggle.v}
                                 name="v"
-                            />
+                            /> */}
                         </th>
                     </tr>
                     <tr>
@@ -84,7 +90,7 @@ const IC = ({nIC, i, j, n, optionsI, optionsJ, rvs, handleIndex, handleIC, handl
                         </td>
                     </tr>
                     <tr>
-                        <td colSpan="2">row and column</td>
+                        <td colSpan="2">... row and column</td>
                         <td align="center">x</td><td align="center">y</td><td align="center">z</td>
                         <td align="center">x</td><td align="center">y</td><td align="center">z</td>
                     </tr>

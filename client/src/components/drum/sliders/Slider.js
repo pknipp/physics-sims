@@ -1,12 +1,14 @@
 import React from "react";
-import Button from "../../Button";
+// import Button from "../../Button";
 const Slider = ({label, secondLine, minText, maxText, name,
     maxVal, stepSize, quantity, handler, handleToggle, info, toggle}) => (
     <>
         <tr rowSpan="2">
             <>
                 <td>
-                    {label}:
+                    <span className="ttip" data-toggle="tooltip" title={info}>
+                        {label}:
+                    </span>
                 </td>
                 <td align="right">
                     {minText}
@@ -25,13 +27,13 @@ const Slider = ({label, secondLine, minText, maxText, name,
                 <td>
                     {maxText}
                 </td>
-                <td>
+                {/* <td>
                     {!info ? null : <Button
                         onClick={handleToggle}
                         toggle={toggle}
                         name={name}
                     />}
-                </td>
+                </td> */}
             </>
         </tr>
         {(!secondLine) ? null : <tr>

@@ -1,3 +1,36 @@
+.ttip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  /* width: 120px; */
+  /* width: max-width; */
+  /* width: 900px; */
+  /* background-color: white; */
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  /* top: 55px; */
+  /* left: 105%; */
+  /* left: -55px; */
+  z-index: 1000;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* .tooltiptext.show{opacity:0;} */
+/* .tooltiptext.in{opacity:1!important;} */
+
 * {
   font-family: "Ubuntu", sans-serif !important;
   z-index: 0;

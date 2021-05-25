@@ -24,7 +24,7 @@ const Sliders = ({speed, damping, logdt, dt, T, springConstant, velocityLength,
                     stepSize="0.1"
                     quantity={speed}
                     // handleToggle={handleToggle}
-                    // info={thisInfo.speed}
+                    info={thisInfo.speed}
                     // toggle={stateInfo.speed}
                 />
                 <Slider
