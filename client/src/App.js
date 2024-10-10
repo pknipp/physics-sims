@@ -26,10 +26,16 @@ class App extends React.Component {
         </Switch>
         <span className="center">
           <br/><br/>
-          <span>
-            creator:
-            <a href="https://pknipp.github.io/" target="_blank" rel="noopener noreferrer"> Peter Knipp</a>
-          </span>
+          <div>
+            <div>
+              creator:
+              <a href="https://pknipp.github.io/" target="_blank" rel="noopener noreferrer"> Peter Knipp</a>
+            </div>
+            <div>
+              repo:
+              <a href="https://github.com/pknipp/physics-sims" target="_blank" rel="no opener noreferrer">github.com/pknipp/physics-sims</a>
+            </div>
+          </div>
         </span>
       </BrowserRouter>
     );
