@@ -388,7 +388,7 @@ class Drum extends React.Component {
                                 let newState = {
                                     running: false,
                                     time: 0,
-                                    n: 2,
+                                    n: 4,
                                     nIC: 1,
                                     optionsI: ["row", 1],
                                     optionsJ: ["column", 1],
