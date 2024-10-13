@@ -440,7 +440,7 @@ class Drum extends React.Component {
                                 };
                                 this.setState(newState);
                             }}>
-                                Restore inputs (BUGGY)
+                                Restore inputs
                             </button>
                         </span>
                     </div>
