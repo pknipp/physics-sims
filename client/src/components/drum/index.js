@@ -384,6 +384,7 @@ class Drum extends React.Component {
                         />
                         <span className="button-container">
                             <button onClick={() => {
+                                clearInterval(this.interval);
                                 let newState = {
                                     running: false,
                                     time: 0,
@@ -434,6 +435,7 @@ class Drum extends React.Component {
                                     calcEi: false,
                                     springConstant: 2,
                                     info: {},
+                                    interval: null,
                                 };
                                 this.setState(newState);
                             }}>
