@@ -428,6 +428,7 @@ class Drum extends React.Component {
                                     E: 0,
                                     Ei: 0,
                                     logdt: 1.4,
+                                    dt: Math.round(10 ** 1.4)
                                     T: 0.4,
                                     showBond: true,
                                     velocityLength: 0.5,
