@@ -3,7 +3,6 @@ import Object from "./Object";
 
 const Drumhead = ({n, xs, ys, rvs, Fs, velocityLength, accelerationLength, showBond, width, dt}) => {
     let numPx = 540;
-    console.log(rvs, xs.length, ys.length);
     let rComponents = (
         xs.map((x, i) => {
             return ys.map((y, j) => {
